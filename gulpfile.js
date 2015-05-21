@@ -4,9 +4,11 @@ var gulp = require('gulp');
 // Include Our Plugins
 var jshint = require('gulp-jshint');
 //var sass = require('gulp-sass');
-//var concat = require('gulp-concat');
+var concat = require('gulp-concat');
 //var uglify = require('gulp-uglify');
 //var rename = require('gulp-rename');
+var docco = require('gulp-docco');
+
 
 // Lint Task
 gulp.task('lint', function() {
@@ -14,6 +16,24 @@ gulp.task('lint', function() {
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
+
+// Documentation Tasks
+
+var filesToDoc = [ './shout/www/js/*.js', 'app.js', './routes/*.js', './bin/www'];
+
+gulp.task('concat', function(){
+	return gulp.src(filesToDoc)
+						.pipe(concat('all.js'))
+						.pipe(gulp.dest('./docs/'))
+});
+
+gulp.task('docco', function(){
+	return gulp.src('./docs/all.js')
+				.pipe(docco())
+				.pipe(gulp.dest('./docs/'))
+});
+
+
 
 // Compile Our Sass
 //gulp.task('sass', function() {
@@ -41,4 +61,6 @@ gulp.task('watch', function() {
 
 // Default Task
 //gulp.task('default', ['lint', 'scripts', 'watch']);
-gulp.task('default', ['lint', 'watch']);
+gulp.task('docs', ['concat', 'docco']);
+gulp.task('default', ['lint', 'watch', 'docs']);
+
