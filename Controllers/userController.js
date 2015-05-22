@@ -4,7 +4,7 @@ var db = require('../db.js')
 
 var userController = {
 
-signupUser: function(req, res) {
+signupUser: function(req, res) {  
   console.log(req.body);
   var username = req.body.username;
   var password = req.body.password;
