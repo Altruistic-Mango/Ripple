@@ -42,15 +42,25 @@ function configure($stateProvider, $urlRouterProvider) {
     }
   })
 
-  // .state('tab.chats', {
-  //     url: '/chats',
-  //     views: {
-  //       'tab-chats': {
-  //         templateUrl: 'templates/tab-chats.html',
-  //         controller: 'ChatsCtrl'
-  //       }
-  //     }
-  //   })
+  .state('tab.settings', {
+      url: '/settings',
+      views: {
+        'tab-settings': {
+          templateUrl: 'app/settings/tab-settings.html',
+          controller: 'SettingsCtrl'
+        }
+      }
+    })
+
+  .state('tab.camera', {
+      url: '/camera',
+      views: {
+        'tab-camera': {
+          templateUrl: 'app/camera/tab-camera.html',
+          controller: 'CameraCtrl'
+        }
+      }
+    })
   //   .state('tab.chat-detail', {
   //     url: '/chats/:chatId',
   //     views: {
@@ -60,17 +70,6 @@ function configure($stateProvider, $urlRouterProvider) {
   //       }
   //     }
   //   })
-
-  // .state('tab.account', {
-  //   url: '/account',
-  //   views: {
-  //     'tab-account': {
-  //       templateUrl: 'templates/tab-account.html',
-  //       controller: 'AccountCtrl'
-  //     }
-  //   }
-  // });
-
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');

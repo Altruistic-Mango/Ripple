@@ -1,7 +1,7 @@
 angular
-	.module('shout.inbox')
-	.controller('InboxCtrl', InboxCtrl);
+	.module('shout.settings')
+	.controller('SettingsCtrl', InboxCtrl);
 
 function InboxCtrl($scope, $state) {
-	console.log('inboxctrl instantiated!!!');
+	console.log('settingsctrl instantiated!!!');
 }
