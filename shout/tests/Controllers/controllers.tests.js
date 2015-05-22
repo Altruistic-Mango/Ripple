@@ -1,16 +1,20 @@
-describe('Controllers', function(){
-    var scope;
+describe('Login Controller', function(){
+    var scope, state;
 
     // load the controller's module
-    beforeEach(module('starter.controllers'));
+    beforeEach(module('shout.login'));
 
-    beforeEach(inject(function($rootScope, $controller) {
-        scope = $rootScope.$new();
-        $controller('AccountCtrl', {$scope: scope});
+    beforeEach(inject(function( $scope, $state, $controller ) {
+        scope = $scope;
+        state = $state; 
+        $controller('LoginCtrl', {
+            $scope: scope,
+            $state: state
+        });
     }));
 
     // tests start here
-    it('should have enabled friends to be true', function(){
-        expect(scope.settings.enableFriends).toEqual(true);
+    it('should have a function called login', function(){
+        expect(scope.login).toBe('function');
     });
 });
