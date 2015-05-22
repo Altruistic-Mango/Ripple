@@ -3,23 +3,31 @@ Create tabs with an icon and label, using the tabs-positive style.
 Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
-<ion-tabs class="tabs-icon-top tabs-striped tabs-top tabs-color-active-positive">
+<ion-tabs class="tabs-icon-top tabs-color-active-positive">
+<!-- TODO: tabs-striped add this class and style it differently later on-->
 
 
   <!-- Chats Tab -->
-  <ion-tab title="Chats" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/chats">
+  <ion-tab title="Menu" icon-off="ion-android-menu" icon-on="ion-android-menu" href="#/tab/chats">
     <ion-nav-view name="tab-chats"></ion-nav-view>
   </ion-tab>
 
   <!-- Inbox Tab -->
-  <ion-tab title="Inbox" icon-off="ion-android-mail" icon-on="ion-android-mail" href="#/tab/inbox">
+  <ion-tab title="Inbox" icon-off="ion-ios-email-outline" icon-on="ion-ios-email" href="#/tab/inbox">
     <ion-nav-view name="tab-inbox"></ion-nav-view>
   </ion-tab>
 
-  <!-- Account Tab -->
-  <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
+  <!-- Settings Tab -->
+  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
+    <ion-nav-view name="tab-settings"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Camera Tab -->
+  <ion-tab title="Camera" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" href="#/tab/camera">
+    <ion-nav-view name="tab-camera"></ion-nav-view>
   </ion-tab>
 
 
 </ion-tabs>
+
+
