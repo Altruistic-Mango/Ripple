@@ -1,6 +1,8 @@
 var User = require('../Models/User.js');
 var mongoose = require('mongoose');
-var db = require('../db.js')
+var db = require('../db.js');
+var Promise = require('bluebird');
+var bcrypt = require('bcrypt-nodejs')
 
 var userController = {
 
