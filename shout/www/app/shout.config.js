@@ -23,6 +23,12 @@ function configure($stateProvider, $urlRouterProvider) {
     templateUrl: 'app/login/login.html',
     controller: 'LoginCtrl'
   })
+
+  .state('signup', {
+    url: '/signup', 
+    templateUrl: 'app/login/signup.html',
+    controller: 'SignupCtrl'
+  })
   //setup an abstract state for the tabs directive
     .state('tab', {
     url: "/tab",
@@ -61,15 +67,15 @@ function configure($stateProvider, $urlRouterProvider) {
         }
       }
     })
-  //   .state('tab.chat-detail', {
-  //     url: '/chats/:chatId',
-  //     views: {
-  //       'tab-chats': {
-  //         templateUrl: 'templates/chat-detail.html',
-  //         controller: 'ChatDetailCtrl'
-  //       }
-  //     }
-  //   })
+    .state('tab.album', {
+      url: '/album',
+      views: {
+        'tab-album': {
+          templateUrl: 'app/album/tab-album.html',
+          controller: 'AlbumCtrl'
+        }
+      }
+    })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
