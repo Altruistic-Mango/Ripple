@@ -10,13 +10,13 @@ var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
 var app = express();
 
-var routes = require('./routes/index');
+var routes = require('./Routes/index');
 
 /* allows access to users file in routes*/
-var users = require('./routes/users');
+var users = require('./Routes/users');
 
 /* allows access to photos file in routes*/
-var photos = require('./routes/photos')
+var photos = require('./Routes/photos')
 
 
 // Headers set for testing 
