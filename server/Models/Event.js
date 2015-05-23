@@ -35,3 +35,5 @@ var EventSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Photos', PhotoSchema);
+
+

@@ -20,7 +20,7 @@ signupUser: function(req, res) {
           password: password,
           uuId: randInt
         });
-        newUser.save(function(err, newUser) {
+        newUser.save(function(err, newUser) { 
           if (err) {
             console.log(err);
             res.send(500, err);

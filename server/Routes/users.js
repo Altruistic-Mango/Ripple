@@ -8,9 +8,16 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/users', function(req, res, next) {
+/* GET the list of users in the database*/
+router.get('/list', function(req, res) {
   console.log('listing users');
-  userController.retrieveUsers();
+  userController.retrieveUsers(req, res);
+});
+
+/*POST a new user to the database*/
+router.post('/signup', function(req, res) {
+  console.log('got signup request');
+  userController.signupUser(req, res)
 });
 
 module.exports = router;
