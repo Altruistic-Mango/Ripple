@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
 
-var EventSchema = new mongoose.Schema({
+var PhotoSchema = new mongoose.Schema({
 
-  uuId: {
+  photoId: {
     type: Number,
     required: true,
     unique: true
   },
 
-  photoId: {
-    type: Number,
+  radius: {
+    type: Number, 
     required: true,
     unique: false
   },
@@ -34,4 +34,4 @@ var EventSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Photos', PhotoSchema);
+module.exports = mongoose.model('Photo', PhotoSchema);
