@@ -16,7 +16,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       '../www/lib/angular/angular.js',
+      '../www/lib/angular-ui-router/release/angular-ui-router.js',
       '../www/lib/angular-mocks/angular-mocks.js',
+
 
       '../www/app/shout.module.js',
       '../www/app/shout.config.js',
@@ -29,12 +31,17 @@ module.exports = function(config) {
 
       '../www/app/inbox/inbox.module.js',
       '../www/app/inbox/inbox.controller.js',
+      '../www/app/inbox/inbox.factory.js',
+
       '../www/app/settings/settings.module.js',
       '../www/app/settings/settings.controller.js',
       '../www/app/camera/camera.module.js',
       '../www/app/camera/camera.controller.js',
+
       '../www/app/album/album.module.js',
       '../www/app/album/album.controller.js',
+      '../www/app/album/album.factory.js',
+
       '**/*tests.js'
     ],
 

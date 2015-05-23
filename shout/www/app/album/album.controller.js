@@ -4,4 +4,5 @@ angular
 
 function AlbumCtrl($scope, $state) {
 	console.log('albumctrl instantiated!!!');
+	$scope.photos = []; 
 }
