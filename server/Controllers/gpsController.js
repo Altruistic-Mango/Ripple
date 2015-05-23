@@ -28,4 +28,5 @@ var gpsController = {
   }
 };
 
+
 module.exports = gpsController;
