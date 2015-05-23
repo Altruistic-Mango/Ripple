@@ -8,11 +8,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
+var app = express();
 
 var routes = require('./routes/index');
+
+/* allows access to users file in routes*/
 var users = require('./routes/users');
 
-var app = express();
+/* allows access to photos file in routes*/
+var photos = require('./routes/photos')
 
 
 // Headers set for testing 
@@ -32,16 +36,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/users', users);
+app.use('/photos', photos);
 
-app.post('/signup', function(req, res) {
-  console.log('got signup request');
-  userController.signupUser(req, res)
-});
-
-app.get('/users', function(req, res) {
-  console.log('listing users');
-  userController.retrieveUsers(req, res);
-})
 
 
 module.exports = app;
