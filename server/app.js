@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
 var app = express();
+var quadtree = require('simple-quadtree');
 
 var routes = require('./Routes/index');
 
@@ -16,6 +17,8 @@ var users = require('./Routes/users');
 
 /* allows access to photos file in routes*/
 var photos = require('./Routes/photos')
+
+var gps = require('./Routes/gps')
 
 
 // Headers set for testing 
