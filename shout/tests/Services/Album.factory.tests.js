@@ -3,7 +3,6 @@ describe('Album Factory Unit Tests', function(){
     beforeEach(module('shout.album'));
 
     beforeEach(inject(function (_AlbumFactory_) {
-        console.log(_AlbumFactory_);
         AlbumFactory = _AlbumFactory_;
     }));
 
