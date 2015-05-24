@@ -4,7 +4,7 @@ describe('Login Controller', function(){
     // load the controller's module
     beforeEach(module('ui.router'));
     beforeEach(module('shout.login'));
-
+    //TODO: add the LocationFactory dependency so these tests pass again
     beforeEach(inject(function($injector) {
         rootScope = $injector.get('$rootScope');
         scope = rootScope.$new();
