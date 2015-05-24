@@ -42,6 +42,9 @@ module.exports = function(config) {
       '../www/app/album/album.controller.js',
       '../www/app/album/album.factory.js',
 
+      '../www/app/location/location.module.js',
+      '../www/app/location/location.factory.js',
+
       '**/*tests.js'
     ],
 
