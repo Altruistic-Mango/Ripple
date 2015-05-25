@@ -6,6 +6,7 @@ CameraFactory.$inject = ['$rootScope'];
 
 function CameraFactory($rootScope) {
   console.log('CameraFactory');
+  var services = {};
 
   var uploadurl = "http://localhost/upl";
   var pictureSource;
@@ -13,7 +14,6 @@ function CameraFactory($rootScope) {
   var picture;
   initialize();
 
-  services = {};
   services.query = query;
   services.takePicture = takePicture;
 

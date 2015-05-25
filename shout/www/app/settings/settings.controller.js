@@ -1,14 +1,20 @@
 angular
   .module('shout.settings')
-  .controller('SettingsCtrl', InboxCtrl);
+  .controller('SettingsCtrl', SettingsCtrl);
 
-function InboxCtrl($scope, $state, $ionicHistory) {
-  console.log('settingsctrl instantiated!!!');
-  $scope.radius = 0; //TODO: determine an appropriate initial value
-  $scope.TTL = 0; //TODO: determine an appropriate initial value
-  $scope.polling = true; //TODO: determine an appropriate initial value
+SettingsCtrl.$inject = ['$state', '$ionicHistory'];
 
-  $scope.acceptSettings = function() {
+function SettingsCtrl($state, $ionicHistory) {
+  console.log('SettingsCtrl');
+
+  var vm = this;
+
+  vm.radius = 0; //TODO: determine an appropriate initial value
+  vm.TTL = 0; //TODO: determine an appropriate initial value
+  vm.polling = true; //TODO: determine an appropriate initial value
+  vm.acceptSettings = acceptSettings;
+
+  function acceptSettings() {
     //do something with the settings, probably involving sending the information
     //to the settings factory
     //then go back to the last view
@@ -17,5 +23,5 @@ function InboxCtrl($scope, $state, $ionicHistory) {
     } else {
       $state.go('tab.inbox');
     }
-  };
+  }
 }

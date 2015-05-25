@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory'];
+InboxCtrl.$inject = ['$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory'];
 
-function InboxCtrl($scope, $state, InboxFactory, AlbumFactory) {
+function InboxCtrl($state, InboxFactory, AlbumFactory) {
   console.log('InboxCtrl');
   var vm = this;
 
