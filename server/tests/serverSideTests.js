@@ -1,3 +1,4 @@
+
 var app = require('../app');
 var should = require('should');
 var supertest = require('supertest');
@@ -26,8 +27,4 @@ describe('photos', function(){
   	});
 
   });
-});
-
-
-
 
