@@ -7,18 +7,32 @@ LocationFactory.$inject = ['$ionicPlatform', '$http'];
 function LocationFactory($ionicPlatform, $http) {
   console.log('location factory instantiated');
   var currentPosition;
+  var services = {
+    setPosition: setPosition,
+    setWatch: setWatch,
+    getCurrentPosition: getCurrentPosition,
+    getSuccessCallback: getSuccessCallback,
+    watchSuccessCallback: watchSuccessCallback,
+    errorCallback: errorCallback,
+    currentPosition: currentPosition,
+    clearWatch: clearWatch
+  };
 
-  var getCurrentPosition = function(successCallback, errorCallback) {
+  setInterval(sendPosition, 60000);
+
+  return services;
+
+  function getCurrentPosition (successCallback, errorCallback) {
     console.log('about to grab the initial position');
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
-  var setWatch = function(successCallback, errorCallback) {
+  function setWatch (successCallback, errorCallback) {
     console.log('setting watch on position');
     var watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
   }
 
-  var setPosition = function(position) {
+  function setPosition (position) {
 
     currentPosition = {
                       username: 'mango',
@@ -28,9 +42,8 @@ function LocationFactory($ionicPlatform, $http) {
     console.log(' currentPosition set! ', currentPosition);
 
   };
-
   
-  var sendPosition = function() {
+  function sendPosition () {
     $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server')});
   };
 
@@ -38,29 +51,17 @@ function LocationFactory($ionicPlatform, $http) {
     console.log('error getting position: ', error);
   }
 
-  var getSuccessCallback = function (position) {
+  function getSuccessCallback (position) {
     setPosition(position);
     sendPosition(); 
   };
 
-  var watchSuccessCallback = function (position) {
+  function watchSuccessCallback (position) {
     setPosition(position);
   }
 
-  var clearWatch = function() {
+  function clearWatch () {
     navigator.geolocation.clearWatch(watchId);
   };
 
-  setInterval(sendPosition, 60000);
-
-  return {
-    setPosition: setPosition,
-    getCurrentPosition: getCurrentPosition,
-    setWatch: setWatch,
-    getSuccessCallback: getSuccessCallback,
-    watchSuccessCallback: watchSuccessCallback,
-    currentPosition: currentPosition,
-    errorCallback: errorCallback,
-    clearWatch: clearWatch
-  };
 }
