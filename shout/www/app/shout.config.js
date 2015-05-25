@@ -38,6 +38,16 @@ function configure($stateProvider, $urlRouterProvider) {
     }
   })
 
+  .state('tab.review', {
+    url: '/review',
+    views: {
+      'tab-review': {
+        templateUrl: 'app/review/tab-review.html',
+        controller: 'ReviewCtrl as vm'
+      }
+    }
+  })
+
   .state('tab.settings', {
     url: '/settings',
     views: {

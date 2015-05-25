@@ -2,9 +2,9 @@ angular
   .module('shout.camera')
   .factory('CameraFactory', CameraFactory);
 
-CameraFactory.$inject = ['$rootScope'];
+CameraFactory.$inject = ['$state'];
 
-function CameraFactory($rootScope) {
+function CameraFactory($state) {
   console.log('CameraFactory');
   var services = {};
   
@@ -54,6 +54,7 @@ function CameraFactory($rootScope) {
       function(imageURI) {
         console.log("got camera success ", imageURI);
         mypicture = imageURI;
+        $state.go('shout.review');
       },
       function(err) {
         // error handling camera plugin
