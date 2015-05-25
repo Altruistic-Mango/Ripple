@@ -62,5 +62,22 @@
   padding-left:5vw;
 }
 
+/* Review Page */
+
+.pictureContainer {
+  display:flex;
+  justify-content: center;
+  width: 50vw;
+  height: 50vh;
+}
+
+.picturePreview {
+  width: 50vw;
+  height: 50vh;
+  align-self:center;
+  margin: 0 auto;
+}
+
+
 
 

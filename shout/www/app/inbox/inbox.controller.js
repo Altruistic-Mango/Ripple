@@ -4,7 +4,7 @@ angular
 
 InboxCtrl.$inject = ['$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory'];
 
-function InboxCtrl($state, InboxFactory, AlbumFactory) {
+function InboxCtrl($state, InboxFactory, AlbumFactory, CameraFactory) {
   console.log('InboxCtrl');
   var vm = this;
 
