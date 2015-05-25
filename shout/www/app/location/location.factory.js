@@ -4,7 +4,7 @@ angular
 
 LocationFactory.$inject = ['$ionicPlatform', '$http'];
 
-function LocationFactory($ionicPlatform) {
+function LocationFactory($ionicPlatform, $http) {
   console.log('LocationFactory');
   var currentPosition;
   var services = {
