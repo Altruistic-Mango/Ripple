@@ -3,6 +3,7 @@ angular.module('shout', [
   'shout.login',
   'shout.signup',
   'shout.inbox',
+  'shout.review',
   'shout.settings',
   'shout.camera',
   'shout.album',

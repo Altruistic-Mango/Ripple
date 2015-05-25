@@ -16,6 +16,7 @@ function CameraFactory($state) {
 
   services.query = query;
   services.takePicture = takePicture;
+  services.getPicture = getPicture;
 
   return services;
 
@@ -52,14 +53,18 @@ function CameraFactory($state) {
     }
     navigator.camera.getPicture(
       function(imageURI) {
-        console.log("got camera success ", imageURI);
-        mypicture = imageURI;
-        $state.go('tab.review');
+        console.log('got camera success');
+        picture = imageURI;
+        $state.go('review');
       },
       function(err) {
         // error handling camera plugin
-        console.log("got camera error ", err);
+        console.log('got camera error ', err);
       },
       options);
+  }
+
+  function getPicture() {
+    return picture;
   }
 }
