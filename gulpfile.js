@@ -9,6 +9,8 @@ var concat = require('gulp-concat');
 //var rename = require('gulp-rename');
 var docco = require('gulp-docco');
 
+var mocha = require('gulp-mocha');
+
 
 // Lint Task
 gulp.task('lint', function() {
@@ -31,6 +33,13 @@ gulp.task('docco', function(){
 	return gulp.src('./docs/all.js')
 				.pipe(docco())
 				.pipe(gulp.dest('./docs/'))
+});
+
+
+gulp.task('test', function () {
+    return gulp.src('./server/tests/serverSideTests.js', {read: false})
+        // gulp-mocha needs filepaths so you can't have any plugins before it 
+        .pipe(mocha({reporter: 'nyan'}));
 });
 
 
