@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
 var app = express();
-var quadtree = require('simple-quadtree');
+// var quadtree = require('simple-quadtree');
 
 var routes = require('./Routes/index');
 
@@ -36,7 +36,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(path.join(__dirname, '../shout/www/')));
 
 app.use('/users', users);
 app.use('/photos', photos);

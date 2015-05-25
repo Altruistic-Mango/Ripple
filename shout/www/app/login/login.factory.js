@@ -5,6 +5,8 @@ angular
 LoginFactory.$inject = ['LocationFactory'];
 
 function LoginFactory(LocationFactory) {
+  
+
   var successfulLogin = function() {
     console.log('login factory successfulLogin called')
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
