@@ -11,15 +11,15 @@ function LocationFactory($ionicPlatform) {
     navigator.geolocation.watchPosition(setPosition, errorCallback);
   });
 
-  var setPosition = function(position) {
+  function setPosition(position) {
     console.log('setPosition called with: ', position);
     currentPosition = position.coords;
     console.log('currentPosition set! ', currentPosition);
-  };
+  }
 
-  var errorCallback = function(error) {
+  function errorCallback(error) {
     console.log('error getting position: ', error);
-  };
+  }
 
   return {
     setPosition: setPosition,

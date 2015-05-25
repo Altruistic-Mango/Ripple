@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var bower = require('bower');
+var jshint = require('gulp-jshint');
+var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
@@ -8,11 +10,20 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var karma = require('karma').server;
 
+//Paths to source files
+// note: js files need to have the module files concated first otherwise angular breaks
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  js:   ['./www/app/**/*module.js',
+         './www/app/**/*.js'],
+  dist: ['./www/dist/*.js']
 };
 
-gulp.task('default', ['sass']);
+//Main gulp task
+gulp.task('default', ['scripts']);
+
+//Script for all gulp tasks, used in default and watch
+gulp.task('scripts', ['sass', 'jshint', 'clean', 'concat']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -28,8 +39,25 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('jshint', function() {
+  return gulp.src(paths.js)
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task('clean', function() {
+  return gulp.src(paths.dist)
+    .pipe(clean());
+});
+
+gulp.task('concat', function() {
+  return gulp.src(paths.js)
+    .pipe(concat('shout.js'))
+    .pipe(gulp.dest('./www/dist/'));
+});
+
 gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
+  gulp.watch([paths.sass, paths.js], ['scripts']);
 });
 
 gulp.task('install', ['git-check'], function() {
@@ -52,9 +80,7 @@ gulp.task('git-check', function(done) {
   done();
 });
 
-/**
-* Test task, run test once and exit
-*/
+//Test Task
 gulp.task('test', function(done) {
     karma.start({
         configFile: __dirname + '/tests/my.conf.js',

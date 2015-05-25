@@ -2,7 +2,11 @@ angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
-function AlbumCtrl($scope, $state) {
+AlbumCtrl.$inject = ['$state'];
+
+function AlbumCtrl($state) {
   console.log('AlbumCtrl');
-  $scope.photos = [];
+  var vm = this;
+
+  vm.photos = [];
 }
