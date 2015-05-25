@@ -1,1 +1,66 @@
 /* Empty. Add your own CSS if you like */
+
+.loginView {
+  /*background-image: url('../img/loginBackground.svg');*/
+  background-image: url('../img/bg.png');
+  background-size:100% 100%;
+}
+
+.loginTitleContainer {
+  display:flex;
+  justify-content: center;
+  height: 20vh;
+}
+
+/* Title */
+.loginTitle {
+  font-family: DINCondensed-Bold;
+  font-size: 8vh;
+  color: #4B3F32;
+  line-height: 1em;
+  letter-spacing: 4vh;
+  padding-left:3vh;
+  align-self:center;
+}
+
+.loginInputContainer {
+  display:flex;
+  justify-content: center;
+  height: 50vh;
+}
+
+/* LoginContainer: */
+.loginInputBox {
+  background: #D8D8D8;
+  min-width: 90%;
+  max-width: 90%;
+  height: 26vh;
+}
+
+/* Input: */
+.loginInputItem {
+  background: #FFFFFF;
+  font-family: Avenir-Book;
+  color: #49B6D3;
+  height: 6vh;
+  padding-left: 5%;
+  margin: 2vh 2vh;
+}
+
+.loginButtonContainer {
+  display:flex;
+  justify-content: center;
+}
+/* LoginButton */
+.loginButton {
+  background: #49B6D3;
+  font-family: Avenir-Book;
+  font-size: 8vh;
+  color: #FFFFFF;
+  line-height: 1.25em;
+  letter-spacing: 2.5vw;
+  padding-left:5vw;
+}
+
+
+
