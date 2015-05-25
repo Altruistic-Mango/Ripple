@@ -12,25 +12,25 @@ var docco = require('gulp-docco');
 
 // Lint Task
 gulp.task('lint', function() {
-    return gulp.src('js/*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
+  return gulp.src('js/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
 });
 
 // Documentation Tasks
 
-var filesToDoc = [ './shout/www/js/*.js', 'app.js', './routes/*.js', './bin/www'];
+var filesToDoc = ['./shout/www/js/*.js', 'app.js', './routes/*.js', './bin/www'];
 
-gulp.task('concat', function(){
-	return gulp.src(filesToDoc)
-						.pipe(concat('all.js'))
-						.pipe(gulp.dest('./docs/'))
+gulp.task('concat', function() {
+  return gulp.src(filesToDoc)
+    .pipe(concat('all.js'))
+    .pipe(gulp.dest('./docs/'));
 });
 
-gulp.task('docco', function(){
-	return gulp.src('./docs/all.js')
-				.pipe(docco())
-				.pipe(gulp.dest('./docs/'))
+gulp.task('docco', function() {
+  return gulp.src('./docs/all.js')
+    .pipe(docco())
+    .pipe(gulp.dest('./docs/'));
 });
 
 
@@ -54,13 +54,12 @@ gulp.task('docco', function(){
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    //gulp.watch('js/*.js', ['lint', 'scripts']);
-    gulp.watch('js/*.js', ['lint']);
-//    gulp.watch('scss/*.scss', ['sass']);
+  //gulp.watch('js/*.js', ['lint', 'scripts']);
+  gulp.watch('js/*.js', ['lint']);
+  //    gulp.watch('scss/*.scss', ['sass']);
 });
 
 // Default Task
 //gulp.task('default', ['lint', 'scripts', 'watch']);
 gulp.task('docs', ['concat', 'docco']);
 gulp.task('default', ['lint', 'watch', 'docs']);
-
