@@ -1,18 +1,24 @@
-<ion-view view-title="Login"> 
-	<ion-content class="padding">
-		<div class="list list-inset">
-		   <label class="item item-input">
-		       <input type="text" placeholder="Username" ng-model="data.username">
-		   </label>
-		   <label class="item item-input">
-		       <input type="email" placeholder="Email" ng-model="data.email">
-		   </label>
-		   <label class="item item-input">
-		       <input type="password" placeholder="Password" ng-model="data.password">
-		   </label>
-		</div>
-		<button class="button button-block button-calm" ng-click="login()">Login</button>
-		<button class="button button-block button-calm" ui-sref="signup">Sign Up</button>
-	</ion-content>
-
+<ion-view class="loginView">
+  <ion-content class="padding">
+    <div class="loginTitleContainer">
+      <div class="loginTitle">RIPPLE</div>
+    </div>
+    <div class="loginInputContainer">
+      <div class="loginInputBox">
+        <div class="loginInputItem">
+          <input type="text" placeholder="Username" ng-model="data.username">
+        </div>
+        <div class="loginInputItem">
+          <input type="email" placeholder="Email" ng-model="data.email">
+        </div>
+        <div class="loginInputItem">
+          <input type="password" placeholder="Password" ng-model="data.password">
+        </div>
+      </div>
+    </div>
+    <div class="loginButtonContainer">
+      <button class="item button loginButton" ng-click="login()">Login</button>
+      <button class="item button loginButton" ng-hide=true ui-sref="signup">Sign Up</button>
+    </div>
+  </ion-content>
 </ion-view>
