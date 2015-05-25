@@ -121,9 +121,32 @@ function Quadtree(boundaries, maxChildren) {
     return index;
   }
 
+    Quadtree.prototype.update = function(item) {
+      var results = this.get(item);
+      var found;
+      results.forEach(function(coord) {
+        if (coord.username === item.username) {
+          coord.x = item.x;
+          coord.y = item.y;
+          found = true;
+        }
+      });
+      if (!found) {
+        this.put(item);      
+      }
+    };
+
 
     // remove gps data function
       // find last position then delete according to id
+    Quadtree.prototype.remove = function(item) {
+      var results = this.get(item);
+      for (var i = 0; i < results.length; i++) {
+        if (results[i].username === item.username) {
+          results.splice(i, 1);
+        }
+      }
+    };
 
     // broadcast function 
       // use find then find others in same quadrant
@@ -167,6 +190,9 @@ function Quadtree(boundaries, maxChildren) {
         height: height
       }, this.maxChildren);
     }
+
+
+    module.exports = new Quadtree();
 
     // combine quadrants when too few nodes
 

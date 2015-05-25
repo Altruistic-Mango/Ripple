@@ -1,5 +1,5 @@
-var Quadtree = require('../Utils/QTree.js');
-var quadtree = new Quadtree()
+var quadtree = require('../Utils/QTree.js');
+
 
 var gpsController = {
 
@@ -11,7 +11,7 @@ var gpsController = {
       username: req.body.username
     }
 
-    quadtree.put(node);
+    quadtree.update(node);
     res.send('Entered node')
   },
 
