@@ -3,12 +3,15 @@ angular
   .factory('AlbumFactory', AlbumFactory);
 
 function AlbumFactory() {
-  var photos = [];
-  var savePhoto = function() {
-  };
+  console.log('AlbumFactory');
+  var services = {};
 
-  return {
-    photos: photos,
-    savePhoto: savePhoto
-  };
+  services.photos = [];
+  services.savePhoto = savePhoto;
+
+  return services;
+
+  function savePhoto() {
+  }
+
 }

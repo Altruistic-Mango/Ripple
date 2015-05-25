@@ -3,19 +3,19 @@ angular
   .factory('InboxFactory', InboxFactory);
 
 function InboxFactory() {
-  var photos = [];
+  console.log('InboxFactory');
+  var services = {};
 
-  var checkForExpiredPhotos = function() {
+  services.photos = [];
+  services.checkForExpiredPhotos = checkForExpiredPhotos;
+  services.deleteExpiredPhotos = deleteExpiredPhotos;
 
-  };
+  return services;
 
-  var deleteExpiredPhotos = function() {
+  function checkForExpiredPhotos() {
+  }
 
-  };
+  function deleteExpiredPhotos() {
+  }
 
-  return {
-    photos: photos,
-    checkForExpiredPhotos: checkForExpiredPhotos,
-    deleteExpiredPhotos: deleteExpiredPhotos
-  };
 }
