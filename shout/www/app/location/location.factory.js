@@ -31,7 +31,7 @@ function LocationFactory($ionicPlatform, $http) {
 
   
   var sendPosition = function() {
-    $http.post('/gps/position', currentPosition).success(function(){console.log('sent position to server')});
+    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server')});
   };
 
   function errorCallback(error) {
