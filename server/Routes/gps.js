@@ -7,7 +7,7 @@ router.post('/newdata', function(req, res) {
   gpsController.insertCoords(req, res);
 });
 
-router.get('/getlocal', function(req, res) {
+router.post('/getlocal', function(req, res) {
   console.log('getting nearby nodes');
   gpsController.findNearbyNodes(req, res);
 });
