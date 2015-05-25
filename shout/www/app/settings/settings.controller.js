@@ -11,8 +11,9 @@ function SettingsCtrl($state, $ionicHistory) {
 
   vm.radius = 0; //TODO: determine an appropriate initial value
   vm.TTL = 0; //TODO: determine an appropriate initial value
-  vm.polling = true; //TODO: determine an appropriate initial value
+  vm.watch = true; 
   vm.acceptSettings = acceptSettings;
+  vm.userSetWatch = userSetWatch;
 
   function acceptSettings() {
     //do something with the settings, probably involving sending the information
@@ -23,5 +24,9 @@ function SettingsCtrl($state, $ionicHistory) {
     } else {
       $state.go('tab.inbox');
     }
+  }
+
+  function userSetWatch() {
+    console.log('value of toggle: ', vm.watch);
   }
 }
