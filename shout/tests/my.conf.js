@@ -37,6 +37,7 @@ module.exports = function(config) {
       '../www/app/settings/settings.controller.js',
       '../www/app/camera/camera.module.js',
       '../www/app/camera/camera.controller.js',
+      '../www/app/camera/camera.services.js',
 
       '../www/app/album/album.module.js',
       '../www/app/album/album.controller.js',
