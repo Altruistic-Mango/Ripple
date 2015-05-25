@@ -12,12 +12,6 @@ function InboxCtrl($state, InboxFactory, AlbumFactory, CameraFactory) {
   vm.photos = InboxFactory.photos;
   vm.data = CameraFactory.data;
   vm.obj = CameraFactory.obj;
-  vm.takePicture = takePicture;
+  vm.takePicture = CameraFactory.takePicture;
   vm.query = CameraFactory.query;
-
-  function takePicture() {
-    console.log('takePicture()');
-    CameraFactory.takePicture();
-  }
-
 }
