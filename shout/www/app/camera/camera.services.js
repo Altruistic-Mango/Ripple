@@ -54,7 +54,7 @@ function CameraFactory($state) {
       function(imageURI) {
         console.log("got camera success ", imageURI);
         mypicture = imageURI;
-        $state.go('shout.review');
+        $state.go('tab.review');
       },
       function(err) {
         // error handling camera plugin
