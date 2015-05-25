@@ -1,21 +1,21 @@
 angular
-	.module('shout.inbox')
-	.factory('InboxFactory', InboxFactory);
+  .module('shout.inbox')
+  .factory('InboxFactory', InboxFactory);
 
-	function InboxFactory() {
-		var photos = []; 
+function InboxFactory() {
+  var photos = [];
 
-		var checkForExpiredPhotos = function () {
+  var checkForExpiredPhotos = function() {
 
-		}
+  };
 
-		var deleteExpiredPhotos = function () {
+  var deleteExpiredPhotos = function() {
 
-		}
-		
-		return {
-			photos: photos,
-			checkForExpiredPhotos: checkForExpiredPhotos,
-			deleteExpiredPhotos: deleteExpiredPhotos
-		}
-	};
+  };
+
+  return {
+    photos: photos,
+    checkForExpiredPhotos: checkForExpiredPhotos,
+    deleteExpiredPhotos: deleteExpiredPhotos
+  };
+}
