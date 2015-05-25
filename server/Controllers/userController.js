@@ -2,7 +2,7 @@ var User = require('../Models/User.js');
 var mongoose = require('mongoose');
 var db = require('../db.js');
 var Promise = require('bluebird');
-var bcrypt = require('bcrypt-nodejs')
+var bcrypt = require('bcrypt-nodejs');
 
 var userController = {
 
@@ -67,16 +67,17 @@ signupUser: function(req, res) {
             res.end();
           }
           else {
-            console.log('not a match')
-            res.end()
+            console.log('not a match');
+            res.end();
           }
         });
       }
     });
   },
-
-}
-
+};
 
 
 module.exports = userController;
+
+
+

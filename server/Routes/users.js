@@ -17,12 +17,12 @@ router.get('/list', function(req, res) {
 /*POST a new user to the database*/
 router.post('/signup', function(req, res) {
   console.log('got signup request');
-  userController.signupUser(req, res)
+  userController.signupUser(req, res);
 });
 
 router.post('/signin', function(req, res) {
   console.log('got signin request');
-  userController.signinUser(req, res)
+  userController.signinUser(req, res);
 });
 
 module.exports = router;
