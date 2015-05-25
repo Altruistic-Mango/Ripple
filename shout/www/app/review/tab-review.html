@@ -2,7 +2,10 @@
   <ion-content class="padding">
     <div class="list card">
     </div>
-    <!-- Camera Button-->
-    <button class="button button-block" ng-click="vm.takePicture()">Camera</button>
+    <!-- Share Button-->
+    <div class="pictureContainer">
+      <img class="picturePreview" src={{vm.photo}}>
+    </div>
+    <button class="button button-block" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>
 </ion-view>

@@ -20,6 +20,12 @@ function configure($stateProvider, $urlRouterProvider) {
     controller: 'SignupCtrl as vm'
   })
 
+  .state('review', {
+    url: '/review',
+    templateUrl: 'app/review/tab-review.html',
+    controller: 'ReviewCtrl as vm'
+  })
+
   //setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',
@@ -34,16 +40,6 @@ function configure($stateProvider, $urlRouterProvider) {
       'tab-inbox': {
         templateUrl: 'app/inbox/tab-inbox.html',
         controller: 'InboxCtrl as vm'
-      }
-    }
-  })
-
-  .state('tab.review', {
-    url: '/review',
-    views: {
-      'tab-review': {
-        templateUrl: 'app/review/tab-review.html',
-        controller: 'ReviewCtrl as vm'
       }
     }
   })

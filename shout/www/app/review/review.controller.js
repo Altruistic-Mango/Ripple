@@ -8,5 +8,10 @@ function ReviewCtrl($state, CameraFactory) {
   console.log('ReviewCtrl');
   var vm = this;
 
-  vm.photo = CameraFactory.photo;
+  vm.photo = CameraFactory.getPicture();
+  vm.sharePhoto = sharePhoto;
+
+  function sharePhoto() {
+    console.log('sharePhoto');
+  }
 }
