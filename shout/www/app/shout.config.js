@@ -17,7 +17,7 @@ function configure($stateProvider, $urlRouterProvider) {
   .state('signup', {
     url: '/signup',
     templateUrl: 'app/login/signup.html',
-    controller: 'SignupCtrl'
+    controller: 'SignupCtrl as vm'
   })
 
   //setup an abstract state for the tabs directive
@@ -43,7 +43,7 @@ function configure($stateProvider, $urlRouterProvider) {
     views: {
       'tab-settings': {
         templateUrl: 'app/settings/tab-settings.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsCtrl as vm'
       }
     }
   })
@@ -64,7 +64,7 @@ function configure($stateProvider, $urlRouterProvider) {
     views: {
       'tab-album': {
         templateUrl: 'app/album/tab-album.html',
-        controller: 'AlbumCtrl'
+        controller: 'AlbumCtrl as vm'
       }
     }
   });
