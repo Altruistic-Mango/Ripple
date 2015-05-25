@@ -8,6 +8,7 @@ var userController = {
 
 signupUser: function(req, res) {  
   console.log(req.body);
+  console.log(this.hasher(req.body.password));
   var username = req.body.username;
   var password = req.body.password;
   var randInt = Math.floor(Math.random() * 10000);
@@ -43,8 +44,25 @@ signupUser: function(req, res) {
         throw err;
       }
     });
+  },
+
+  hasher: function(password) {
+    return bcrypt.hashSync(password);
   }
 
+
+
+
 };
+
+
+User.comparePassword = function(password, hashedPassword, cb) {
+  bcrypt.compare(password, hashedPassword, function(err, match) {
+    if (err) return cb(err);
+    cb(null, matchtch);
+  });
+};
+
+
 
 module.exports = userController;
