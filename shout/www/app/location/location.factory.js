@@ -2,10 +2,10 @@ angular
   .module('shout.location')
   .factory('LocationFactory', LocationFactory);
 
-LocationFactory.$inject = ['$ionicPlatform', '$http'];  
+LocationFactory.$inject = ['$ionicPlatform', '$http'];
 
 function LocationFactory($ionicPlatform, $http) {
-  console.log('location factory instantiated');
+  console.log('LocationFactory');
   var currentPosition;
   var services = {
     setPosition: setPosition,
@@ -41,11 +41,11 @@ function LocationFactory($ionicPlatform, $http) {
                       };
     console.log(' currentPosition set! ', currentPosition);
 
-  };
-  
+  }
+
   function sendPosition () {
-    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server')});
-  };
+    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server');});
+  }
 
   function errorCallback(error) {
     console.log('error getting position: ', error);
@@ -53,8 +53,8 @@ function LocationFactory($ionicPlatform, $http) {
 
   function getSuccessCallback (position) {
     setPosition(position);
-    sendPosition(); 
-  };
+    sendPosition();
+  }
 
   function watchSuccessCallback (position) {
     setPosition(position);
@@ -62,6 +62,6 @@ function LocationFactory($ionicPlatform, $http) {
 
   function clearWatch () {
     navigator.geolocation.clearWatch(watchId);
-  };
+  }
 
 }

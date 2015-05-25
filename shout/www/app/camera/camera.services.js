@@ -2,9 +2,9 @@ angular
   .module('shout.camera')
   .factory('CameraFactory', CameraFactory);
 
-CameraFactory.$inject = ['$rootScope'];
+CameraFactory.$inject = ['$state'];
 
-function CameraFactory($rootScope) {
+function CameraFactory($state) {
   console.log('CameraFactory');
   var services = {};
   
@@ -16,6 +16,7 @@ function CameraFactory($rootScope) {
 
   services.query = query;
   services.takePicture = takePicture;
+  services.getPicture = getPicture;
 
   return services;
 
@@ -52,13 +53,18 @@ function CameraFactory($rootScope) {
     }
     navigator.camera.getPicture(
       function(imageURI) {
-        console.log("got camera success ", imageURI);
-        mypicture = imageURI;
+        console.log('got camera success');
+        picture = imageURI;
+        $state.go('review');
       },
       function(err) {
         // error handling camera plugin
-        console.log("got camera error ", err);
+        console.log('got camera error ', err);
       },
       options);
+  }
+
+  function getPicture() {
+    return picture;
   }
 }
