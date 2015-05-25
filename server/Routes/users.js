@@ -20,4 +20,9 @@ router.post('/signup', function(req, res) {
   userController.signupUser(req, res)
 });
 
+router.post('/signin', function(req, res) {
+  console.log('got signin request');
+  userController.signinUser(req, res)
+});
+
 module.exports = router;
