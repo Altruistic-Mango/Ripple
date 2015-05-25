@@ -1,68 +1,67 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+  <!-- ionic/angularjs js -->
+  <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+  <!-- cordova script (this will be a 404 during development) -->
+  <script src="cordova.js"></script>
 
-    <!-- your app's js -->
-    <script src="app/shout.module.js"></script>
-    <script src="app/shout.config.js"></script>
-    <script src="app/shout.run.js"></script>
+  <!-- your app's js -->
+  <script src="app/shout.module.js"></script>
+  <script src="app/shout.config.js"></script>
+  <script src="app/shout.run.js"></script>
 
-    <script src="app/login/login.module.js"></script>
-    <script src="app/login/login.controller.js"></script>
-    <script src="app/login/signup.module.js"></script>
-    <script src="app/login/signup.controller.js"></script>
+  <script src="app/login/login.module.js"></script>
+  <script src="app/login/login.controller.js"></script>
+  <script src="app/login/signup.module.js"></script>
+  <script src="app/login/signup.controller.js"></script>
 
-    <script src="app/inbox/inbox.module.js"></script>
-    <script src="app/inbox/inbox.controller.js"></script>
-    <script src="app/inbox/inbox.factory.js"></script>
+  <script src="app/inbox/inbox.module.js"></script>
+  <script src="app/inbox/inbox.controller.js"></script>
+  <script src="app/inbox/inbox.factory.js"></script>
 
-    <script src="app/settings/settings.module.js"></script>
-    <script src="app/settings/settings.controller.js"></script>
-    <script src="app/camera/camera.module.js"></script>
-    <script src="app/camera/camera.controller.js"></script>
+  <script src="app/settings/settings.module.js"></script>
+  <script src="app/settings/settings.controller.js"></script>
 
-    <script src="app/album/album.module.js"></script>
-    <script src="app/album/album.controller.js"></script>
-    <script src="app/album/album.factory.js"></script>
+  <script src="app/camera/camera.module.js"></script>
+  <!--<script src="app/camera/camera.controller.js"></script>-->
+  <script src="app/camera/camera.services.js"></script>
 
-    <script src="app/location/location.module.js"></script>
-    <script src="app/location/location.factory.js"></script>    
+  <script src="app/album/album.module.js"></script>
+  <script src="app/album/album.controller.js"></script>
+  <script src="app/album/album.factory.js"></script>
 
+  <script src="app/location/location.module.js"></script>
+  <script src="app/location/location.factory.js"></script>
 
+</head>
 
-
-
-
-  </head>
-  <body ng-app="shout">
-    <!--
+<body ng-app="shout">
+  <!--
       The nav bar that will be updated as we navigate between views.
     -->
-    <ion-nav-bar view-title='index' class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-    </ion-nav-bar>
-    <!--
+  <ion-nav-bar view-title='index' class="bar-stable">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <!--
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
     -->
-    <ion-nav-view></ion-nav-view>
-  </body>
+  <ion-nav-view></ion-nav-view>
+</body>
+
 </html>
