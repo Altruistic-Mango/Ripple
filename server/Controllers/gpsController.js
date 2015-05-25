@@ -9,10 +9,10 @@ var gpsController = {
       x: +req.body.x, 
       y: +req.body.y, 
       username: req.body.username
-    }
+    };
 
     quadtree.update(node);
-    res.send('Entered node')
+    res.send('Entered node');
   },
 
   findNearbyNodes: function(req, res) {
@@ -26,6 +26,6 @@ var gpsController = {
     var nodes = quadtree.get(searchParams);
     res.send(nodes);
   }
-}
+};
 
 module.exports = gpsController;

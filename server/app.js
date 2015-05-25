@@ -1,6 +1,5 @@
 //Server Config
 //--------------
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -17,9 +16,9 @@ var routes = require('./Routes/index');
 var users = require('./Routes/users');
 
 /* allows access to photos file in routes*/
-var photos = require('./Routes/photos')
+var photos = require('./Routes/photos');
 
-var gps = require('./Routes/gps')
+var gps = require('./Routes/gps');
 
 
 // Headers set for testing 

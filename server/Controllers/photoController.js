@@ -10,25 +10,26 @@ var photoController = {
 
 	storePhoto: function(req, res) {
 
-		console.log(req.body);
+		newPhoto = new Photo({
+			photoId: req.body.photoId,
+		  radius: req.body.radius,
+		  TTL: req.body.TTL,
+		  photoURL: req.body.photoURL,
+		  recipientList: req.body.recipientList
+	  });
 
-		photoId = req.body.photoId;
-	  radius = req.body.radius;
-	  TTL = req.body.TTL;
-	  photoURL = "www.somePhotoFromS3";
-	  recipientList = ["a bunch of fricken people"];
-
-		Photo.create({
-			photoId: photoId,
-		  radius: radius,
-		  TTL: TTL,
-		  photoURL: photoURL,
-		  recipientList: recipientList
-		}, function(err, photo){
+		newPhoto.save(function(err, newPhoto){
+			console.log("in photo save function");
 			if(err){
-				console.log("Error: ", err);
+				console.log("Photo Error: ", err);
+				res.send(500);
+				res.end();
+			} else {
+				res.send(200, newPhoto);
+				res.end();
 			}
 		});
+
 	},
 
 	getPhotos: function(req, res) {
@@ -39,7 +40,12 @@ var photoController = {
 				throw err;
 			}
 		});
+	},
+
+	testingFunc: function(req, res) {
+		res.status(200);
+		res.end();
 	}
-}
+};
 
 module.exports = photoController;
