@@ -1,5 +1,5 @@
 angular
-  .module('shout.reveiw')
+  .module('shout.review')
   .factory('ReviewFactory', ReviewFactory);
 
 function ReviewFactory() {
