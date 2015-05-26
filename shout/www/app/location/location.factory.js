@@ -6,7 +6,7 @@ LocationFactory.$inject = ['$ionicPlatform', '$http'];
 
 function LocationFactory($ionicPlatform, $http) {
   console.log('LocationFactory');
-  var currentPosition;
+  var currentPosition, watchId, intervalId;
   var services = {
     setPosition: setPosition,
     setWatch: setWatch,
@@ -15,10 +15,13 @@ function LocationFactory($ionicPlatform, $http) {
     watchSuccessCallback: watchSuccessCallback,
     errorCallback: errorCallback,
     currentPosition: currentPosition,
-    clearWatch: clearWatch
+    clearWatch: clearWatch, 
+    triggerPingInterval: triggerPingInterval,
+    clearPingInterval: clearPingInterval, 
+    intervalId: intervalId
   };
 
-  setInterval(sendPosition, 60000);
+  triggerPingInterval()
 
   return services;
 
@@ -29,7 +32,7 @@ function LocationFactory($ionicPlatform, $http) {
 
   function setWatch (successCallback, errorCallback) {
     console.log('setting watch on position');
-    var watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
+    watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
   }
 
   function setPosition (position) {
@@ -62,6 +65,16 @@ function LocationFactory($ionicPlatform, $http) {
 
   function clearWatch () {
     navigator.geolocation.clearWatch(watchId);
+  }
+
+  function triggerPingInterval() {
+    intervalId = setInterval(sendPosition, 60000);
+  }
+
+  function clearPingInterval() {
+    console.log('clear ping interval called with id: ', intervalId);
+    clearInterval(intervalId)
+    intervalId = null; 
   }
 
 }
