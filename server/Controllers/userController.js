@@ -92,6 +92,5 @@ User.comparePassword = function(password, hashedPassword, cb) {
 };
 
 
-
 module.exports = userController;
 
