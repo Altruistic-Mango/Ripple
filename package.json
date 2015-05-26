@@ -17,12 +17,17 @@
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-docco": "0.0.4",
     "gulp-jshint": "^1.10.0",
+    "gulp-mocha": "^2.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.1",
-    "gulp-uglify": "^1.2.0"
+    "gulp-uglify": "^1.2.0",
+    "mocha": "^2.2.5",
+    "should": "^6.0.3",
+    "supertest": "^1.0.1"
   }
 }
