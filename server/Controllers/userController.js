@@ -7,10 +7,9 @@ var bcrypt = require('bcrypt-nodejs')
 var userController = {
 
 signupUser: function(req, res) {  
-  console.log(req.body);
-  console.log(this.hasher(req.body.password));
+
   var username = req.body.username;
-  var password = req.body.password;
+  var password = bcrypt.hashSync(req.body.password);
   var randInt = Math.floor(Math.random() * 10000);
 
   User.findOne({ username: req.body.username })
@@ -26,7 +25,7 @@ signupUser: function(req, res) {
             console.log(err);
             res.send(500, err);
           }
-          res.json(newUser)
+            res.send(200);
         });
       } else {
         console.log('Account already exists');
@@ -46,22 +45,37 @@ signupUser: function(req, res) {
     });
   },
 
-  hasher: function(password) {
-    return bcrypt.hashSync(password);
-  }
 
+  signinUser: function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
 
+    User.findOne({username: username}, function(err, person) {
+      if (err) console.log(err);
+      else if (!person) {
+        console.log("This user does not exist.");
+        res.send('None found');
+      }
 
+      else {
+        var hashedPassword = person.password;
+        bcrypt.compare(password, hashedPassword, function(err, match) {
+          if (err) return (err);
+          console.log(match);
+          if (match) {
+            res.json({userId: person.uuId});
+            res.end();
+          }
+          else {
+            console.log('not a match')
+            res.end()
+          }
+        });
+      }
+    });
+  },
 
-};
-
-
-User.comparePassword = function(password, hashedPassword, cb) {
-  bcrypt.compare(password, hashedPassword, function(err, match) {
-    if (err) return cb(err);
-    cb(null, matchtch);
-  });
-};
+}
 
 
 
