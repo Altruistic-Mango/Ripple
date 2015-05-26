@@ -14,7 +14,7 @@ describe('Album Controller', function(){
         spyOn(state, 'go');
 
         createController = function() {
-            return $controller('AlbumCtrl', {
+            return $controller('AlbumCtrl as vm', {
                 $scope: scope, 
                 $state: state
             });
@@ -25,7 +25,7 @@ describe('Album Controller', function(){
 
     // tests start here
     it('should have an array of photos', function(){
-        expect(scope.photos).toEqual(jasmine.any(Array));
+        expect(scope.vm.photos).toEqual(jasmine.any(Array));
     });
 
     
