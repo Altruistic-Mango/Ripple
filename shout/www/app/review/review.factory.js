@@ -2,16 +2,19 @@ angular
   .module('shout.review')
   .factory('ReviewFactory', ReviewFactory);
 
-function ReviewFactory() {
+ReviewFactory.$inject = ['$state'];
+
+function ReviewFactory($state) {
   console.log('ReviewFactory');
   var services = {};
 
   services.photo = {};
-  services.sendPhoto = sendPhoto;
+  services.sharePhoto = sharePhoto;
 
   return services;
 
-  function sendPhoto() {
+  function sharePhoto() {
+    $state.go('tab.settings');
   }
 
 }
