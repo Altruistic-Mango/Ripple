@@ -24,5 +24,7 @@ describe('photos', function(){
   		res.status.should.equal(200);
   		done();
   	});
+  });
+});
 
 
