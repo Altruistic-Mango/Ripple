@@ -2,12 +2,14 @@ var User = require('../Models/User.js');
 var mongoose = require('mongoose');
 var db = require('../db.js');
 var Promise = require('bluebird');
-var bcrypt = require('bcrypt-nodejs')
+var bcrypt = require('bcrypt-nodejs');
 
 var userController = {
 
 signupUser: function(req, res) {  
 
+  console.log(req.body);
+  console.log(this.hasher(req.body.password));
   var username = req.body.username;
   var password = bcrypt.hashSync(req.body.password);
   var randInt = Math.floor(Math.random() * 10000);
@@ -67,16 +69,28 @@ signupUser: function(req, res) {
             res.end();
           }
           else {
-            console.log('not a match')
-            res.end()
+            console.log('not a match');
+            res.end();
           }
         });
       }
     });
   },
 
-}
+  hasher: function(password) {
+    return bcrypt.hashSync(password);
+  }
+};
 
+
+
+User.comparePassword = function(password, hashedPassword, cb) {
+  bcrypt.compare(password, hashedPassword, function(err, match) {
+    if (err) return cb(err);
+    cb(null, matchtch);
+  });
+};
 
 
 module.exports = userController;
+
