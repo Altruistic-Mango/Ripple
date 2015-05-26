@@ -49,6 +49,7 @@ function CameraFactory($state) {
     if (!navigator.camera) {
       // error handling
       console.log('no camera found');
+      $state.go('review');
       return;
     }
     navigator.camera.getPicture(
