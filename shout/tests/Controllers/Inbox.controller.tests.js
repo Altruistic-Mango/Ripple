@@ -1,11 +1,12 @@
 describe('Inbox Controller', function(){
-    var scope, state, rootScope, InboxFactory, AlbumFactory, createController;
+    var scope, state, rootScope, InboxFactory, AlbumFactory, CameraFactoryMock, createController;
 
     // load the controller's module
     beforeEach(module('ui.router'));
     beforeEach(module('shout.inbox'));
 
     beforeEach(inject(function($injector) {
+        CameraFactoryMock = jasmine.createSpyObj('CameraFactory', ['data', 'obj', 'takePicture', 'query']);
         rootScope = $injector.get('$rootScope');
         scope = rootScope.$new();
         state = $injector.get('$state');
@@ -16,11 +17,12 @@ describe('Inbox Controller', function(){
         spyOn(state, 'go');
 
         createController = function() {
-            return $controller('InboxCtrl', {
+            return $controller('InboxCtrl as vm', {
                 $scope: scope, 
                 $state: state,
                 InboxFactory: InboxFactory,
-                AlbumFactory: AlbumFactory
+                AlbumFactory: AlbumFactory,
+                CameraFactory: CameraFactoryMock
             });
         }
 
@@ -29,7 +31,7 @@ describe('Inbox Controller', function(){
 
     // tests start here
     it('should have an array of photos', function(){
-        expect(scope.photos).toEqual(jasmine.any(Array));
+        expect(scope.vm.photos).toEqual(jasmine.any(Array));
     });
 
 });
