@@ -11,7 +11,7 @@ var photoController = {
 	storePhoto: function(req, res) {
 
 		newPhoto = new Photo({
-			photoId: req.body.photoId,
+		  photoId: req.body.photoId,
 		  radius: req.body.radius,
 		  TTL: req.body.TTL,
 		  photoURL: req.body.photoURL,
