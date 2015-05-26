@@ -5,7 +5,7 @@ function Quadtree(boundaries, maxChildren) {
   this.quadrants = [];
   this.children = [];
 
-};
+}
 
   // northwest point
     // 37.809455, -122.525293 
@@ -119,7 +119,7 @@ function Quadtree(boundaries, maxChildren) {
 
     // return the quadrant index to getter function...
     return index;
-  }
+  };
 
     Quadtree.prototype.update = function(item) {
       var results = this.get(item);
@@ -189,7 +189,7 @@ function Quadtree(boundaries, maxChildren) {
         width: width,
         height: height
       }, this.maxChildren);
-    }
+    };
 
 
     module.exports = new Quadtree();

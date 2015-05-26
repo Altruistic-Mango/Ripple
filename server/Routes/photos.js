@@ -12,4 +12,9 @@ router.get('/getPhotos', function(req, res) {
 	photoController.getPhotos(req, res);
 });
 
+router.get('/test', function(req, res){
+	console.log('Testing Route pinged');
+	photoController.testingFunc(req, res);
+});
+
 module.exports = router;

@@ -1,6 +1,5 @@
 //Server Config
 //--------------
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,16 +9,17 @@ var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
 var app = express();
 
-
 var routes = require('./Routes/index');
 
 /* allows access to users file in routes*/
 var users = require('./Routes/users');
 
 /* allows access to photos file in routes*/
-var photos = require('./Routes/photos')
+var photos = require('./Routes/photos');
 
-var gps = require('./Routes/gps')
+var gps = require('./Routes/gps');
+
+var gps = require('./Routes/gps');
 
 
 // Headers set for testing 
