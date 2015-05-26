@@ -7,7 +7,7 @@
 }
 
 .loginTitleContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
   height: 20vh;
 }
@@ -24,26 +24,36 @@
 }
 
 .loginInputContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
   height: 50vh;
+  padding: 5px;
 }
 
 /* LoginContainer: */
 .loginInputBox {
+  align-self: flex-start;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   background: #D8D8D8;
-  min-width: 90%;
   max-width: 90%;
+  width:50vw;
   height: 26vh;
 }
 
 /* Input: */
 .loginInputItem {
+  
+  display: block;
   background: #FFFFFF;
   font-family: Avenir-Book;
+  font-size: 6vh;
+  size: 6vh;
   color: #49B6D3;
   height: 6vh;
   padding-left: 5%;
+  padding-right: 5%;
   margin: 2vh 2vh;
 }
 
@@ -64,18 +74,17 @@
 
 /* Review Page */
 
+/*
 .pictureContainer {
   display:flex;
   justify-content: center;
-  width: 50vw;
-  height: 50vh;
 }
+*/
 
 .picturePreview {
   width: 50vw;
   height: 50vh;
   align-self:center;
-  margin: 0 auto;
 }
 
 
