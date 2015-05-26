@@ -1,16 +1,15 @@
 describe('Login Controller', function(){
-    var scope, state, rootScope, ionicPlatformMock, LocationFactory, createController;
+    var scope, state, rootScope, LoginFactoryMock, createController;
 
     // load the controller's module
     beforeEach(module('ui.router'));
     beforeEach(module('shout.login'));
     //TODO: add the LocationFactory dependency so these tests pass again
     beforeEach(inject(function($injector) {
-        ionicPlatformMock = jasmine.createSpyObj('ionicPlatform', ['ready']);
+        LoginFactoryMock = jasmine.createSpyObj('LoginFactory', ['successfulLogin']);
         rootScope = $injector.get('$rootScope');
         scope = rootScope.$new();
         state = $injector.get('$state');
-        LocationFactory = $injector.get('LocationFactory');
         var $controller = $injector.get('$controller');
 
         spyOn(state, 'go');
@@ -19,7 +18,7 @@ describe('Login Controller', function(){
             return $controller('LoginCtrl', {
                 $scope: scope, 
                 $state: state,
-                $ionicPlatform: ionicPlatformMock
+                LoginFactory: LoginFactoryMock
             });
         }
 

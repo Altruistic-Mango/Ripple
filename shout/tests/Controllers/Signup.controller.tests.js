@@ -14,7 +14,7 @@ describe('Signup Controller', function(){
         spyOn(state, 'go');
 
         createController = function() {
-            return $controller('SignupCtrl', {
+            return $controller('SignupCtrl as vm', {
                 $scope: scope, 
                 $state: state
             });
@@ -25,11 +25,11 @@ describe('Signup Controller', function(){
 
     // tests start here
     it('should have a function called login', function(){
-        expect(scope.login).toEqual(jasmine.any(Function));
+        expect(scope.vm.login).toEqual(jasmine.any(Function));
     });
 
     it('$scope.login should trigger a state change', function(){
-        scope.login(); 
+        scope.vm.login(); 
         expect(state.go).toHaveBeenCalled();
     });
 
