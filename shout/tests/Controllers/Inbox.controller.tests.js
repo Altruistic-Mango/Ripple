@@ -31,8 +31,20 @@ describe('Inbox Controller', function(){
 
     // tests start here
     it('should have an array of photos', function(){
+        scope.vm.photos = InboxFactory.photos; 
         expect(scope.vm.photos).toEqual(jasmine.any(Array));
     });
 
+    it('should update photos when InboxFactory.photos updates', function(){
+        InboxFactory.photos = [5,4,3,2,1];
+        scope.vm.photos = InboxFactory.photos; 
+        expect(scope.vm.photos).toEqual([5,4,3,2,1]);
+        InboxFactory.updateInbox({inbox: [1,2,3,4,5]});
+        expect(scope.vm.photos).toEqual([1,2,3,4,5])
+
+    })
+
 });
+
+
 
