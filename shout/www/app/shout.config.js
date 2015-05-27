@@ -30,7 +30,8 @@ function configure($stateProvider, $urlRouterProvider) {
   .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'app/layout/tabs.html'
+    templateUrl: 'app/layout/tabs.html',
+    controller: 'TabsCtrl as vm'
   })
 
   //Each tab has its own nav history stack:
