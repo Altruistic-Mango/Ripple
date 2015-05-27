@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 var userController = require('../Controllers/userController.js');
 
 /* GET users listing. */
@@ -19,10 +18,15 @@ router.post('/signup', function(req, res) {
   console.log('got signup request');
   userController.signupUser(req, res);
 });
-
+/* POST sign in an existing user*/
 router.post('/signin', function(req, res) {
   console.log('got signin request');
   userController.signinUser(req, res);
+});
+
+router.post('deleteUser', function(username) {
+  console.log('deleting user');
+  userController.deleteUser(username);
 });
 
 module.exports = router;
