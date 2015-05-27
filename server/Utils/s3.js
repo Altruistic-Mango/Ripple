@@ -37,6 +37,7 @@ var s3 = {
     User.findOne({userId: req.body.userId}, function(err, person){
       if(person === null){
         console.log("couldn't find user");
+        res.status(400);
         res.send("cannot find user, unable to sign policy doc");
       } else {
         console.log("sending the signed doc");
