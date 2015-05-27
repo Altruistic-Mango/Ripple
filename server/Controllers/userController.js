@@ -95,7 +95,13 @@ signupUser: function(req, res) {
       User.findOne({username: person.username}, function(err, person) {
         if (err) console.log(err);
         else if (person) {
-          cb(person);
+          if (cb) {
+            cb(person);
+          }
+          else {
+            console.log('User already exists');
+            return 'User already exists';
+          }
         }
         else return null;
       });
