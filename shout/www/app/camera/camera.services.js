@@ -61,6 +61,7 @@ function CameraFactory($state) {
       function(err) {
         // error handling camera plugin
         console.log('got camera error ', err);
+        $state.go('review');
       },
       options);
   }
