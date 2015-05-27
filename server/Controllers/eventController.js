@@ -120,4 +120,3 @@ var eventController = {
 
 
 module.exports = eventController;
-
