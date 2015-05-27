@@ -2,9 +2,8 @@
 
 var Photo = require('../Models/Photo.js');
 var eventController = require('../Controllers/eventController.js');
-var mongoose = require('mongoose');
-var db = require('../db.js');
 var Q = require('q');
+
 
 
 
@@ -44,6 +43,7 @@ var photoController = {
 		});
 	},
 
+
 	testingFunc: function(req, res) {
 		res.status(200);
 		res.end();
@@ -51,3 +51,6 @@ var photoController = {
 };
 
 module.exports = photoController;
+
+
+
