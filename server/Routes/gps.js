@@ -12,4 +12,19 @@ router.post('/getlocal', function(req, res) {
   gpsController.findNearbyNodes(req, res);
 });
 
+router.post('/distance', function(req, res) {
+  console.log('getting distance');
+  gpsController.getDist(req, res);
+});
+
+router.get('/postdata', function(req, res) {
+  console.log('posting data');
+  gpsController.loadData(req, res);
+});
+
+router.post('/remove', function(req, res) {
+  console.log('removing item');
+  gpsController.initRemove(req, res);
+})
+
 module.exports = router;
