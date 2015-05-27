@@ -5,14 +5,14 @@
     </div>
     <div class="loginInputContainer">
       <div class="loginInputBox">
-        <input class="loginInputItem" type="text" placeholder="Username" ng-model="data.username">
-        <input class="loginInputItem" type="email" placeholder="Email" ng-model="data.email">
-        <input class="loginInputItem" type="password" placeholder="Password" ng-model="data.password">
+        <input class="loginInputItem" type="text" placeholder="Username" ng-model="vm.data.username">
+        <input class="loginInputItem" type="email" placeholder="Email" ng-model="vm.data.email">
+        <input class="loginInputItem" type="password" placeholder="Password" ng-model="vm.data.password">
       </div>
     </div>
     <div class="loginButtonContainer">
-      <button class="item button loginButton" ng-click="login()">Login</button>
-      <button class="item button loginButton" ng-hide=true ui-sref="signup">Sign Up</button>
+      <button class="item button loginButton" ng-click="vm.login()">Login</button>
+      <button class="item button loginButton" ng-hide=false ui-sref="signup">Sign Up</button>
     </div>
   </ion-content>
 </ion-view>

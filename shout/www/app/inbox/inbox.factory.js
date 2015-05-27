@@ -18,7 +18,7 @@ function InboxFactory($rootScope) {
 
   function updateInbox(data) {
     console.log('update inbox called');
-    services.photos = data.inbox;
+    services.photos = data;
     $rootScope.$broadcast('updateInbox', services.photos); 
   }
   function getPhotos(){

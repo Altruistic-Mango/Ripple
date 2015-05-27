@@ -2,11 +2,11 @@ angular
   .module('shout.location')
   .factory('LocationFactory', LocationFactory);
 
-LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory'];
+LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage'];
 
-function LocationFactory($ionicPlatform, $http, InboxFactory) {
+function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
   console.log('LocationFactory');
-  var currentPosition, watchId, intervalId;
+  var currentPosition, watchId, intervalId, userId;
   var services = {
     setPosition: setPosition,
     setWatch: setWatch,
@@ -20,6 +20,8 @@ function LocationFactory($ionicPlatform, $http, InboxFactory) {
     clearPingInterval: clearPingInterval, 
     intervalId: intervalId
   };
+
+  userId = $localstorage.get('userId');
 
   triggerPingInterval()
 
@@ -38,7 +40,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory) {
   function setPosition (position) {
 
     currentPosition = {
-                      username: 'mango',
+                      userId: userId,
                       x: position.coords.latitude,
                       y: position.coords.longitude
                       };
@@ -47,8 +49,8 @@ function LocationFactory($ionicPlatform, $http, InboxFactory) {
   }
 
   function sendPosition () {
-    // $http.post('http://localhost:3000/gps/position', currentPosition).success(InboxFactory.updateInbox(data));
-    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('send position to server!!!')});
+    // $http.post('http://localhost:3000/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
+    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server!!!')});
 
   }
 
