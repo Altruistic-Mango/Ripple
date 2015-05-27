@@ -25,6 +25,6 @@ router.get('/postdata', function(req, res) {
 router.post('/remove', function(req, res) {
   console.log('removing item');
   gpsController.initRemove(req, res);
-})
+});
 
 module.exports = router;

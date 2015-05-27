@@ -11,7 +11,7 @@ signupUser: function(req, res) {
   var username = req.body.username;
   var password = bcrypt.hashSync(req.body.password);
   var randInt = function() {
-    var id = ""
+    var id = "";
     while (id.length < 7) {
       id +=  Math.floor(Math.random() * 10);
     }
@@ -122,10 +122,10 @@ signupUser: function(req, res) {
         user.inbox.push(eventObj);
         user.save();
       }
-    })
+    });
   }
 
-}
+};
 
 
 module.exports = userController;
