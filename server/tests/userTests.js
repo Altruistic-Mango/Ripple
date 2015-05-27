@@ -37,7 +37,6 @@ var User = require('../Models/User');
             if(err){
               console.log(err);
             } else {
-              console.log("this is the delete test", res);
               should(res).be.exactly(null);
               done();
             }
