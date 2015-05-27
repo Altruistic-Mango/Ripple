@@ -8,7 +8,7 @@ function Quadtree(boundaries, maxChildren) {
 }
 
   // northwest point
-    // 37.809455, -122.525293 
+    // 37.809455, -122.525293
 
   // northeast point
     // 37.811552, -122.354177
@@ -40,7 +40,7 @@ function Quadtree(boundaries, maxChildren) {
     // check length against the max number of coordinates per quadrant
     var length = this.children.length;
     if (this.children.length > this.maxChildren) {
-        
+
         // create new quadrants
         this.subDivide();
 
@@ -132,8 +132,12 @@ function Quadtree(boundaries, maxChildren) {
         }
       });
       if (!found) {
+<<<<<<< HEAD
         console.log('not found');
         this.put(item);      
+=======
+        this.put(item);
+>>>>>>> remove trailing whitespace
       }
     };
 
@@ -152,7 +156,7 @@ function Quadtree(boundaries, maxChildren) {
       return removedItem;
     };
 
-    // broadcast function 
+    // broadcast function
       // use find then find others in same quadrant
 
     // subdivide quadrant when necessary
@@ -176,15 +180,15 @@ function Quadtree(boundaries, maxChildren) {
         y: y,
         width: width,
         height: height
-      }, this.maxChildren);   
-      
+      }, this.maxChildren);
+
       // bottom left quadrant
       this.quadrants[2] = new Quadtree({
         x: x,
         y: y + height,
         width: width,
         height: height
-      }, this.maxChildren);   
+      }, this.maxChildren);
 
       // bottom right quadrant
       this.quadrants[3] = new Quadtree({
@@ -200,7 +204,7 @@ function Quadtree(boundaries, maxChildren) {
 
     // combine quadrants when too few nodes
 
-    /* 
+    /*
 
     work in progress
 
