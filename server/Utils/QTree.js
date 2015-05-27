@@ -125,13 +125,14 @@ function Quadtree(boundaries, maxChildren) {
       var results = this.get(item);
       var found;
       results.forEach(function(coord) {
-        if (coord.username === item.username) {
+        if (coord.userId === item.userId) {
           coord.x = item.x;
           coord.y = item.y;
           found = true;
         }
       });
       if (!found) {
+        console.log('not found');
         this.put(item);      
       }
     };

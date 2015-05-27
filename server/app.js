@@ -19,8 +19,7 @@ var photos = require('./Routes/photos');
 
 var gps = require('./Routes/gps');
 
-var gps = require('./Routes/gps');
-
+var events = require('./Routes/events');
 
 // Headers set for testing 
 
@@ -43,6 +42,7 @@ app.use(express.static(path.join(__dirname, '../shout/www/')));
 app.use('/users', users);
 app.use('/photos', photos);
 app.use('/gps', gps);
+app.use('/events', events);
 
 
 
