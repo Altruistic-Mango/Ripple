@@ -11,7 +11,6 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory) {
 
   //when user clicks save on a photo call AlbumFactory.savePhoto();
   vm.photos = [];
-  vm.items = []; 
   vm.data = CameraFactory.data;
   vm.obj = CameraFactory.obj;
   vm.takePicture = CameraFactory.takePicture;
@@ -26,15 +25,15 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory) {
   vm.addPhotos(); 
 
   function addPhotos() {
-    for (var i = currentStart; i < currentStart + 10; i++) {
-      vm.photos.push(InboxFactory.photos[i]);
-      vm.items.push('Item ', i);
+    console.log('inf scroll addPhotos called!!!');
+    for (var i = currentStart; i < currentStart + 5; i++) {
+      if (InboxFactory.photos[i]) {
+        vm.photos.push(InboxFactory.photos[i]);
+      }
     }
-
-    currentStart += 10; 
+    currentStart += 5; 
     $scope.$broadcast('scroll.infiniteScrollComplete')
   }
-
 
 }
 
