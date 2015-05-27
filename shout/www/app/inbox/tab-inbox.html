@@ -1,8 +1,13 @@
 <ion-view view-title="Inbox">
   <ion-content class="padding">
-    <div class="list card">
-    </div>
-    <!-- Camera Button-->
-    <button class="button button-block" ng-click="vm.takePicture()">Camera</button>
+  <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher>
+  <ion-list>
+    <ion-item ng-repeat="photo in vm.photos track by $index">
+      <img ng-src="{{photo.src}}" />
+      <p>{{photo.number}}</p>
+    </ion-item>
+    <ion-infinite-scroll infinite-scroll-disabled="vm.canScroll" on-infinite="vm.loadMore()" ></ion-infinite-scroll>
+  </ion-list>
   </ion-content>
 </ion-view>
+

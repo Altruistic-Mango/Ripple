@@ -1,8 +1,11 @@
 describe('Location Factory Unit Tests', function(){
-    var LocationFactory, ionicPlatformMock;
+    var LocationFactory, ionicPlatformMock, InboxFactoryMock;
     beforeEach(module('shout.location', function($provide) {
         ionicPlatformMock = jasmine.createSpyObj('ionicPlatform', ['ready']);
+        InboxFactoryMock = jasmine.createSpyObj('InboxFactory', ['updateInbox']);
+
         $provide.value('$ionicPlatform', ionicPlatformMock);
+        $provide.value('InboxFactory', InboxFactoryMock);
     }));
 
     beforeEach(inject(function (_LocationFactory_) {
