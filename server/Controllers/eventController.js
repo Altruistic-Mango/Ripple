@@ -32,7 +32,7 @@ var eventController = {
         photoId: photoId,
         TTL: TTL,
         radius: radius
-    }
+    };
 
     Event.create({
       userId: userId,
@@ -81,7 +81,7 @@ var eventController = {
     });
   }
 
-}
+};
 
 
 
