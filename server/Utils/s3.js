@@ -1,13 +1,18 @@
 var crypto = require('crypto');
-var bucket = "ripple-photos";
 var s3Keys = require('./s3config');
+var User = require('../Models/User');
 
+var bucket = "ripple-photos";
 
 var s3 = {
 
   // signs the policy document 
   // expiration set to 1 minute
-	docSign: function(userId, timeStamp) {
+  docSign: function(req, res) {
+
+
+    var userId = req.body.userId;
+    var timeStamp = req.body.timeStamp;
 
     var photoId = userId + timeStamp;
 
@@ -27,10 +32,17 @@ var s3 = {
 
 		signature = crypto.createHmac('sha1', s3Keys.secret).update(policyBase64).digest('base64');
 
-	 var signedPolicy = {bucket: bucket, awsKey: s3Keys.awsKey, policy: policyBase64, signature: signature};
+	  var signedPolicy = {bucket: bucket, awsKey: s3Keys.awsKey, policy: policyBase64, signature: signature};
 
-   return signedPolicy;
-
+    User.findOne({userId: req.body.userId}, function(err, person){
+      if(person === null){
+        console.log("couldn't find user");
+        res.send("cannot find user, unable to sign policy doc");
+      } else {
+        console.log("sending the signed doc");
+        res.send(signedPolicy);
+      }
+    });
 	}
 }
 
