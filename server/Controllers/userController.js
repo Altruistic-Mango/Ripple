@@ -1,6 +1,4 @@
 var User = require('../Models/User.js');
-var mongoose = require('mongoose');
-var db = require('../db.js');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 var Q = require('q');
@@ -8,6 +6,7 @@ var Q = require('q');
 var userController = {
 
 signupUser: function(req, res) {  
+
 
   var username = req.body.username;
   var password = bcrypt.hashSync(req.body.password);
@@ -36,6 +35,7 @@ signupUser: function(req, res) {
         });
       } else {
         console.log('Account already exists');
+        res.send(500);
         res.end();
       }
 },
@@ -79,7 +79,14 @@ signupUser: function(req, res) {
         });
       }
     });
+  },
 
+  deleteUser: function(username) {
+    User.remove({"username": username}, function(err){
+      if(err){
+        console.log(err);
+      }
+    });
   },
 
   getUserFromDB: function(person, cb) {   
