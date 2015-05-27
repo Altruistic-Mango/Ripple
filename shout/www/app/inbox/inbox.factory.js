@@ -7,124 +7,17 @@ InboxFactory.$inject = ['$rootScope'];
 function InboxFactory($rootScope) {
   console.log('InboxFactory');
   var services = {};
-
-  services.photos = [
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 1
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 2
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 3
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 4
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 5
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 6
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 7
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 8
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 9
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 10
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 11
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 12
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 13
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 14
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 15
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 16
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 17
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 18
-    }
-  ];
-  services.dummyPhotos = [    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 3
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 9
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 15
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 13
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 14
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 1
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 16
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 4
-    },
-    {
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
-      number: 18
-    }
-  ];
+  //this is some dummy data for testing the inbox functionality
+  services.photos = [];
   services.updateInbox = updateInbox; 
   services.getPhotos = getPhotos;
   services.removeExpired = removeExpired; 
+  services.filterForNew = filterForNew;
+
   return services;
 
   function updateInbox(data) {
+    console.log('update inbox called');
     services.photos = data.inbox;
     $rootScope.$broadcast('updateInbox', services.photos); 
   }
@@ -133,6 +26,7 @@ function InboxFactory($rootScope) {
   }
 
   function removeExpired(oldInbox, newData){
+    console.log('removeExpired called with oldInbox: ', oldInbox);
     var idArray = [];
     newData.forEach(function(item) {
       idArray.push(item.number);
@@ -143,6 +37,19 @@ function InboxFactory($rootScope) {
     })
     console.log('new inbox: ', newInbox)
     return newInbox;
+  }
+
+  function filterForNew(oldInbox, newData){
+    var oldIdArray = [];
+    console.log('filterForNew called with oldInbox: ', oldInbox);
+    oldInbox.forEach(function(item) {
+      oldIdArray.push(item.number);
+    })
+    var newPhotos = _.filter(newData, function(photo) {
+      return !_.contains(oldIdArray, photo.number);
+    })
+    console.log('the new photos: ', newPhotos);
+    return newPhotos; 
   }
 
 }
