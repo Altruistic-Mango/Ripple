@@ -52,6 +52,14 @@ describe('user controller', function(){
 
 });
 
+
+
+/* testing the docSign function and encrytion
+make a new user
+fake http post with appropriate data
+should respond with object containing appropriate properties(key, etc...)
+fake an http post with inapropiate data*/
+
 // describe('photos', function(){
 
 // 	it('Test should return a 200 status code', function(done){
