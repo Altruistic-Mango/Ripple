@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 
 var EventSchema = new mongoose.Schema({
 
-  uuId: {
+  userId: {
     type: Number,
     required: true,
-    unique: true
+    unique: false
   },
 
   photoId: {
@@ -16,6 +16,12 @@ var EventSchema = new mongoose.Schema({
 
   TTL: {
     type: Number, 
+    required: true,
+    unique: false
+  },
+
+  radius: {
+    type: Number,
     required: true,
     unique: false
   },
@@ -34,6 +40,6 @@ var EventSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Photos', PhotoSchema);
+module.exports = mongoose.model('Event', EventSchema);
 
 

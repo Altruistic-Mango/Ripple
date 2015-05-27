@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
   
-  uuId: {
+  userId: {
     type: Number,
     required: true,
     unique: true
@@ -20,14 +20,14 @@ var UserSchema = new mongoose.Schema({
     unique: false
   },
 
-  lat: {
-    type: Number,
+  inbox: {
+    type: Array,
     required: false,
     unique: false
   },
 
-  long: {
-    type: Number,
+  s3key: {
+    type: String,
     required: false,
     unique: false
   }
@@ -35,4 +35,3 @@ var UserSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', UserSchema);
-

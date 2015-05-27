@@ -10,8 +10,8 @@ var gpsController = {
     var node = {
       x: +req.body.x, 
       y: +req.body.y, 
-      username: req.body.username
-    };
+      userId: req.body.userId
+    }
 
     quadtree.update(node);
     res.send('Entered node');
@@ -24,7 +24,7 @@ var gpsController = {
     var searchParams = {
       x: req.body.x, 
       y: req.body.y,
-      username: req.body.username
+      userId: req.body.userId
     };
 
     var nearbyNodes = this.getNodes(searchParams);
@@ -71,11 +71,9 @@ var gpsController = {
   // load dummy data for testing
   loadData: function(req, res) {
     quadtree.addData();
+    res.end();
   },
 
 };
-
-
->>>>>>> Added removal and distance calculation for quadtree
 
 module.exports = gpsController;
