@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 
 var EventSchema = new mongoose.Schema({
 
-  userId: {
+  eventId: {
     type: Number,
     required: true,
-    unique: false
+    unique: true
   },
 
   photoId: {
@@ -34,7 +34,7 @@ var EventSchema = new mongoose.Schema({
 
   recipientList: {
     type: Array,
-    required: true,
+    required: false,
     unique: false
   }
 

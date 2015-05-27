@@ -1,4 +1,5 @@
 var quadtree = require('../Utils/QTree.js');
+var userController = require('../Controllers/userController.js');
 
 
 var gpsController = {
@@ -14,7 +15,8 @@ var gpsController = {
     }
 
     quadtree.update(node);
-    res.send('Entered node');
+    var inbox = userController.retrieveInbox(node.userId)
+    res.send(inbox);
   },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
