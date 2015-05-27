@@ -37,7 +37,7 @@ gulp.task('docco', function() {
 
 
 gulp.task('test', function () {
-    return gulp.src('./server/tests/photoTests.js', {read: false})
+    return gulp.src('./server/tests/tests.js', {read: false})
         // gulp-mocha needs filepaths so you can't have any plugins before it 
         .pipe(mocha({reporter: 'nyan'}));
 });
