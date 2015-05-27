@@ -1,11 +1,11 @@
 <ion-view view-title="Inbox">
   <ion-content class="padding">
   <ion-list>
-    <ion-item ng-repeat="photo in photos track by $index">
-      <img src="{{photo.src}}">
-      <p>{{item}}</p>
+    <ion-item ng-repeat="photo in vm.photos track by $index">
+      <img ng-src="{{photo.src}}" />
+      <p>{{photo.number}}</p>
     </ion-item>
-    <ion-infinite-scroll on-infinite="addItems()"></ion-infinite-scroll>
+    <ion-infinite-scroll on-infinite="vm.addPhotos()"></ion-infinite-scroll>
   </ion-list>
   </ion-content>
 </ion-view>

@@ -2,8 +2,11 @@ angular
   .module('shout')
   .config(configure);
 
-function configure($stateProvider, $urlRouterProvider) {
+configure.$injector = ['$stateProvider', '$urlRouterProvider', '$compileProvider'];
+
+function configure($stateProvider, $urlRouterProvider, $compileProvider) {
   console.log('shout configure');
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
   // Ionic uses AngularUI Router which uses the concept of states
   $stateProvider
