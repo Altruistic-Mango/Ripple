@@ -82,8 +82,46 @@ function InboxFactory($rootScope) {
       number: 18
     }
   ];
+  services.dummyPhotos = [    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 3
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 9
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 15
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 13
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 14
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 1
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 16
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 4
+    },
+    {
+      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg',
+      number: 18
+    }
+  ];
   services.updateInbox = updateInbox; 
   services.getPhotos = getPhotos;
+  services.removeExpired = removeExpired; 
   return services;
 
   function updateInbox(data) {
@@ -92,6 +130,19 @@ function InboxFactory($rootScope) {
   }
   function getPhotos(){
     return services.photos; 
+  }
+
+  function removeExpired(oldInbox, newData){
+    var idArray = [];
+    newData.forEach(function(item) {
+      idArray.push(item.number);
+    })
+    console.log('removeExpired called!');
+    var newInbox = _.filter(oldInbox, function(photo) {
+      return _.contains(idArray, photo.number); 
+    })
+    console.log('new inbox: ', newInbox)
+    return newInbox;
   }
 
 }
