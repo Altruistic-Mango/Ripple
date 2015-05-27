@@ -1,7 +1,7 @@
 function Quadtree(boundaries, maxChildren) {
 
   this.boundaries = boundaries || {x: -122.526000, y: 37.613500, width: 0.2, height: 0.2};
-  this.maxChildren = maxChildren || 4;
+  this.maxChildren = maxChildren || 10;
   this.quadrants = [];
   this.children = [];
 
@@ -141,11 +141,14 @@ function Quadtree(boundaries, maxChildren) {
       // find last position then delete according to id
     Quadtree.prototype.remove = function(item) {
       var results = this.get(item);
+      item.x = +item.x;
+      item.y = +item.y;
       for (var i = 0; i < results.length; i++) {
-        if (results[i].username === item.username) {
-          results.splice(i, 1);
+        if (results[i].x === item.x && results[i].y === item.y) {
+          var removedItem = results.splice(i, 1);
         }
       }
+      return removedItem;
     };
 
     // broadcast function 
