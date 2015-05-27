@@ -13,7 +13,7 @@ signupUser: function(req, res) {
   var randInt = function() {
     var id = "";
     while (id.length < 7) {
-      id +=  Math.floor(Math.random() * 10);
+      id +=  Math.floor(Math.random() * (10 - 1) + 1);
     }
     return id;
   };
@@ -69,8 +69,7 @@ signupUser: function(req, res) {
           if (err) return (err);
           console.log(match);
           if (match) {
-            res.json(user);
-            res.end();
+            res.send(user);
           }
           else {
             console.log('not a match');
@@ -111,18 +110,51 @@ signupUser: function(req, res) {
     }
   },
 
-  updateInbox: function(userId, eventObj, cb) {
+  updateInbox: function(userId, eventObj) {
     var query = {userId: userId};
     User.findOne(query, function(err, user) {
       if (err) {
         console.log(err);
       }
+
       else if (user) {
-        console.log(user);
-        user.inbox.push(eventObj);
-        user.save();
+
+        var broadcastEvent = {
+          photoId: eventObj.photoId,
+          TTL: eventObj.TTL,
+          radius: eventObj.radius
+        };
+
+        console.log('checking inbox now');
+        var bool = true;
+        user.inbox.reduce(function(bool, eventItem) {
+          if (bool && eventItem.photoId !== eventObj.photoId) {
+            return true;
+          }  
+          else return false;
+        }, true)
+
+        if (bool) {
+            console.log('check did not find a match in user inbox, saving')
+            user.inbox.push(broadcastEvent);
+            user.save();
+        }
+        else return;
       }
     });
+  },
+
+  retrieveInbox: function(userId) {
+    User.findOne({userId: userId}, function(err, user) {
+      if (err) {
+        console.log(err);
+        return err;
+      }
+      else if (user) {
+        return user.inbox;
+      }
+      else return null;
+    })
   }
 
 };

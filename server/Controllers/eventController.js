@@ -1,7 +1,7 @@
 var Event = require('../Models/Event.js');
-var Photo = require('../Models/Photo.js');
 var gpsController = require('../Controllers/gpsController.js');
 var userController = require('../Controllers/userController.js');
+var Photo = require('../Models/Photo.js');
 var mongoose = require('mongoose');
 var db = require('../db.js');
 var Promise = require('bluebird');
@@ -9,19 +9,33 @@ var Q = require('q');
 
 var eventController = {
 
+
+
+  getEventFromDB: function(event, cb) {   
+    if (event.eventId) {
+      Event.findOne({eventId: event.eventId}, function(err, event) {
+        if (err) console.log(err);
+        else if (event) {
+          return event;
+        }
+        else return null;
+      });
+    }
+  },
+
   broadcast: function(data, cb) {
-    console.log(data);
+    console.log('called broadcast : ' + data);
     var photoId = data.photoId;
-    var userId = +data.userId;
+    var userId = data.userId;
+    var eventId = "" + photoId + userId;
+    var TTL = +data.TTL;
+    var radius = +data.radius;
+    
     var searchParams = {
       x: +data.x, 
       y: +data.y,
       username: data.userId
     };
-
-    var TTL = +data.TTL;
-    var radius = +data.radius;
-
     var nodes = gpsController.getNodes(searchParams);
 
     var recipients = nodes.map(function(user) {
@@ -35,7 +49,7 @@ var eventController = {
     };
 
     Event.create({
-      userId: userId,
+      eventId: eventId,
       photoId: photoId,
       TTL: TTL,
       radius: radius,
@@ -50,19 +64,40 @@ var eventController = {
       else {
         // enter the photo object to the user's inbox array
           // for each loop to enter object
-          console.log('event is ' + event);
           recipients.forEach(function(recipient) {
-            console.log(recipient);
             userController.updateInbox(recipient, eventItem);
           });
       }
     });
-    cb(200);
+    console.log('calling events callback')
+    cb(photoId, recipients);
   },
 
   broadcastEvent: function(req, res) {
-    var result = this.broadcast(req.body, function() {
-    res.send(200);  
+
+    var photoId = req.body.photoId;
+    var recipients;
+    this.broadcast(req.body, function(photoId, recipients) {
+      Photo.findOne({photoId: photoId}, function(err, photo) {
+        if (err) {
+          console.log(err);
+        }
+        else if (photo) {
+          console.log('finding recipientList')
+          console.log(photo.recipientList);
+          var recipientList = photo.recipientList;
+          recipients.forEach(function(userId) {
+            if (recipientList.indexOf(userId) === -1) {
+              console.log('adding user to photo recipient list')
+              recipientList.push(userId);
+            }
+          });
+          photo.recipientList = recipientList;
+          photo.save();
+          res.end();
+        }
+
+      }) 
     });
   },
 
@@ -79,10 +114,10 @@ var eventController = {
       }
 
     });
-  }
+  },
 
 };
 
 
-
 module.exports = eventController;
+
