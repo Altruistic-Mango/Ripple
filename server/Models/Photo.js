@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var PhotoSchema = new mongoose.Schema({
 
   photoId: {
-    type: Number,
+    type: String,
     required: true,
     unique: true
   },
@@ -28,7 +28,7 @@ var PhotoSchema = new mongoose.Schema({
 
   recipientList: {
     type: Array,
-    required: true,
+    required: false,
     unique: false
   }
 
