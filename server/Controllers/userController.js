@@ -31,7 +31,7 @@ signupUser: function(req, res) {
             console.log(err);
             res.send(500, err);
           }
-            res.send(200);
+            res.end();
         });
       } else {
         console.log('Account already exists');
