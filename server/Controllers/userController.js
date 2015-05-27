@@ -9,18 +9,23 @@ var userController = {
 
 signupUser: function(req, res) {  
 
-  console.log(req.body);
-  console.log(this.hasher(req.body.password));
   var username = req.body.username;
   var password = bcrypt.hashSync(req.body.password);
-  var randInt = Math.floor(Math.random() * 100000);
+  var randInt = function() {
+    var id = ""
+    while (id.length < 7) {
+      id +=  Math.floor(Math.random() * 10);
+    }
+    return id;
+  };
+
 
   var user = this.getUserFromDB({ username: req.body.username });
     if (!user) {
       var newUser = new User({
         username: username,
         password: password,
-        userId: randInt,
+        userId: randInt(),
         });
         newUser.save(function(err, newUser) { 
           if (err) {
