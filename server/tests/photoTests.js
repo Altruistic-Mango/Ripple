@@ -14,7 +14,6 @@ describe('Photo Controller', function(){
     .set('Content-Type', 'application/json')
     .send('{"userId": "1234567", "timeStamp": "1234567890123"}')
     .end(function(err, res){
-      console.log(res.body);
       should(res.body.bucket).be.exactly("ripple-photos");
       should(res.body.awsKey).be.exactly("AKIAIE5AVGKPA4OCKD5A");
       res.status.should.equal(200);
@@ -34,7 +33,6 @@ describe('Photo Controller', function(){
     .set('Content-Type', 'application/json')
     .send('{"userId": "1234567", "timeStamp": "1234567890123"}')
     .end(function(err, res){
-      console.log(res.body);
       res.status.should.equal(400);
       done();
     });
