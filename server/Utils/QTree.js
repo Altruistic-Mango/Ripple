@@ -196,6 +196,24 @@ Quadtree.prototype.subDivide = function() {
   }, this.maxChildren);
 };
 
+    Quadtree.prototype.addData = function() {
+      this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
+      this.put({x: -122.515, y: 37.615, userId: 3145326});
+      this.put({x: -122.515, y: 37.619, userId: 1745118});
+      this.put({x: -122.515, y: 37.618, userId: 1353996});
+    };
+
 
 module.exports = new Quadtree();
 
@@ -204,6 +222,45 @@ module.exports = new Quadtree();
 /*
 
 work in progress
+
+curl -i http://localhost:3000/gps/postdata
+curl -i http://localhost:3000/users/list
+curl -H "Content-Type: application/json" -X POST -d '{"username" : "test2", "password": "test2"}' http://localhost:3000/users/signup
+
+
+
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615"}' http://localhost:3000/gps/getlocal
+
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "photoId": "666666", "userId": "2343289", "TTL": "15", "radius": "15", "photoURL" : "http://localhost"}' http://localhost:3000/photos/newPhoto
+
+
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "2343289", "TTL": "55", "radius": "55", "timestamp" : "1432780946323"}' http://localhost:3000/photos/newPhoto
+
+
+curl -H "Content-Type:application/json" -X POST -d '{"username" : "henry"}' http://localhost:3000/users/clearInbox
+
+curl -H "Content-Type: application/json" -X POST -d '{"x": "-122.515" , "y" : "37.615"}' http://localhost:3000/gps/distance
+
+
+
+
+    // Quadtree.prototype.addData = function() {
+    //   this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.515, y: 37.615, userId: 4296166});
+    //   this.put({x: -122.515, y: 37.619, userId: 4227385});
+    //   this.put({x: -122.515, y: 37.618, userId: 1857132});
+    // };
 
 
 

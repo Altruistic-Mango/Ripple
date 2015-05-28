@@ -8,16 +8,15 @@ var photoController = {
 
   storePhoto: function(req, res) {
 
+    var photoId = "" + req.body.userId + (+req.body.timestamp);
+    req.body.photoId = photoId;
     var data = {
-      userId: req.body.userId,
-      photoId: req.body.photoId,
-      timestamp: +req.body.timestamp || 5000,
+      photoId: photoId,
       radius: +req.body.radius,
-      TTL: +req.body.TTL,
-      photoURL: req.body.photoURL || "http://localhost/",
+      TTL: +req.body.TTL
     };
 
-    Photo.findOne({photoId: data.photoId}, function(err, photo) {
+    Photo.findOne({photoId: photoId}, function(err, photo) {
         if (err) console.log(err);
         
         else if (photo) {
