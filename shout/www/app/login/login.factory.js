@@ -2,9 +2,9 @@ angular
   .module('shout.login')
   .factory('LoginFactory', LoginFactory);
 
-LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http'];
+LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST'];
 
-function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http) {
+function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST) {
   return {
     successfulLogin: successfulLogin,
     loginUser: loginUser
@@ -13,7 +13,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http) {
   function loginUser (data) {
     return $http({
       method: 'POST',
-      url: '/users/signin',
+      url: API_HOST + '/users/signin',
       data: data
     })
   }
