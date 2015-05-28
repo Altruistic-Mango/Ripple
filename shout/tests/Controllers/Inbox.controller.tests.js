@@ -1,5 +1,5 @@
 describe('Inbox Controller', function(){
-    var scope, state, rootScope, InboxFactory, AlbumFactory, CameraFactoryMock, createController;
+    var scope, state, rootScope, InboxFactory, AlbumFactory, CameraFactoryMock, BroadcastFactoryMock, createController;
 
     // load the controller's module
     beforeEach(module('ui.router'));
@@ -7,6 +7,7 @@ describe('Inbox Controller', function(){
 
     beforeEach(inject(function($injector) {
         CameraFactoryMock = jasmine.createSpyObj('CameraFactory', ['data', 'obj', 'takePicture', 'query']);
+        BroadcastFactoryMock = jasmine.createSpyObj('BroadcastFactory', ['reBroadcast']);
         rootScope = $injector.get('$rootScope');
         scope = rootScope.$new();
         state = $injector.get('$state');
@@ -14,7 +15,8 @@ describe('Inbox Controller', function(){
         AlbumFactory = $injector.get('AlbumFactory');
         var $controller = $injector.get('$controller');
 
-        spyOn(state, 'go');
+        clearInbox = jasmine.createSpy(); 
+        addPhotos = jasmine.createSpy();
 
         createController = function() {
             return $controller('InboxCtrl as vm', {
@@ -22,7 +24,8 @@ describe('Inbox Controller', function(){
                 $state: state,
                 InboxFactory: InboxFactory,
                 AlbumFactory: AlbumFactory,
-                CameraFactory: CameraFactoryMock
+                CameraFactory: CameraFactoryMock,
+                BroadcastFactory: BroadcastFactoryMock
             });
         }
 
@@ -35,12 +38,10 @@ describe('Inbox Controller', function(){
         expect(scope.vm.photos).toEqual(jasmine.any(Array));
     });
 
-    it('should update photos when InboxFactory.photos updates', function(){
-        InboxFactory.photos = [5,4,3,2,1];
-        scope.vm.photos = InboxFactory.photos; 
-        expect(scope.vm.photos).toEqual([5,4,3,2,1]);
-        InboxFactory.updateInbox({inbox: [1,2,3,4,5]});
-        expect(scope.vm.photos).toEqual([1,2,3,4,5])
+    it('should call clearInbox when InboxFactory.photos updates', function(){
+        InboxFactory.updateInbox([1,2,3,4,5]);
+        expect(clearInbox).toHaveBeenCalled();
+        expect(addPhotos).toHaveBeenCalled();
 
     })
 
