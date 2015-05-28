@@ -9,17 +9,19 @@ function LoginCtrl($scope, $state, LoginFactory) {
   var vm = this;
   vm.data; 
   vm.login = login; 
-
+  vm.badCombo = false; 
 
   function login () {
     console.log('vm.data: ', vm.data);
     LoginFactory.loginUser(vm.data)
-                .then(function(res){
-                  console.log('res from server on login: ', res.data);
-                  if (res.status === 200) {
-                    LoginFactory.successfulLogin(res.data); 
-                    $state.go('tab.inbox');
-                  }
+                .success(function(res){
+                  console.log('res from server on login: ', res);
+                  LoginFactory.successfulLogin(res); 
+                  $state.go('tab.inbox');
+                })
+                .error(function(res){
+                  console.log('error on login');
+                  vm.badCombo = true; 
                 });
   };
 }

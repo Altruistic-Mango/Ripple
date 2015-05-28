@@ -29,14 +29,13 @@ signupUser: function(req, res) {
         newUser.save(function(err, newUser) { 
           if (err) {
             console.log(err);
-            res.send(500, err);
+            res.status(500).send(err);
           }
-            res.end();
+            res.status(200).end();
         });
       } else {
         console.log('Account already exists');
-        res.send(500);
-        res.end();
+        res.status(500).end();
       }
 },
 
@@ -61,7 +60,7 @@ signupUser: function(req, res) {
 
       if (!user) {
         console.log('user not found');
-        res.end();
+        res.status(500).end();
       }
 
       else {
@@ -70,11 +69,11 @@ signupUser: function(req, res) {
           if (err) return (err);
           console.log(match);
           if (match) {
-            res.send(user);
+            res.status(200).send(user);
           }
           else {
             console.log('not a match');
-            res.end();
+            res.status(500).end();
           }
         });
       }
