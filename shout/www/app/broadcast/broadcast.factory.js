@@ -2,9 +2,9 @@ angular
   .module('shout.broadcast')
   .factory('BroadcastFactory', BroadcastFactory);
 
-BroadcastFactory.$inject = ['LocationFactory', '$http']
+BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST']
 
-function BroadcastFactory(LocationFactory, $http) {
+function BroadcastFactory(LocationFactory, $http, API_HOST) {
   var services = {};
     services.reBroadcast = reBroadcast;
     services.sendBroadcastEvent = sendBroadcastEvent;
@@ -24,6 +24,6 @@ function BroadcastFactory(LocationFactory, $http) {
   }
 
   function sendBroadcastEvent (broadcastEvent) {
-    $http.post('http://localhost:3000/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!')});
+    $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!')});
   }
 } 
