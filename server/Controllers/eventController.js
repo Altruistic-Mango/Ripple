@@ -17,9 +17,9 @@ var eventController = {
     var userId = data.userId;
     var TTL = +data.TTL;
     var radius = +data.radius;
-    
+
     var searchParams = {
-      x: +data.x, 
+      x: +data.x,
       y: +data.y,
       userId: data.userId
     };
@@ -56,12 +56,15 @@ var eventController = {
           });
       }
     });
-    console.log('calling events callback')
+    console.log('calling events callback');
     cb(photoId, recipients);
   },
 
-  broadcastEvent: function(req, res) {
+  signUrl: function(req, res) {
+    aws.getS3Policy(req, res);
+  },
 
+  broadcastEvent: function(req, res) {
     var photoId = req.body.photoId;
     var recipients;
     this.broadcast(req.body, function(photoId, recipients) {
@@ -70,12 +73,12 @@ var eventController = {
           console.log(err);
         }
         else if (photo) {
-          console.log('finding recipientList')
+          console.log('finding recipientList');
           console.log(photo.recipientList);
           var recipientList = photo.recipientList;
           recipients.forEach(function(userId) {
             if (recipientList.indexOf(userId) === -1) {
-              console.log('adding user to photo recipient list')
+              console.log('adding user to photo recipient list');
               recipientList.push(userId);
             }
           });
@@ -84,7 +87,7 @@ var eventController = {
           res.end();
         }
 
-      }) 
+      });
     });
   },
 

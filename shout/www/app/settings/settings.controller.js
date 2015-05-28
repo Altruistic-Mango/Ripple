@@ -2,9 +2,9 @@ angular
   .module('shout.settings')
   .controller('SettingsCtrl', SettingsCtrl);
 
-SettingsCtrl.$inject = ['$state', '$ionicHistory', 'SettingsFactory'];
+SettingsCtrl.$inject = ['$state', '$ionicHistory', 'SettingsFactory', 'CameraFactory', 's3Upload'];
 
-function SettingsCtrl($state, $ionicHistory, SettingsFactory) {
+function SettingsCtrl($state, $ionicHistory, CameraFactory, SettingsFactory, s3Upload) {
   console.log('SettingsCtrl');
 
   var vm = this;
@@ -13,6 +13,7 @@ function SettingsCtrl($state, $ionicHistory, SettingsFactory) {
   vm.TTL = 5; //initial value 5 minutes
   vm.watch = true; 
   vm.acceptSettings = acceptSettings;
+  vm.sharePhoto = sharePhoto;
   vm.userSetWatch = userSetWatch; 
 
   function acceptSettings() {
@@ -23,8 +24,15 @@ function SettingsCtrl($state, $ionicHistory, SettingsFactory) {
       $state.go('tab.inbox');
     }
     console.log('radius set to: ', parseInt(vm.radius));
-    console.log('TTL set to: ', parseInt(vm.TTL))
+    console.log('TTL set to: ', parseInt(vm.TTL));
   }
+
+
+  function sharePhoto() {
+    var files = document.getElementById('photos').files;
+    s3Upload.uploadFile(files);
+  }
+  
 
   function userSetWatch() {
     SettingsFactory.setWatch(vm.watch);
