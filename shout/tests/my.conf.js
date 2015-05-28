@@ -18,34 +18,8 @@ module.exports = function(config) {
       '../www/lib/angular/angular.js',
       '../www/lib/angular-ui-router/release/angular-ui-router.js',
       '../www/lib/angular-mocks/angular-mocks.js',
-
-
-      '../www/app/shout.module.js',
-      '../www/app/shout.config.js',
-      '../www/app/shout.run.js',
-
-      '../www/app/login/login.module.js',
-      '../www/app/login/login.controller.js',
-      '../www/app/login/signup.module.js',
-      '../www/app/login/signup.controller.js',
-
-      '../www/app/inbox/inbox.module.js',
-      '../www/app/inbox/inbox.controller.js',
-      '../www/app/inbox/inbox.factory.js',
-
-      '../www/app/settings/settings.module.js',
-      '../www/app/settings/settings.controller.js',
-      '../www/app/camera/camera.module.js',
-      '../www/app/camera/camera.controller.js',
-      '../www/app/camera/camera.services.js',
-
-      '../www/app/album/album.module.js',
-      '../www/app/album/album.controller.js',
-      '../www/app/album/album.factory.js',
-
-      '../www/app/location/location.module.js',
-      '../www/app/location/location.factory.js',
-
+      '../www/lib/underscore/underscore-min.js',
+      '../www/dist/shout.js',
       '**/*tests.js'
     ],
 
