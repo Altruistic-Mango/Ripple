@@ -1,5 +1,6 @@
 angular.module('shout', [
   'ionic',
+  'shout.constants',
   'shout.localstorage',
   'shout.tabs',
   'shout.login',

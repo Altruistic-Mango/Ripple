@@ -9,13 +9,15 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var karma = require('karma').server;
+var ngConstant = require('gulp-ng-constant');
 
 //Paths to source files
 // note: js files need to have the module files concated first otherwise angular breaks
 var paths = {
   sass: ['./scss/**/*.scss'],
   js:   ['./www/app/**/*module.js',
-         './www/app/**/*.js'],
+         './www/app/**/*.js', 
+         '.www/app.config.js'],
   dist: ['./www/dist/*.js']
 };
 
@@ -79,6 +81,13 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+gulp.task('constant', function() {
+  gulp.src('./config.json')
+    .pipe(ngConstant())
+    .pipe(gulp.dest("./www/app/"))
+});
+
 
 //Test Task
 gulp.task('test', function(done) {
