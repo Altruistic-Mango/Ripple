@@ -21,7 +21,7 @@ describe('Inbox Factory Unit Tests', function(){
     it('should update photos when when updateInbox is called', function(){
         InboxFactory.photos = [5,4,3,2,1];
         expect(InboxFactory.photos).toEqual([5,4,3,2,1])
-        InboxFactory.updateInbox({inbox: [1,2,3,4,5]});
+        InboxFactory.updateInbox([1,2,3,4,5]);
         expect(InboxFactory.photos).toEqual([1,2,3,4,5])
     })
 
