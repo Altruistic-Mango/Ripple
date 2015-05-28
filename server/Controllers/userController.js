@@ -80,14 +80,6 @@ signupUser: function(req, res) {
     });
   },
 
-  deleteUser: function(username) {
-    User.remove({"username": username}, function(err){
-      if(err){
-        console.log(err);
-      }
-    });
-  },
-
   getUserFromDB: function(person, cb) {   
     if (person.uuId) {
       User.findOne({uuId: person.uuId}, function(err, person) {
