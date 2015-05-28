@@ -39,18 +39,18 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
 
   function setPosition (position) {
 
-    currentPosition = {
-                      userId: userId,
+    services.currentPosition = {
+                      userId: $localstorage.get('userId'),
                       x: position.coords.latitude,
                       y: position.coords.longitude
                       };
-    console.log(' currentPosition set! ', currentPosition);
+    console.log(' currentPosition set! ', services.currentPosition);
 
   }
 
   function sendPosition () {
     // $http.post('http://localhost:3000/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
-    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server!!!')});
+    $http.post('http://localhost:3000/gps/position', services.currentPosition).success(function(){console.log('sent position to server!!!')});
 
   }
 

@@ -9,6 +9,7 @@ angular.module('shout', [
   'shout.settings',
   'shout.camera',
   'shout.album',
-  'shout.location'
+  'shout.location',
+  'shout.broadcast'
   //list the other modules that contain factories and controllers that you will use
 ]);
