@@ -8,6 +8,7 @@ function configure($stateProvider, $urlRouterProvider, $compileProvider) {
   console.log('shout configure');
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
+  //$locationProvider.html5Mode(true);
   // Ionic uses AngularUI Router which uses the concept of states
   $stateProvider
 

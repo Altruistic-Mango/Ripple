@@ -1,9 +1,7 @@
 var quadtree = require('../Utils/QTree.js');
 var userController = require('../Controllers/userController.js');
 
-
 var gpsController = {
-
 
   // this will insert a coordinate to the quadtree for insertion
   insertCoords: function(req, res) {
@@ -13,25 +11,25 @@ var gpsController = {
     console.log('inserting coordinates ' + typeof userId);
 
     var node = {
-      x: +req.body.x, 
-      y: +req.body.y, 
-      userId: userId
-    }
+      x: +req.body.x,
+      y: +req.body.y,
+      userId: req.body.userId
+    };
 
     quadtree.update(node);
 
     var inbox = userController.retrieveInbox(userId, null, function(inbox) {
       console.log(inbox);
-      res.send(inbox);  
+      res.send(inbox);
       });
     },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
   findNearbyNodes: function(req, res) {
     console.log(req.body);
-    
+
     var searchParams = {
-      x: req.body.x, 
+      x: req.body.x,
       y: req.body.y,
       userId: req.body.userId
     };
@@ -45,7 +43,7 @@ var gpsController = {
     if (typeof(Number.prototype.toRad) === "undefined") {
       Number.prototype.toRad = function() {
       return this * Math.PI / 180;
-      }
+      };
     }
     var R = 6371;
     var nodes = this.getNodes(item1);
@@ -60,10 +58,10 @@ var gpsController = {
       lon2 = item2.y;
       dLat = (lat2 - lat1).toRad();
       dLon = (lon2 - lon1).toRad();
-      var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
-              Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
-              Math.sin(dLon/2) * Math.sin(dLon/2);  
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       var d = R * c;
       d = d * 0.621371;
       console.log(d);
@@ -81,8 +79,8 @@ var gpsController = {
 
   // Invoke calculate distance function
   getDist: function(req, res) {
-    var result = this.calculateDist(req.body)
-    res.send(result)
+    var result = this.calculateDist(req.body);
+    res.send(result);
   },
 
   // remove nodes from quadtree if they match the item sent

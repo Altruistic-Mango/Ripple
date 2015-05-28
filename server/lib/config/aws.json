@@ -1,0 +1,7 @@
+{
+  "accessKeyId": "XXXXXXXXXXXXXXXXXXXX",
+  "secretAccessKey": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "region": "us-west-1",
+  "bucket": "ripple-photos"
+}
+
