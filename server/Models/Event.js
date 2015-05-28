@@ -5,7 +5,7 @@ var EventSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true,
-    unique: true
+    unique: false
   },
 
   photoId: {
