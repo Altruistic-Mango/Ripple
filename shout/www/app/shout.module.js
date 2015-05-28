@@ -11,6 +11,7 @@ angular.module('shout', [
   'shout.camera',
   'shout.album',
   'shout.location',
-  'shout.broadcast'
+  'shout.broadcast',
+  's3UploadApp'
   //list the other modules that contain factories and controllers that you will use
 ]);
