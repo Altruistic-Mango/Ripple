@@ -111,20 +111,20 @@ signupUser: function(req, res) {
 
   updateInbox: function(userId, eventObj) {
     var query = {userId: userId};
-    User.findOne(query, function(err, user) {
+    if (userId.length > 6) {
+      var query = {userId: +userId}
+    User.find(query, function(err, user) {
       if (err) {
         console.log(err);
       }
 
       else if (user) {
-
         var broadcastEvent = {
           photoId: eventObj.photoId,
           TTL: eventObj.TTL,
           radius: eventObj.radius
         };
 
-        console.log('checking inbox now');
         var bool = true;
         user.inbox.reduce(function(bool, eventItem) {
           if (bool && eventItem.photoId !== eventObj.photoId) {
@@ -141,6 +141,7 @@ signupUser: function(req, res) {
         else return;
       }
     });
+  }
   },
 
   retrieveInbox: function(userId) {
