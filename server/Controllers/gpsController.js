@@ -6,10 +6,6 @@ var gpsController = {
   // this will insert a coordinate to the quadtree for insertion
   insertCoords: function(req, res) {
 
-    var userId = req.body.userId;
-
-    console.log('inserting coordinates ' + typeof userId);
-
     var node = {
       x: +req.body.x, 
       y: +req.body.y, 
