@@ -227,7 +227,7 @@ curl -i http://localhost:3000/gps/postdata
 curl -i http://localhost:3000/users/list
 curl -H "Content-Type: application/json" -X POST -d '{"username" : "test2", "password": "test2"}' http://localhost:3000/users/signup
 
-
+curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "-122.515", "y" : "37.615"}' http://localhost:3000/gps/position
 
 curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615"}' http://localhost:3000/gps/getlocal
 

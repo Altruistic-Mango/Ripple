@@ -10,6 +10,8 @@ var gpsController = {
 
     var userId = req.body.userId;
 
+    console.log('inserting coordinates ' + typeof userId);
+
     var node = {
       x: +req.body.x, 
       y: +req.body.y, 
@@ -18,9 +20,11 @@ var gpsController = {
 
     quadtree.update(node);
 
-    var inbox = userController.retrieveInbox(userId)
-    res.send(inbox);
-  },
+    var inbox = userController.retrieveInbox(userId, null, function(inbox) {
+      console.log(inbox);
+      res.send(inbox);  
+      });
+    },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
   findNearbyNodes: function(req, res) {
