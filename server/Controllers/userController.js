@@ -40,13 +40,14 @@ signupUser: function(req, res) {
       }
 },
 
-  retrieveUsers: function(req, res) {
+  retrieveUsers: function(req, res, cb) {
     User.find({}, function(err, data) {
-      if (!err) { 
-          res.send(200, data);
+      if (!err && cb) { 
+          cb(data);
       } 
+      else if (err) throw err;
       else {
-        throw err;
+        res.send(data);
       }
     });
   },
@@ -149,11 +150,46 @@ signupUser: function(req, res) {
         return err;
       }
       else if (user) {
-        return user.inbox;
+        var newInbox = user.inbox.reduce(function(acc, inboxItem) {
+            console.log(acc);
+            if (inboxItem.TTL > 50) {
+              acc.push(inboxItem);
+            }
+            return acc;
+          }, []);
+
+        user.inbox = newInbox;
+        user.update({inbox: newInbox}, function(err, data) {
+          console.log(data);
+          return data;
+        });
       }
       else return null;
     })
-  }
+  },
+
+  cullInbox: function(userId, cb) {
+    
+    User.findOne({userId: userId}, function(err, users) {
+      if (err) console.log(err);
+      
+      else {
+        users.forEach(function(user) {
+          var newInbox = user.inbox.reduce(function(acc, inboxItem) {
+            console.log(acc);
+            if (inboxItem.TTL > 50) {
+              acc.push(inboxItem);
+            }
+            return acc;
+          }, []);
+
+          user.inbox = newInbox;
+          user.save();
+        })
+      }
+    })
+    res.end();
+  },
 
 };
 
