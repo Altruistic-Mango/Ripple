@@ -40,13 +40,14 @@ signupUser: function(req, res) {
       }
 },
 
-  retrieveUsers: function(req, res) {
+  retrieveUsers: function(req, res, cb) {
     User.find({}, function(err, data) {
-      if (!err) { 
-          res.send(200, data);
+      if (!err && cb) { 
+          cb(data);
       } 
+      else if (err) throw err;
       else {
-        throw err;
+        res.send(data);
       }
     });
   },
@@ -95,7 +96,13 @@ signupUser: function(req, res) {
       User.findOne({username: person.username}, function(err, person) {
         if (err) console.log(err);
         else if (person) {
-          cb(person);
+          if (cb) {
+            cb(person);
+          }
+          else {
+            console.log('User already exists');
+            return 'User already exists';
+          }
         }
         else return null;
       });
@@ -103,51 +110,81 @@ signupUser: function(req, res) {
   },
 
   updateInbox: function(userId, eventObj) {
-    var query = {userId: userId};
-    User.findOne(query, function(err, user) {
-      if (err) {
-        console.log(err);
-      }
+    this.retrieveInbox(userId, eventObj, function(inbox) {
+      console.log(inbox);
+    })
 
-      else if (user) {
 
-        var broadcastEvent = {
-          photoId: eventObj.photoId,
-          TTL: eventObj.TTL,
-          radius: eventObj.radius
-        };
 
-        console.log('checking inbox now');
-        var bool = true;
-        user.inbox.reduce(function(bool, eventItem) {
-          if (bool && eventItem.photoId !== eventObj.photoId) {
-            return true;
-          }  
-          else return false;
-        }, true)
-
-        if (bool) {
-            console.log('check did not find a match in user inbox, saving')
-            user.inbox.push(broadcastEvent);
-            user.save();
-        }
-        else return;
-      }
-    });
   },
 
-  retrieveInbox: function(userId) {
+  retrieveInbox: function(userId, eventObj, cb) {
     User.findOne({userId: userId}, function(err, user) {
       if (err) {
         console.log(err);
         return err;
       }
       else if (user) {
-        return user.inbox;
+        var newInbox = user.inbox.reduce(function(acc, inboxItem) {
+            console.log(acc);
+            if (inboxItem.TTL > 50) {
+              acc.push(inboxItem);
+            }
+            return acc;
+          }, []);
+
+        if (eventObj) {
+          var broadcastEvent = {
+            photoId: eventObj.photoId,
+            TTL: eventObj.TTL,
+            radius: eventObj.radius
+          };
+
+          var bool = true;
+
+          newInbox.reduce(function(bool, eventItem) {
+            if (bool && eventItem.photoId !== eventObj.photoId) {
+              return true;
+            }  
+            else return false;
+          }, true)
+
+          if (bool) {
+              console.log('check did not find a match in user inbox, saving')
+              newInbox.push(broadcastEvent);
+              user.inbox = newInbox;
+              user.save();
+          }
+        }
+
+
+        user.update({inbox: newInbox}, function(err, data) {
+          console.log(user.inbox);
+          cb(user.inbox);
+        });
+
       }
+
       else return null;
     })
-  }
+  },
+
+  cullInbox: function(req, res) {
+    var query = req.body.username ? {username: req.body.username} : {};
+    User.find(query, function(err, users) {
+      if (err) console.log(err);
+      
+      else {
+        users.forEach(function(user) {
+          var newInbox = [];
+
+          user.inbox = newInbox;
+          user.save();
+        })
+      }
+    })
+    res.end();
+  },
 
 };
 

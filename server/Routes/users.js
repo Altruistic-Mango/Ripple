@@ -24,9 +24,20 @@ router.post('/signin', function(req, res) {
   userController.signinUser(req, res);
 });
 
-router.post('deleteUser', function(username) {
+router.post('/deleteUser', function(username) {
   console.log('deleting user');
   userController.deleteUser(username);
+});
+
+router.post('/clearInbox', function(req, res) {
+  if (req.body.username) {
+    console.log('clearing ' + req.body.username + '\'s inbox');
+    userController.cullInbox(req, res);
+  }
+  else {
+    console.log('clearing all inboxes');
+    userController.cullInbox(req, res);
+  }
 });
 
 module.exports = router;
