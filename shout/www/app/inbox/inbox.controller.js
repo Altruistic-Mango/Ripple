@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory'];
+InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadcastFactory'];
 
-function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory) {
+function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadcastFactory) {
   console.log('InboxCtrl');
   var vm = this;
   var currentStart = 0;
@@ -19,6 +19,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory) {
   vm.addPhotos = addPhotos; 
   vm.doRefresh = doRefresh;
   vm.loadMore = loadMore; 
+  vm.reBroadcast = reBroadcast;
   vm.morePhotosVar;
   vm.canScroll; 
 
@@ -55,6 +56,10 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory) {
 
   function clearInbox() {
     vm.photos = InboxFactory.removeExpired(vm.photos, InboxFactory.photos);
+  }
+
+  function reBroadcast(index) {
+    BroadcastFactory.reBroadcast(vm.photos[index]);
   }
 
 }
