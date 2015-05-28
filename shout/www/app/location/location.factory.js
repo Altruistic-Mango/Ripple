@@ -2,9 +2,9 @@ angular
   .module('shout.location')
   .factory('LocationFactory', LocationFactory);
 
-LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage'];
+LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage', 'API_HOST'];
 
-function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
+function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API_HOST) {
   console.log('LocationFactory');
   var currentPosition, watchId, intervalId, userId;
   var services = {
@@ -49,8 +49,8 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
   }
 
   function sendPosition () {
-    // $http.post('http://localhost:3000/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
-    $http.post('http://localhost:3000/gps/position', services.currentPosition).success(function(){console.log('sent position to server!!!')});
+    // $http.post(API_HOST + '/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
+    $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(){console.log('sent position to server!!!')});
 
   }
 
