@@ -110,8 +110,8 @@ signupUser: function(req, res) {
   },
 
   updateInbox: function(userId, eventObj) {
-    this.retrieveInbox(userId, eventObj, function() {
-      console.log('we did it!!!');
+    this.retrieveInbox(userId, eventObj, function(inbox) {
+      console.log(inbox);
     })
 
 
@@ -133,36 +133,38 @@ signupUser: function(req, res) {
             return acc;
           }, []);
 
-        console.log('user inbox is a ' + typeof user.inbox)
-        var broadcastEvent = {
-          photoId: eventObj.photoId,
-          TTL: eventObj.TTL,
-          radius: eventObj.radius
-        };
+        if (eventObj) {
+          var broadcastEvent = {
+            photoId: eventObj.photoId,
+            TTL: eventObj.TTL,
+            radius: eventObj.radius
+          };
 
-        var bool = true;
-        newInbox.reduce(function(bool, eventItem) {
-          if (bool && eventItem.photoId !== eventObj.photoId) {
-            return true;
-          }  
-          else return false;
-        }, true)
+          var bool = true;
 
-        if (bool) {
-            console.log('check did not find a match in user inbox, saving')
-            newInbox.push(broadcastEvent);
-            user.inbox = newInbox;
-            user.save();
+          newInbox.reduce(function(bool, eventItem) {
+            if (bool && eventItem.photoId !== eventObj.photoId) {
+              return true;
+            }  
+            else return false;
+          }, true)
+
+          if (bool) {
+              console.log('check did not find a match in user inbox, saving')
+              newInbox.push(broadcastEvent);
+              user.inbox = newInbox;
+              user.save();
+          }
         }
 
-        else
 
         user.update({inbox: newInbox}, function(err, data) {
-          console.log(data);
-          return data;
+          console.log(user.inbox);
+          cb(user.inbox);
         });
 
       }
+
       else return null;
     })
   },
