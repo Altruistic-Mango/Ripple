@@ -13,8 +13,7 @@ var photoController = {
       photoId: req.body.photoId,
       timestamp: +req.body.timestamp || 5000,
       radius: +req.body.radius,
-      TTL: +req.body.TTL,
-      photoURL: req.body.photoURL || "http://localhost/",
+      TTL: +req.body.TTL
     };
 
     Photo.findOne({photoId: data.photoId}, function(err, photo) {

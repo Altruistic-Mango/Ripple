@@ -20,12 +20,6 @@ var PhotoSchema = new mongoose.Schema({
     unique: false
   },
 
-  photoURL: {
-    type: String,
-    required: true,
-    unique: true
-  },
-
   recipientList: {
     type: Array,
     required: false,

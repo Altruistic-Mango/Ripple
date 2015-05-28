@@ -53,7 +53,6 @@ var eventController = {
       photoId: photoId,
       TTL: TTL,
       radius: radius,
-      photoURL: data.photoURL,
       recipientList: recipients
     }, function(err, event) {
       if (err) {
