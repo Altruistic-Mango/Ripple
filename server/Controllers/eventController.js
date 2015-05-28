@@ -10,31 +10,18 @@ var Q = require('q');
 var eventController = {
 
 
-
-  getEventFromDB: function(event, cb) {   
-    if (event.eventId) {
-      Event.findOne({eventId: event.eventId}, function(err, event) {
-        if (err) console.log(err);
-        else if (event) {
-          return event;
-        }
-        else return null;
-      });
-    }
-  },
-
   broadcast: function(data, cb) {
-    console.log('called broadcast : ' + data);
+    console.log('called broadcast : ' + JSON.stringify(data));
     var photoId = data.photoId;
+    var timestamp = data.timestamp;
     var userId = data.userId;
-    var eventId = "" + photoId + userId;
     var TTL = +data.TTL;
     var radius = +data.radius;
     
     var searchParams = {
       x: +data.x, 
       y: +data.y,
-      username: data.userId
+      userId: data.userId
     };
     var nodes = gpsController.getNodes(searchParams);
 
@@ -49,9 +36,10 @@ var eventController = {
     };
 
     Event.create({
-      eventId: eventId,
+      userId: userId,
       photoId: photoId,
       TTL: TTL,
+      timestamp: timestamp,
       radius: radius,
       recipientList: recipients
     }, function(err, event) {

@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
   
   userId: {
-    type: String,
+    type: Number,
     required: true,
     unique: true
   },

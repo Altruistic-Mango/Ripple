@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var PhotoSchema = new mongoose.Schema({
 
   photoId: {
-    type: String,
+    type: Number,
     required: true,
     unique: true
   },

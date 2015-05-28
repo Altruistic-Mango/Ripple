@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var EventSchema = new mongoose.Schema({
 
-  eventId: {
+  userId: {
     type: Number,
     required: true,
     unique: true
@@ -12,6 +12,12 @@ var EventSchema = new mongoose.Schema({
     type: Number,
     required: true,
     unique: false
+  },
+
+  timestamp: {
+    type: Number,
+    required: true,
+    unique: true
   },
 
   TTL: {
