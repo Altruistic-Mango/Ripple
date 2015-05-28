@@ -110,41 +110,15 @@ signupUser: function(req, res) {
   },
 
   updateInbox: function(userId, eventObj) {
-    var query = {userId: userId};
-    if (userId.length > 6) {
-      var query = {userId: +userId}
-    User.find(query, function(err, user) {
-      if (err) {
-        console.log(err);
-      }
+    this.retrieveInbox(userId, eventObj, function() {
+      console.log('we did it!!!');
+    })
 
-      else if (user) {
-        var broadcastEvent = {
-          photoId: eventObj.photoId,
-          TTL: eventObj.TTL,
-          radius: eventObj.radius
-        };
 
-        var bool = true;
-        user.inbox.reduce(function(bool, eventItem) {
-          if (bool && eventItem.photoId !== eventObj.photoId) {
-            return true;
-          }  
-          else return false;
-        }, true)
 
-        if (bool) {
-            console.log('check did not find a match in user inbox, saving')
-            user.inbox.push(broadcastEvent);
-            user.save();
-        }
-        else return;
-      }
-    });
-  }
   },
 
-  retrieveInbox: function(userId) {
+  retrieveInbox: function(userId, eventObj, cb) {
     User.findOne({userId: userId}, function(err, user) {
       if (err) {
         console.log(err);
@@ -159,30 +133,48 @@ signupUser: function(req, res) {
             return acc;
           }, []);
 
-        user.inbox = newInbox;
+        console.log('user inbox is a ' + typeof user.inbox)
+        var broadcastEvent = {
+          photoId: eventObj.photoId,
+          TTL: eventObj.TTL,
+          radius: eventObj.radius
+        };
+
+        var bool = true;
+        newInbox.reduce(function(bool, eventItem) {
+          if (bool && eventItem.photoId !== eventObj.photoId) {
+            return true;
+          }  
+          else return false;
+        }, true)
+
+        if (bool) {
+            console.log('check did not find a match in user inbox, saving')
+            newInbox.push(broadcastEvent);
+            user.inbox = newInbox;
+            user.save();
+        }
+
+        else
+
         user.update({inbox: newInbox}, function(err, data) {
           console.log(data);
           return data;
         });
+
       }
       else return null;
     })
   },
 
-  cullInbox: function(userId, cb) {
-    
-    User.findOne({userId: userId}, function(err, users) {
+  cullInbox: function(req, res) {
+    var query = req.body.username ? {username: req.body.username} : {};
+    User.find(query, function(err, users) {
       if (err) console.log(err);
       
       else {
         users.forEach(function(user) {
-          var newInbox = user.inbox.reduce(function(acc, inboxItem) {
-            console.log(acc);
-            if (inboxItem.TTL > 50) {
-              acc.push(inboxItem);
-            }
-            return acc;
-          }, []);
+          var newInbox = [];
 
           user.inbox = newInbox;
           user.save();

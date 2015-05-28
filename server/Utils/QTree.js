@@ -209,9 +209,9 @@ Quadtree.prototype.subDivide = function() {
       this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
       this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
       this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.515, y: 37.615, userId: 4296166});
-      this.put({x: -122.515, y: 37.619, userId: 4227385});
-      this.put({x: -122.515, y: 37.618, userId: 1857132});
+      this.put({x: -122.515, y: 37.615, userId: 3145326});
+      this.put({x: -122.515, y: 37.619, userId: 1745118});
+      this.put({x: -122.515, y: 37.618, userId: 1353996});
     };
 
 

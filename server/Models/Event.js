@@ -3,13 +3,13 @@ var mongoose = require('mongoose');
 var EventSchema = new mongoose.Schema({
 
   userId: {
-    type: Number,
+    type: String,
     required: true,
     unique: true
   },
 
   photoId: {
-    type: Number,
+    type: String,
     required: true,
     unique: false
   },
