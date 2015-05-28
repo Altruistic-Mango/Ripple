@@ -41,8 +41,8 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
 
     services.currentPosition = {
                       userId: $localstorage.get('userId'),
-                      x: position.coords.latitude,
-                      y: position.coords.longitude
+                      y: position.coords.latitude,
+                      x: position.coords.longitude
                       };
     console.log(' currentPosition set! ', services.currentPosition);
 

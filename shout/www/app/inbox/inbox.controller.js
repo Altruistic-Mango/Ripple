@@ -20,6 +20,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.doRefresh = doRefresh;
   vm.loadMore = loadMore; 
   vm.reBroadcast = reBroadcast;
+  vm.clearInbox = clearInbox; 
   vm.morePhotosVar;
   vm.canScroll; 
 
@@ -29,14 +30,14 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   $scope.$on('updateInbox', function (event, data) {
     console.log('update inbox event heard!!!'); 
     newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    clearInbox(); 
+    vm.clearInbox(); 
     vm.addPhotos(newPhotos);
   });
 
 
   function doRefresh() {
     console.log('doRefresh called');
-    clearInbox();
+    vm.clearInbox();
     $scope.$broadcast('scroll.refreshComplete');
   }
 
