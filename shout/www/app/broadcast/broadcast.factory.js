@@ -15,7 +15,7 @@ function BroadcastFactory(LocationFactory, $http) {
     if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId 
       && LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
       photo = _.extend(photo, LocationFactory.currentPosition);
-      photo.timestamp = new Date(); 
+      photo.timestamp = new Date().getTime(); 
       console.log('reBroadcast this photo: ', photo);
       services.sendBroadcastEvent(photo);
     } else {

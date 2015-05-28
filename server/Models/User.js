@@ -26,12 +26,6 @@ var UserSchema = new mongoose.Schema({
     unique: false
   },
 
-  s3key: {
-    type: String,
-    required: false,
-    unique: false
-  }
-
 });
 
 module.exports = mongoose.model('User', UserSchema);

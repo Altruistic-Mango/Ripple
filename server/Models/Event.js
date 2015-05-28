@@ -2,16 +2,22 @@ var mongoose = require('mongoose');
 
 var EventSchema = new mongoose.Schema({
 
-  eventId: {
-    type: Number,
+  userId: {
+    type: String,
     required: true,
     unique: true
   },
 
   photoId: {
-    type: Number,
+    type: String,
     required: true,
     unique: false
+  },
+
+  timestamp: {
+    type: Number,
+    required: true,
+    unique: true
   },
 
   TTL: {
@@ -24,12 +30,6 @@ var EventSchema = new mongoose.Schema({
     type: Number,
     required: true,
     unique: false
-  },
-
-  photoURL: {
-    type: String,
-    required: true,
-    unique: true
   },
 
   recipientList: {
