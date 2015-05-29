@@ -16,6 +16,6 @@ function SignupFactory ($http, $localstorage, API_HOST) {
       method: 'POST',
       url: API_HOST + '/users/signup',
       data: data
-    })
+    });
   }
 }

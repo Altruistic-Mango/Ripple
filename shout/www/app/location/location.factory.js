@@ -23,7 +23,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   userId = $localstorage.get('userId');
 
-  triggerPingInterval()
+  triggerPingInterval();
 
   return services;
 
@@ -56,7 +56,6 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     } else {
       console.log('not sending incomplete position object to server');
     }
-
   }
 
   function errorCallback(error) {
@@ -82,7 +81,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   function clearPingInterval() {
     console.log('clear ping interval called with id: ', intervalId);
-    clearInterval(intervalId)
+    clearInterval(intervalId);
     intervalId = null; 
   }
 

@@ -116,12 +116,12 @@ function InboxFactory($rootScope) {
     var idArray = [];
     newData.forEach(function(item) {
       idArray.push(item.photoId);
-    })
+    });
     console.log('removeExpired called!');
     var newInbox = _.filter(oldInbox, function(photo) {
       return _.contains(idArray, photo.photoId); 
-    })
-    console.log('new inbox: ', newInbox)
+    });
+    console.log('new inbox: ', newInbox);
     return newInbox;
   }
 
@@ -130,11 +130,11 @@ function InboxFactory($rootScope) {
     console.log('filterForNew called with oldInbox: ', oldInbox);
     oldInbox.forEach(function(item) {
       oldIdArray.push(item.photoId);
-    })
+    });
     console.log('oldIdArray: ', oldIdArray);
     var newPhotos = _.filter(newData, function(photo) {
       return !_.contains(oldIdArray, photo.photoId);
-    })
+    });
     console.log('the new photos: ', newPhotos);
     return newPhotos; 
   }

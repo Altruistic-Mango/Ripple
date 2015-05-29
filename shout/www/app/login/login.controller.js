@@ -23,5 +23,5 @@ function LoginCtrl($scope, $state, LoginFactory) {
                   console.log('error on login');
                   vm.badCombo = true; 
                 });
-  };
+  }
 }
