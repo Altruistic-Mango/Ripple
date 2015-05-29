@@ -1,10 +1,11 @@
 # Ignore everything in this directory
-*
+
 # Don't ignore this file
 !.gitignore
 
 # Don't ignore directories so we can recurse into them
-!*/www/
+!/www/*
 
-!xml2json.js
+www/lib/
 config.json
+
