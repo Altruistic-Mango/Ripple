@@ -6,6 +6,7 @@
 
 # Ignore
 www/lib/
+www/platforms/
 config.json
 config.xml
 .DS_Store

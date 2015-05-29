@@ -31,16 +31,18 @@ var eventController = {
     var eventItem = {
         photoId: photoId,
         TTL: TTL,
-        radius: radius
+        radius: radius,
+        timestamp: timestamp
     };
 
     Event.create({
+      x: searchParams.x,
+      y: searchParams.y,
       userId: userId,
       photoId: photoId,
       TTL: TTL,
       timestamp: timestamp,
-      radius: radius,
-      recipientList: recipients
+      radius: radius
     }, function(err, event) {
       if (err) {
         console.log(err);

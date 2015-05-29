@@ -6,6 +6,13 @@ var gpsController = {
   // this will insert a coordinate to the quadtree for insertion
   insertCoords: function(req, res) {
 
+
+    var userId = req.body.userId;
+
+    console.log('inserting coordinates ' + typeof userId);
+
+    var timestamp = new Date().getTime();
+
     var node = {
       x: +req.body.x, 
       y: +req.body.y, 
@@ -14,7 +21,10 @@ var gpsController = {
 
     quadtree.update(node);
 
-    var inbox = userController.retrieveInbox(userId, null, function(inbox) {
+    node.timestamp = timestamp
+
+
+    var inbox = userController.retrieveInbox(userId, node, function(inbox) {
       console.log(inbox);
       res.send(inbox);  
       });
@@ -31,7 +41,7 @@ var gpsController = {
     };
 
     var nearbyNodes = this.getNodes(searchParams);
-    res.send(nearbyNodes);
+    res.send(nearbyNodes.children);
   },
 
   // This will get the distance between two coordinates

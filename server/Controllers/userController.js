@@ -114,40 +114,43 @@ var userController = {
     User.findOne({
       userId: userId
     }, function(err, user) {
+
       if (err) {
         console.log(err);
         return err;
-      } else if (user) {
+      } 
+
+      else if (user) {
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
           console.log(acc);
-          if (inboxItem.TTL > 50) {
+          if (inboxItem.TTL > 50) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
             acc.push(inboxItem);
           }
           return acc;
         }, []);
 
-        if (eventObj) {
-          var broadcastEvent = {
-            photoId: eventObj.photoId,
-            TTL: eventObj.TTL,
-            radius: eventObj.radius
-          };
+        // if (eventObj && eventObj.photoId) {
+        //   var broadcastEvent = {
+        //     photoId: eventObj.photoId,
+        //     TTL: eventObj.TTL,
+        //     radius: eventObj.radius
+        //   };
 
-          var bool = true;
+        //   var bool = true;
 
-          newInbox.reduce(function(bool, eventItem) {
-            if (bool && eventItem.photoId !== eventObj.photoId) {
-              return true;
-            } else return false;
-          }, true);
+        //   newInbox.reduce(function(bool, eventItem) {
+        //     if (bool && eventItem.photoId !== eventObj.photoId) {
+        //       return true;
+        //     } else return false;
+        //   }, true);
 
-          if (bool) {
-            console.log('check did not find a match in user inbox, saving');
-            newInbox.push(broadcastEvent);
-            user.inbox = newInbox;
-            user.save();
-          }
-        }
+        //   if (bool) {
+        //     console.log('check did not find a match in user inbox, saving');
+        //     newInbox.push(broadcastEvent);
+        //     user.inbox = newInbox;
+        //     user.save();
+        //   }
+        // }
 
         user.update({
           inbox: newInbox

@@ -32,9 +32,15 @@ var EventSchema = new mongoose.Schema({
     unique: false
   },
 
-  recipientList: {
-    type: Array,
-    required: false,
+  x: {
+    type: Number,
+    required: true,
+    unique: false
+  },
+
+  y: {
+    type: Number,
+    required: true,
     unique: false
   }
 
