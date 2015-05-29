@@ -18,7 +18,7 @@ var gpsController = {
       console.log(inbox);
       res.send(inbox);  
       });
-    },
+  },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
   findNearbyNodes: function(req, res) {

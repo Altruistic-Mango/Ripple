@@ -35,11 +35,15 @@ gulp.task('docco', function() {
     .pipe(gulp.dest('./docs/'));
 });
 
-
 gulp.task('test', function () {
-    return gulp.src('./server/tests/populateQuadTree.js', {read: false})
-        // gulp-mocha needs filepaths so you can't have any plugins before it 
-        .pipe(mocha({reporter: 'nyan'}));
+  return gulp.src('./server/tests/tests.js', {read: false})
+      // gulp-mocha needs filepaths so you can't have any plugins before it 
+      .pipe(mocha({reporter: 'nyan'}));
+});
+
+gulp.task('dummy', function () {
+  return gulp.src('./server/tests/dummyTests/populateQuadTree.js', {read: false})
+    .pipe(mocha({reporter: 'nyan'}));
 });
 
 
