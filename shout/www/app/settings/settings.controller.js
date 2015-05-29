@@ -23,7 +23,7 @@ function SettingsCtrl($state, $ionicHistory, SettingsFactory) {
       $state.go('tab.inbox');
     }
     console.log('radius set to: ', parseInt(vm.radius));
-    console.log('TTL set to: ', parseInt(vm.TTL))
+    console.log('TTL set to: ', parseInt(vm.TTL));
   }
 
   function userSetWatch() {

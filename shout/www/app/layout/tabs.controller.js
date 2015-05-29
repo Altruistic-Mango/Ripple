@@ -1,6 +1,6 @@
 angular
   .module('shout.tabs')
-  .controller('TabsCtrl', TabsCtrl)
+  .controller('TabsCtrl', TabsCtrl);
 
 TabsCtrl.$inject = ['CameraFactory'];
 

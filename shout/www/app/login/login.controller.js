@@ -21,5 +21,5 @@ function LoginCtrl($scope, $state, LoginFactory) {
                     $state.go('tab.inbox');
                   }
                 });
-  };
+  }
 }
