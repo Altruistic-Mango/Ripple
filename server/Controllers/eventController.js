@@ -25,10 +25,14 @@ var eventController = {
       radius: radius
     };
     var node = gpsController.getNodes(searchParams);
-    var recipients = gpsController.calculateDist(searchParams, node.children).map(function(user) {
-      // get distance calculation true/false
-      return user.userId;
-    });
+    console.log('these are nearby users in qtree ' + JSON.stringify(node.children));
+    var recipients = gpsController.calculateDist(searchParams, node.children);
+    // recipients = recipients.map(function(user) {
+    //   // get distance calculation true/false
+    //   return user.userId;
+    // });
+
+    console.log('recipients mapped by gps controller and calculate distance are ' + recipients)
 
     var eventItem = {
         photoId: photoId,
@@ -52,6 +56,7 @@ var eventController = {
       }
 
       else {
+        console.log('now calling ')
         // enter the photo object to the user's inbox array
           // for each loop to enter object
           recipients.forEach(function(recipient) {
@@ -64,7 +69,7 @@ var eventController = {
   },
 
   broadcastEvent: function(req, res) {
-    console.log(req.body);
+    console.log('broadcast event request body = ', req.body);
     var photoId = req.body.photoId;
     this.broadcast(req.body, function(photoId, recipients) {
       Photo.findOne({photoId: photoId}, function(err, photo) {

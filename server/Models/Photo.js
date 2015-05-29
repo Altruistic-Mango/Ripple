@@ -8,6 +8,12 @@ var PhotoSchema = new mongoose.Schema({
     unique: true
   },
 
+  userId: {
+    type: String,
+    required: true,
+    unique: false
+  },
+
   radius: {
     type: Number, 
     required: true,
@@ -24,6 +30,12 @@ var PhotoSchema = new mongoose.Schema({
     type: Array,
     required: false,
     unique: false
+  },
+
+  timestamp: {
+    type: Number,
+    required: true,
+    unique: true
   }
 
 });

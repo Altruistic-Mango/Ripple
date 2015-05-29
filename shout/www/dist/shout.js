@@ -17,22 +17,22 @@ angular.module('shout', [
 
 angular.module('shout.album', []);
 
+angular.module('shout.broadcast', [
+]);
+
 angular.module('shout.camera', [
   //list the other modules that contain factories and controllers that you will use
 ]);
 
-angular.module('shout.broadcast', [
-]);
-
-angular.module('shout.tabs', [
-  'shout.camera'
-]);  
 angular.module('shout.inbox', [
   //list the other modules that contain factories and controllers that you will use
   'shout.album',
   'shout.camera'
 ]);
 
+angular.module('shout.tabs', [
+  'shout.camera'
+]);  
 angular.module('shout.localstorage', [
   ]);
 angular.module('shout.location', [
@@ -445,6 +445,35 @@ function AlbumFactory() {
 }
 
 angular
+  .module('shout.broadcast')
+  .factory('BroadcastFactory', BroadcastFactory);
+
+BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
+
+function BroadcastFactory(LocationFactory, $http, API_HOST) {
+  var services = {};
+    services.reBroadcast = reBroadcast;
+    services.sendBroadcastEvent = sendBroadcastEvent;
+  return services;
+
+  function reBroadcast(photo) {
+    console.log('currentPosition: ', LocationFactory.currentPosition);
+    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId && 
+        LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
+      photo = _.extend(photo, LocationFactory.currentPosition);
+      photo.timestamp = new Date().getTime(); 
+      console.log('reBroadcast this photo: ', photo);
+      services.sendBroadcastEvent(photo);
+    } else {
+      console.log('sorry cant broadcast that photo');
+    }
+  }
+
+  function sendBroadcastEvent (broadcastEvent) {
+    $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
+  }
+} 
+angular
   .module('shout.camera')
   .controller('CameraCtrl', CameraCtrl);
 
@@ -527,47 +556,6 @@ function CameraFactory($state) {
   }
 }
 
-angular
-  .module('shout.broadcast')
-  .factory('BroadcastFactory', BroadcastFactory);
-
-BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
-
-function BroadcastFactory(LocationFactory, $http, API_HOST) {
-  var services = {};
-    services.reBroadcast = reBroadcast;
-    services.sendBroadcastEvent = sendBroadcastEvent;
-  return services;
-
-  function reBroadcast(photo) {
-    console.log('currentPosition: ', LocationFactory.currentPosition);
-    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId && 
-        LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
-      photo = _.extend(photo, LocationFactory.currentPosition);
-      photo.timestamp = new Date().getTime(); 
-      console.log('reBroadcast this photo: ', photo);
-      services.sendBroadcastEvent(photo);
-    } else {
-      console.log('sorry cant broadcast that photo');
-    }
-  }
-
-  function sendBroadcastEvent (broadcastEvent) {
-    $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
-  }
-} 
-angular
-  .module('shout.tabs')
-  .controller('TabsCtrl', TabsCtrl);
-
-TabsCtrl.$inject = ['CameraFactory'];
-
-function TabsCtrl(CameraFactory){
-  vm = this; 
-
-  vm.takePicture = CameraFactory.takePicture; 
-
-}  
 angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
@@ -791,6 +779,18 @@ function InboxFactory($rootScope) {
 }
 
 
+angular
+  .module('shout.tabs')
+  .controller('TabsCtrl', TabsCtrl);
+
+TabsCtrl.$inject = ['CameraFactory'];
+
+function TabsCtrl(CameraFactory){
+  vm = this; 
+
+  vm.takePicture = CameraFactory.takePicture; 
+
+}  
 angular
   .module('shout.localstorage')
   .factory('$localstorage', LocalStorageFactory);

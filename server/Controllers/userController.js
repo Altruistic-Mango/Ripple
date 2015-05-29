@@ -106,7 +106,7 @@ var userController = {
 
   updateInbox: function(userId, eventObj) {
     this.retrieveInbox(userId, eventObj, function(inbox) {
-      console.log(inbox);
+      console.log('inbox ==== ' + inbox);
     });
   },
 
@@ -122,8 +122,9 @@ var userController = {
 
       else if (user) {
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
-          console.log(acc);
-          if (inboxItem.TTL > 50) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+          console.log('removing items from inbox');
+          if (eventObj.timestamp - inboxItem.timestamp < inboxItem.TTL) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+            console.log('inboxItem ' + inboxItem + ' passed the test')
             acc.push(inboxItem);
           }
           return acc;
@@ -133,7 +134,8 @@ var userController = {
           var broadcastEvent = {
             photoId: eventObj.photoId,
             TTL: eventObj.TTL,
-            radius: eventObj.radius
+            radius: eventObj.radius,
+            timestamp: eventObj.timestamp
           };
 
           var bool = true;
@@ -155,7 +157,6 @@ var userController = {
         user.update({
           inbox: newInbox
         }, function(err, data) {
-          console.log(user.inbox);
           cb(user.inbox);
         });
 

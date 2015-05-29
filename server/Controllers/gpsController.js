@@ -59,7 +59,7 @@ var gpsController = {
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;
-
+    console.log('type of radius = ' + typeof item1.radius)
     var result = [];
 
     nodes.forEach(function(item2) {
@@ -76,15 +76,16 @@ var gpsController = {
       console.log(d);
       
       if (d < item1.radius) {
-        result.push(d);
+        result.push(item2.userId);
       }
     });
-
+    console.log('result = ' + result)
     return result;
   },
 
   // Find nodes in Quadtree
   getNodes: function(searchParams) {
+    console.log('getNodes searchParams are + ' + searchParams)
     var nodes = quadtree.get(searchParams);
     return nodes;
   },
