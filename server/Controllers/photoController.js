@@ -8,8 +8,9 @@ var photoController = {
 
   storePhoto: function(req, res) {
 
-    var photoId = "" + req.body.userId + (+req.body.timestamp);
-    req.body.photoId = photoId;
+    // incoming photo: '{"userId: "", "photoId": "", "timestamp": "", "x":"", "y": "", "radius": "", "TTL":""}'
+
+    var photoId = req.body.photoId;
     var data = {
       photoId: photoId,
       radius: +req.body.radius,

@@ -10,7 +10,7 @@
   <content src="index.html"/>
   <!-- TODO: change this access origin to limite to amazon S3 URLs -->
   <access origin="*"/>
-  <allow-navigation href="http://18d3265b.ngrok.com/*" />
+  <allow-navigation href="http://3a44f86.ngrok.com/*" />
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>

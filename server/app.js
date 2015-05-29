@@ -8,6 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
+var gpsController = require('./Controllers/gpsController.js');
 var app = express();
 
 // Initialize AWS
@@ -48,7 +49,7 @@ app.use('/users', users);
 app.use('/photos', photos);
 app.use('/gps', gps);
 app.use('/events', events);
-
+gpsController.deleteNodes();
 
 
 module.exports = app;

@@ -17,21 +17,22 @@ angular.module('shout', [
 
 angular.module('shout.album', []);
 
-angular.module('shout.broadcast', [
-  ]);
 angular.module('shout.camera', [
   //list the other modules that contain factories and controllers that you will use
 ]);
 
+angular.module('shout.broadcast', [
+]);
+
+angular.module('shout.tabs', [
+  'shout.camera'
+]);  
 angular.module('shout.inbox', [
   //list the other modules that contain factories and controllers that you will use
   'shout.album',
   'shout.camera'
 ]);
 
-angular.module('shout.tabs', [
-  'shout.camera'
-]);  
 angular.module('shout.localstorage', [
   ]);
 angular.module('shout.location', [
@@ -67,7 +68,7 @@ angular.module('shout.settings', [
 
 angular.module("shout.constants", [])
 
-.constant("API_HOST", "http://localhost:3000")
+.constant("API_HOST", "http://3a44f86.ngrok.com")
 
 ;
 angular
@@ -192,169 +193,225 @@ GNU General Public License version 2 as published by the Free
 Software Foundation. It is distributed without any warranty.
 */
 
-xml2json={
-	parser:function(xmlcode,ignoretags,debug){
-		if(!ignoretags){ignoretags=""};
-		xmlcode=xmlcode.replace(/\s*\/>/g,'/>');
-		xmlcode=xmlcode.replace(/<\?[^>]*>/g,"").replace(/<\![^>]*>/g,"");
-		if (!ignoretags.sort){ignoretags=ignoretags.split(",")};
-		var x=this.no_fast_endings(xmlcode);
-		x=this.attris_to_tags(x);
-		x=escape(x);
-		x=x.split("%3C").join("<").split("%3E").join(">").split("%3D").join("=").split("%22").join("\"");
-		for (var i=0;i<ignoretags.length;i++){
-			x=x.replace(new RegExp("<"+ignoretags[i]+">","g"),"*$**"+ignoretags[i]+"**$*");
-			x=x.replace(new RegExp("</"+ignoretags[i]+">","g"),"*$***"+ignoretags[i]+"**$*")
-		};
-		x='<JSONTAGWRAPPER>'+x+'</JSONTAGWRAPPER>';
-		this.xmlobject={};
-		var y=this.xml_to_object(x).jsontagwrapper;
-		if(debug){y=this.show_json_structure(y,debug)};
-		return y
-	},
-	xml_to_object:function(xmlcode){
-		var x=xmlcode.replace(/<\//g,"§");
-		x=x.split("<");
-		var y=[];
-		var level=0;
-		var opentags=[];
-		for (var i=1;i<x.length;i++){
-			var tagname=x[i].split(">")[0];
-			opentags.push(tagname);
-			level++
-			y.push(level+"<"+x[i].split("§")[0]);
-			while(x[i].indexOf("§"+opentags[opentags.length-1]+">")>=0){level--;opentags.pop()}
-		};
-		var oldniva=-1;
-		var objname="this.xmlobject";
-		for (var i=0;i<y.length;i++){
-			var preeval="";
-			var niva=y[i].split("<")[0];
-			var tagnamn=y[i].split("<")[1].split(">")[0];
-			tagnamn=tagnamn.toLowerCase();
-			var rest=y[i].split(">")[1];
-			if(niva<=oldniva){
-				var tabort=oldniva-niva+1;
-				for (var j=0;j<tabort;j++){objname=objname.substring(0,objname.lastIndexOf("."))}
-			};
-			objname+="."+tagnamn;
-			var pobject=objname.substring(0,objname.lastIndexOf("."));
-			if (eval("typeof "+pobject) != "object"){preeval+=pobject+"={value:"+pobject+"};\n"};
-			var objlast=objname.substring(objname.lastIndexOf(".")+1);
-			var already=false;
-			for (k in eval(pobject)){if(k==objlast){already=true}};
-			var onlywhites=true;
-			for(var s=0;s<rest.length;s+=3){
-				if(rest.charAt(s)!="%"){onlywhites=false}
-			};
-			if (rest!="" && !onlywhites){
-				if(rest/1!=rest){
-					rest="'"+rest.replace(/\'/g,"\\'")+"'";
-					rest=rest.replace(/\*\$\*\*\*/g,"</");
-					rest=rest.replace(/\*\$\*\*/g,"<");
-					rest=rest.replace(/\*\*\$\*/g,">")
-				}
-			} 
-			else {rest="{}"};
-			if(rest.charAt(0)=="'"){rest='unescape('+rest+')'};
-			if (already && !eval(objname+".sort")){preeval+=objname+"=["+objname+"];\n"};
-			var before="=";after="";
-			if (already){before=".push(";after=")"};
-			var toeval=preeval+objname+before+rest+after;
-			eval(toeval);
-			if(eval(objname+".sort")){objname+="["+eval(objname+".length-1")+"]"};
-			oldniva=niva
-		};
-		return this.xmlobject
-	},
-	show_json_structure:function(obj,debug,l){
-		var x='';
-		if (obj.sort){x+="[\n"} else {x+="{\n"};
-		for (var i in obj){
-			if (!obj.sort){x+=i+":"};
-			if (typeof obj[i] == "object"){
-				x+=this.show_json_structure(obj[i],false,1)
-			}
-			else {
-				if(typeof obj[i]=="function"){
-					var v=obj[i]+"";
-					//v=v.replace(/\t/g,"");
-					x+=v
-				}
-				else if(typeof obj[i]!="string"){x+=obj[i]+",\n"}
-				else {x+="'"+obj[i].replace(/\'/g,"\\'").replace(/\n/g,"\\n").replace(/\t/g,"\\t").replace(/\r/g,"\\r")+"',\n"}
-			}
-		};
-		if (obj.sort){x+="],\n"} else {x+="},\n"};
-		if (!l){
-			x=x.substring(0,x.lastIndexOf(","));
-			x=x.replace(new RegExp(",\n}","g"),"\n}");
-			x=x.replace(new RegExp(",\n]","g"),"\n]");
-			var y=x.split("\n");x="";
-			var lvl=0;
-			for (var i=0;i<y.length;i++){
-				if(y[i].indexOf("}")>=0 || y[i].indexOf("]")>=0){lvl--};
-				tabs="";for(var j=0;j<lvl;j++){tabs+="\t"};
-				x+=tabs+y[i]+"\n";
-				if(y[i].indexOf("{")>=0 || y[i].indexOf("[")>=0){lvl++}
-			};
-			if(debug=="html"){
-				x=x.replace(/</g,"&lt;").replace(/>/g,"&gt;");
-				x=x.replace(/\n/g,"<BR>").replace(/\t/g,"&nbsp;&nbsp;&nbsp;&nbsp;")
-			};
-			if (debug=="compact"){x=x.replace(/\n/g,"").replace(/\t/g,"")}
-		};
-		return x
-	},
-	no_fast_endings:function(x){
-		x=x.split("/>");
-		for (var i=1;i<x.length;i++){
-			var t=x[i-1].substring(x[i-1].lastIndexOf("<")+1).split(" ")[0];
-			x[i]="></"+t+">"+x[i]
-		}	;
-		x=x.join("");
-		return x
-	},
-	attris_to_tags: function(x){
-		var d=' ="\''.split("");
-		x=x.split(">");
-		for (var i=0;i<x.length;i++){
-			var temp=x[i].split("<");
-			for (var r=0;r<4;r++){temp[0]=temp[0].replace(new RegExp(d[r],"g"),"_jsonconvtemp"+r+"_")};
-			if(temp[1]){
-				temp[1]=temp[1].replace(/'/g,'"');
-				temp[1]=temp[1].split('"');
-				for (var j=1;j<temp[1].length;j+=2){
-					for (var r=0;r<4;r++){temp[1][j]=temp[1][j].replace(new RegExp(d[r],"g"),"_jsonconvtemp"+r+"_")}
-				};
-				temp[1]=temp[1].join('"')
-			};
-			x[i]=temp.join("<")
-		};
-		x=x.join(">");
-		x=x.replace(/ ([^=]*)=([^ |>]*)/g,"><$1>$2</$1");
-		x=x.replace(/>"/g,">").replace(/"</g,"<");
-		for (var r=0;r<4;r++){x=x.replace(new RegExp("_jsonconvtemp"+r+"_","g"),d[r])}	;
-		return x
-	}
+xml2json = {
+  parser: function(xmlcode, ignoretags, debug) {
+    if (!ignoretags) {
+      ignoretags = "";
+    }
+    xmlcode = xmlcode.replace(/\s*\/>/g, '/>');
+    xmlcode = xmlcode.replace(/<\?[^>]*>/g, "").replace(/<\![^>]*>/g, "");
+    if (!ignoretags.sort) {
+      ignoretags = ignoretags.split(",");
+    }
+    var x = this.no_fast_endings(xmlcode);
+    x = this.attris_to_tags(x);
+    x = escape(x);
+    x = x.split("%3C").join("<").split("%3E").join(">").split("%3D").join("=").split("%22").join("\"");
+    for (var i = 0; i < ignoretags.length; i++) {
+      x = x.replace(new RegExp("<" + ignoretags[i] + ">", "g"), "*$**" + ignoretags[i] + "**$*");
+      x = x.replace(new RegExp("</" + ignoretags[i] + ">", "g"), "*$***" + ignoretags[i] + "**$*")
+    }
+    x = '<JSONTAGWRAPPER>' + x + '</JSONTAGWRAPPER>';
+    this.xmlobject = {};
+    var y = this.xml_to_object(x).jsontagwrapper;
+    if (debug) {
+      y = this.show_json_structure(y, debug);
+    }
+    return y;
+  },
+  xml_to_object: function(xmlcode) {
+    var x = xmlcode.replace(/<\//g, "§");
+    x = x.split("<");
+    var y = [];
+    var level = 0;
+    var opentags = [];
+    for (var i = 1; i < x.length; i++) {
+      var tagname = x[i].split(">")[0];
+      opentags.push(tagname);
+      level++;
+      y.push(level + "<" + x[i].split("§")[0]);
+      while (x[i].indexOf("§" + opentags[opentags.length - 1] + ">") >= 0) {
+        level--;
+        opentags.pop();
+      }
+    }
+    var oldniva = -1;
+    var objname = "this.xmlobject";
+    for (i = 0; i < y.length; i++) {
+      var preeval = "";
+      var niva = y[i].split("<")[0];
+      var tagnamn = y[i].split("<")[1].split(">")[0];
+      tagnamn = tagnamn.toLowerCase();
+      var rest = y[i].split(">")[1];
+      if (niva <= oldniva) {
+        var tabort = oldniva - niva + 1;
+        for (var j = 0; j < tabort; j++) {
+          objname = objname.substring(0, objname.lastIndexOf("."));
+        }
+      }
+      objname += "." + tagnamn;
+      var pobject = objname.substring(0, objname.lastIndexOf("."));
+      if (eval("typeof " + pobject) != "object") {
+        preeval += pobject + "={value:" + pobject + "};\n";
+      }
+      var objlast = objname.substring(objname.lastIndexOf(".") + 1);
+      var already = false;
+      for (var k in eval(pobject)) {
+        if (k == objlast) {
+          already = true
+        }
+      };
+      var onlywhites = true;
+      for (var s = 0; s < rest.length; s += 3) {
+        if (rest.charAt(s) != "%") {
+          onlywhites = false
+        }
+      };
+      if (rest != "" && !onlywhites) {
+        if (rest / 1 != rest) {
+          rest = "'" + rest.replace(/\'/g, "\\'") + "'";
+          rest = rest.replace(/\*\$\*\*\*/g, "</");
+          rest = rest.replace(/\*\$\*\*/g, "<");
+          rest = rest.replace(/\*\*\$\*/g, ">")
+        }
+      } else {
+        rest = "{}"
+      };
+      if (rest.charAt(0) == "'") {
+        rest = 'unescape(' + rest + ')'
+      };
+      if (already && !eval(objname + ".sort")) {
+        preeval += objname + "=[" + objname + "];\n"
+      };
+      var before = "=";
+      after = "";
+      if (already) {
+        before = ".push(";
+        after = ")"
+      };
+      var toeval = preeval + objname + before + rest + after;
+      eval(toeval);
+      if (eval(objname + ".sort")) {
+        objname += "[" + eval(objname + ".length-1") + "]"
+      };
+      oldniva = niva
+    };
+    return this.xmlobject
+  },
+  show_json_structure: function(obj, debug, l) {
+    var x = '';
+    if (obj.sort) {
+      x += "[\n"
+    } else {
+      x += "{\n"
+    };
+    for (var i in obj) {
+      if (!obj.sort) {
+        x += i + ":"
+      };
+      if (typeof obj[i] == "object") {
+        x += this.show_json_structure(obj[i], false, 1)
+      } else {
+        if (typeof obj[i] == "function") {
+          var v = obj[i] + "";
+          //v=v.replace(/\t/g,"");
+          x += v
+        } else if (typeof obj[i] != "string") {
+          x += obj[i] + ",\n"
+        } else {
+          x += "'" + obj[i].replace(/\'/g, "\\'").replace(/\n/g, "\\n").replace(/\t/g, "\\t").replace(/\r/g, "\\r") + "',\n"
+        }
+      }
+    };
+    if (obj.sort) {
+      x += "],\n"
+    } else {
+      x += "},\n"
+    };
+    if (!l) {
+      x = x.substring(0, x.lastIndexOf(","));
+      x = x.replace(new RegExp(",\n}", "g"), "\n}");
+      x = x.replace(new RegExp(",\n]", "g"), "\n]");
+      var y = x.split("\n");
+      x = "";
+      var lvl = 0;
+      for (var i = 0; i < y.length; i++) {
+        if (y[i].indexOf("}") >= 0 || y[i].indexOf("]") >= 0) {
+          lvl--
+        };
+        tabs = "";
+        for (var j = 0; j < lvl; j++) {
+          tabs += "\t"
+        };
+        x += tabs + y[i] + "\n";
+        if (y[i].indexOf("{") >= 0 || y[i].indexOf("[") >= 0) {
+          lvl++
+        }
+      };
+      if (debug == "html") {
+        x = x.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        x = x.replace(/\n/g, "<BR>").replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;")
+      };
+      if (debug == "compact") {
+        x = x.replace(/\n/g, "").replace(/\t/g, "")
+      }
+    };
+    return x
+  },
+  no_fast_endings: function(x) {
+    x = x.split("/>");
+    for (var i = 1; i < x.length; i++) {
+      var t = x[i - 1].substring(x[i - 1].lastIndexOf("<") + 1).split(" ")[0];
+      x[i] = "></" + t + ">" + x[i]
+    };
+    x = x.join("");
+    return x
+  },
+  attris_to_tags: function(x) {
+    var d = ' ="\''.split("");
+    x = x.split(">");
+    for (var i = 0; i < x.length; i++) {
+      var temp = x[i].split("<");
+      for (var r = 0; r < 4; r++) {
+        temp[0] = temp[0].replace(new RegExp(d[r], "g"), "_jsonconvtemp" + r + "_")
+      };
+      if (temp[1]) {
+        temp[1] = temp[1].replace(/'/g, '"');
+        temp[1] = temp[1].split('"');
+        for (var j = 1; j < temp[1].length; j += 2) {
+          for (var r = 0; r < 4; r++) {
+            temp[1][j] = temp[1][j].replace(new RegExp(d[r], "g"), "_jsonconvtemp" + r + "_")
+          }
+        };
+        temp[1] = temp[1].join('"')
+      };
+      x[i] = temp.join("<")
+    };
+    x = x.join(">");
+    x = x.replace(/ ([^=]*)=([^ |>]*)/g, "><$1>$2</$1");
+    x = x.replace(/>"/g, ">").replace(/"</g, "<");
+    for (var r = 0; r < 4; r++) {
+      x = x.replace(new RegExp("_jsonconvtemp" + r + "_", "g"), d[r])
+    };
+    return x
+  }
 };
 
 
-if(!Array.prototype.push){
-	Array.prototype.push=function(x){
-		this[this.length]=x;
-		return true
-	}
+if (!Array.prototype.push) {
+  Array.prototype.push = function(x) {
+    this[this.length] = x;
+    return true
+  }
 };
 
-if (!Array.prototype.pop){
-	Array.prototype.pop=function(){
-  		var response = this[this.length-1];
-  		this.length--;
-  		return response
-	}
+if (!Array.prototype.pop) {
+  Array.prototype.pop = function() {
+    var response = this[this.length - 1];
+    this.length--;
+    return response
+  }
 };
-
 
 angular
   .module('shout.album')
@@ -387,35 +444,6 @@ function AlbumFactory() {
 
 }
 
-angular
-  .module('shout.broadcast')
-  .factory('BroadcastFactory', BroadcastFactory);
-
-BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
-
-function BroadcastFactory(LocationFactory, $http, API_HOST) {
-  var services = {};
-    services.reBroadcast = reBroadcast;
-    services.sendBroadcastEvent = sendBroadcastEvent;
-  return services;
-
-  function reBroadcast(photo) {
-    console.log('currentPosition: ', LocationFactory.currentPosition);
-    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId && 
-        LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
-      photo = _.extend(photo, LocationFactory.currentPosition);
-      photo.timestamp = new Date().getTime(); 
-      console.log('reBroadcast this photo: ', photo);
-      services.sendBroadcastEvent(photo);
-    } else {
-      console.log('sorry cant broadcast that photo');
-    }
-  }
-
-  function sendBroadcastEvent (broadcastEvent) {
-    $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
-  }
-} 
 angular
   .module('shout.camera')
   .controller('CameraCtrl', CameraCtrl);
@@ -500,6 +528,47 @@ function CameraFactory($state) {
 }
 
 angular
+  .module('shout.broadcast')
+  .factory('BroadcastFactory', BroadcastFactory);
+
+BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
+
+function BroadcastFactory(LocationFactory, $http, API_HOST) {
+  var services = {};
+    services.reBroadcast = reBroadcast;
+    services.sendBroadcastEvent = sendBroadcastEvent;
+  return services;
+
+  function reBroadcast(photo) {
+    console.log('currentPosition: ', LocationFactory.currentPosition);
+    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId && 
+        LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
+      photo = _.extend(photo, LocationFactory.currentPosition);
+      photo.timestamp = new Date().getTime(); 
+      console.log('reBroadcast this photo: ', photo);
+      services.sendBroadcastEvent(photo);
+    } else {
+      console.log('sorry cant broadcast that photo');
+    }
+  }
+
+  function sendBroadcastEvent (broadcastEvent) {
+    $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
+  }
+} 
+angular
+  .module('shout.tabs')
+  .controller('TabsCtrl', TabsCtrl);
+
+TabsCtrl.$inject = ['CameraFactory'];
+
+function TabsCtrl(CameraFactory){
+  vm = this; 
+
+  vm.takePicture = CameraFactory.takePicture; 
+
+}  
+angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
@@ -517,24 +586,22 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.obj = CameraFactory.obj;
   vm.takePicture = CameraFactory.takePicture;
   vm.query = CameraFactory.query;
-  vm.addPhotos = addPhotos; 
+  vm.addPhotos = addPhotos;
   vm.doRefresh = doRefresh;
-  vm.loadMore = loadMore; 
+  vm.loadMore = loadMore;
   vm.reBroadcast = reBroadcast;
-  vm.clearInbox = clearInbox; 
-  vm.morePhotosVar;
-  vm.canScroll; 
+  vm.clearInbox = clearInbox;
+  vm.morePhotosVar = false;
+  vm.canScroll = false;
 
-  vm.addPhotos(InboxFactory.photos); 
+  vm.addPhotos(InboxFactory.photos);
 
-
-  $scope.$on('updateInbox', function (event, data) {
-    console.log('update inbox event heard!!!'); 
+  $scope.$on('updateInbox', function(event, data) {
+    console.log('update inbox event heard!!!');
     newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    vm.clearInbox(); 
+    vm.clearInbox();
     vm.addPhotos(newPhotos);
   });
-
 
   function doRefresh() {
     console.log('doRefresh called');
@@ -542,19 +609,19 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
     $scope.$broadcast('scroll.refreshComplete');
   }
 
-  function loadMore () {
+  function loadMore() {
     console.log('loadMore called');
     if (vm.morePhotosVar) {
-      vm.canScroll = true; 
+      vm.canScroll = true;
     } else {
-      vm.canScroll = false; 
+      vm.canScroll = false;
     }
     $scope.$broadcast('scroll.infiniteScrollComplete');
   }
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
-    vm.morePhotosVar = true; 
+    vm.morePhotosVar = true;
   }
 
   function clearInbox() {
@@ -563,7 +630,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   }
 
   function reBroadcast(index) {
-    if (InboxFactory.checkValidPhoto(vm.photos[index])){
+    if (InboxFactory.checkValidPhoto(vm.photos[index])) {
       BroadcastFactory.reBroadcast(vm.photos[index]);
     } else {
       console.log('that photo is expired, refresh your inbox!');
@@ -571,10 +638,6 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   }
 
 }
-
-
-
-
 
 angular
   .module('shout.inbox')
@@ -729,18 +792,6 @@ function InboxFactory($rootScope) {
 
 
 angular
-  .module('shout.tabs')
-  .controller('TabsCtrl', TabsCtrl);
-
-TabsCtrl.$inject = ['CameraFactory'];
-
-function TabsCtrl(CameraFactory){
-  vm = this; 
-
-  vm.takePicture = CameraFactory.takePicture; 
-
-}  
-angular
   .module('shout.localstorage')
   .factory('$localstorage', LocalStorageFactory);
 
@@ -817,7 +868,8 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     services.currentPosition = {
                       userId: $localstorage.get('userId'),
                       y: position.coords.latitude,
-                      x: position.coords.longitude
+                      x: position.coords.longitude,
+                      timestamp: new Date().getTime()
                       };
     console.log(' currentPosition set! ', services.currentPosition);
 
@@ -827,7 +879,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     if (services.currentPosition && services.currentPosition.userId 
       && services.currentPosition.x && services.currentPosition.y){
       // $http.post(API_HOST + '/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
-      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(){console.log('sent position to server!!!')});
+      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(){console.log('sent position to server!!!');});
     } else {
       console.log('not sending incomplete position object to server');
     }
@@ -866,27 +918,27 @@ angular
   .module('shout.login')
   .controller('LoginCtrl', LoginCtrl);
 
-LoginCtrl.$inject = ['$scope', '$state','LoginFactory'];
+LoginCtrl.$inject = ['$scope', '$state', 'LoginFactory'];
 
 function LoginCtrl($scope, $state, LoginFactory) {
   console.log('LoginCtrl');
   var vm = this;
-  vm.data; 
-  vm.login = login; 
-  vm.badCombo = false; 
+  vm.data = null;
+  vm.login = login;
+  vm.badCombo = false;
 
-  function login () {
+  function login() {
     console.log('vm.data: ', vm.data);
     LoginFactory.loginUser(vm.data)
-                .success(function(res){
-                  console.log('res from server on login: ', res);
-                  LoginFactory.successfulLogin(res); 
-                  $state.go('tab.inbox');
-                })
-                .error(function(res){
-                  console.log('error on login');
-                  vm.badCombo = true; 
-                });
+      .success(function(res) {
+        console.log('res from server on login: ', res);
+        LoginFactory.successfulLogin(res);
+        $state.go('tab.inbox');
+      })
+      .error(function(res) {
+        console.log('error on login');
+        vm.badCombo = true;
+      });
   }
 }
 
@@ -901,8 +953,8 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
     successfulLogin: successfulLogin,
     loginUser: loginUser
   };
-  
-  function loginUser (data) {
+
+  function loginUser(data) {
     return $http({
       method: 'POST',
       url: API_HOST + '/users/signin',
@@ -910,15 +962,16 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
     });
   }
 
-  function successfulLogin (data) {
+  function successfulLogin(data) {
     console.log('login factory successfulLogin called');
     $localstorage.set('userId', data.userId);
     // InboxFactory.updateInbox(data.inbox)
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
     LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
   }
-  
+
 }
+
 angular
   .module('shout.signup')
   .controller('SignupCtrl', SignupCtrl);
@@ -928,24 +981,24 @@ SignupCtrl.$inject = ['$state', 'SignupFactory'];
 function SignupCtrl($state, SignupFactory) {
   console.log('SignupCtrl');
   var vm = this;
-  vm.data; 
-  vm.badUsername = false; 
+  vm.data = null;
+  vm.badUsername = false;
 
   vm.signup = signup;
-  
+
   function signup() {
     console.log('vm.data: ', vm.data);
     SignupFactory.signupUser(vm.data)
-                 .success(function (res) {
-                    console.log('response from server on singup: ', res);
-                      $state.go('login');
-                  })
-                 .error(function(res) {
-                    console.log('error on signup');
-                    vm.badUsername = true; 
-                  });
+      .success(function(res) {
+        console.log('response from server on singup: ', res);
+        $state.go('login');
+      })
+      .error(function(res) {
+        console.log('error on signup');
+        vm.badUsername = true;
+      });
   }
-  
+
 }
 
 angular
@@ -954,13 +1007,13 @@ angular
 
 SignupFactory.$inject = ['$http', '$localstorage', 'API_HOST'];
 
-function SignupFactory ($http, $localstorage, API_HOST) {
+function SignupFactory($http, $localstorage, API_HOST) {
   var services = {};
   services.signupUser = signupUser;
 
-  return services; 
+  return services;
 
-  function signupUser (data) {
+  function signupUser(data) {
     console.log('signup data: ', data);
     return $http({
       method: 'POST',
@@ -969,6 +1022,7 @@ function SignupFactory ($http, $localstorage, API_HOST) {
     });
   }
 }
+
 angular
   .module('shout.review')
   .controller('ReviewCtrl', ReviewCtrl);

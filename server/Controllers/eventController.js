@@ -21,27 +21,30 @@ var eventController = {
     var searchParams = {
       x: +data.x, 
       y: +data.y,
-      userId: data.userId
+      userId: data.userId,
+      radius: radius
     };
-    var nodes = gpsController.getNodes(searchParams);
-
-    var recipients = nodes.map(function(user) {
+    var node = gpsController.getNodes(searchParams);
+    var recipients = gpsController.calculateDist(searchParams, node.children).map(function(user) {
+      // get distance calculation true/false
       return user.userId;
     });
 
     var eventItem = {
         photoId: photoId,
         TTL: TTL,
-        radius: radius
+        radius: radius,
+        timestamp: timestamp
     };
 
     Event.create({
+      x: searchParams.x,
+      y: searchParams.y,
       userId: userId,
       photoId: photoId,
       TTL: TTL,
       timestamp: timestamp,
-      radius: radius,
-      recipientList: recipients
+      radius: radius
     }, function(err, event) {
       if (err) {
         console.log(err);
@@ -61,9 +64,8 @@ var eventController = {
   },
 
   broadcastEvent: function(req, res) {
-
+    console.log(req.body);
     var photoId = req.body.photoId;
-    var recipients;
     this.broadcast(req.body, function(photoId, recipients) {
       Photo.findOne({photoId: photoId}, function(err, photo) {
         if (err) {
@@ -73,17 +75,25 @@ var eventController = {
           console.log('finding recipientList')
           console.log(photo.recipientList);
           var recipientList = photo.recipientList;
+
           recipients.forEach(function(userId) {
             if (recipientList.indexOf(userId) === -1) {
               console.log('adding user to photo recipient list')
               recipientList.push(userId);
             }
+            else {
+              console.log(userId);
+            }
+
           });
           photo.recipientList = recipientList;
           photo.save();
           res.end();
         }
-
+        else {
+          console.log('photo not found');
+          res.send('photo not found');
+        }
       }) 
     });
   },

@@ -1,4 +1,4 @@
-function Quadtree(boundaries, maxChildren) {
+function Quadtree(boundaries, maxChildren, root) {
 
   this.boundaries = boundaries || {
     x: -122.526000,
@@ -7,6 +7,7 @@ function Quadtree(boundaries, maxChildren) {
     height: 0.2
   };
   this.maxChildren = maxChildren || 10;
+  this.root = root || this;
   this.quadrants = [];
   this.children = [];
 
@@ -44,7 +45,7 @@ Quadtree.prototype.put = function(item) {
 
   // check length against the max number of coordinates per quadrant
   var length = this.children.length;
-  if (this.children.length > this.maxChildren) {
+  if ((this.depth < this.maxChildren + 1) && (this.children.length > this.maxChildren)) {
 
     // create new quadrants
     this.subDivide();
@@ -87,7 +88,7 @@ Quadtree.prototype.get = function(item, callback) {
     }
     // otherwise just return the children
     else {
-      return this.children;
+      return this;
     }
   }
 };
@@ -123,10 +124,13 @@ Quadtree.prototype.findIndex = function(item) {
 };
 
 Quadtree.prototype.update = function(item) {
-  var results = this.get(item);
+  var quadrant = this.get(item);
+  var results = quadrant.children;
   var found;
+  console.log(JSON.stringify(item));
   results.forEach(function(coord) {
     if (coord.userId === item.userId) {
+      console.log('updating user');
       coord.x = item.x;
       coord.y = item.y;
       found = true;
@@ -142,13 +146,18 @@ Quadtree.prototype.update = function(item) {
 // remove gps data function
 // find last position then delete according to id
 Quadtree.prototype.remove = function(item) {
-  var results = this.get(item);
+  var quadrant = this.get(item);
+  var results = quadrant.children;
   item.x = +item.x;
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
-    if (results[i].x === item.x && results[i].y === item.y) {
+    if (results[i].userId === item.userId) {
       var removedItem = results.splice(i, 1);
     }
+  }
+  // first perform check on child elements for threshold
+  if (results.length < this.maxChildren / 2) {
+    this.unfold(quadrant);
   }
   return removedItem;
 };
@@ -158,6 +167,7 @@ Quadtree.prototype.remove = function(item) {
 
 // subdivide quadrant when necessary
 Quadtree.prototype.subDivide = function() {
+  var root = this;
   var width = this.boundaries.width / 2;
   var height = this.boundaries.height / 2;
   var x = this.boundaries.x;
@@ -169,7 +179,7 @@ Quadtree.prototype.subDivide = function() {
     y: y,
     width: width,
     height: height
-  }, this.maxChildren);
+  }, this.maxChildren, root);
 
   // top right quadrant
   this.quadrants[1] = new Quadtree({
@@ -177,7 +187,7 @@ Quadtree.prototype.subDivide = function() {
     y: y,
     width: width,
     height: height
-  }, this.maxChildren);
+  }, this.maxChildren, root);
 
   // bottom left quadrant
   this.quadrants[2] = new Quadtree({
@@ -185,7 +195,7 @@ Quadtree.prototype.subDivide = function() {
     y: y + height,
     width: width,
     height: height
-  }, this.maxChildren);
+  }, this.maxChildren, root);
 
   // bottom right quadrant
   this.quadrants[3] = new Quadtree({
@@ -193,31 +203,63 @@ Quadtree.prototype.subDivide = function() {
     y: y + height,
     width: width,
     height: height
-  }, this.maxChildren);
+  }, this.maxChildren, root);
 };
 
-    // Quadtree.prototype.addData = function() {
-    //   this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.515, y: 37.615, userId: 3145326});
-    //   this.put({x: -122.515, y: 37.619, userId: 1745118});
-    //   this.put({x: -122.515, y: 37.618, userId: 1353996});
-    // };
+Quadtree.prototype.unfold = function(quad) {
+
+  // check if root 
+  if (quad.children.length && !quad.quadrants.length) {
+    quad.root.unfold(quad.root);
+  }
+  
+  var count = 0;
+
+  quad.quadrants.forEach(function(quadrant) {
+    count += quadrant.children.length;
+  });
+
+  if (count < quad.maxChildren) {
+    var nodes = quad.quadrants.reduce(function(acc, quadrant) {
+      if (quadrant.children.length) {
+        acc = acc.concat(quadrant.children);
+      }
+      return acc;
+    }, []);
+
+    quad.quadrants = [];
+
+    nodes.forEach(function(node) {
+      quad.put(node);
+    })
+  };
+ };
+
+    Quadtree.prototype.addData = function() {
+      var date = new Date().getTime();
+      this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000), timestamp: date});
+      this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000), timestamp: date});
+    };
 
 
 module.exports = new Quadtree();
 
+
 // combine quadrants when too few nodes
+
+
+
+
 
 /*
 
@@ -241,8 +283,9 @@ curl -H "Content-Type:application/json" -X POST -d '{"username" : "henry"}' http
 
 curl -H "Content-Type: application/json" -X POST -d '{"x": "-122.515" , "y" : "37.615"}' http://localhost:3000/gps/distance
 
+{userId: "5134983", y: 37.7837719, x: -122.4092927, timestamp: 1432927321487}
 
-
+curl -H "Content-Type: application/json" -X POST -d '{"y" : "37.7837725", "x" : "-122.4092930", "userId" : "6000000", "timestamp": "1432927321487"}' http://localhost:3000/gps/position
 
     // Quadtree.prototype.addData = function() {
     //   this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
@@ -264,18 +307,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"x": "-122.515" , "y" : "3
 
 
 
-Quadtree.prototype.unfold = function() {
-  debugger;
-  if (!this.children.length) {
-    if (this.quadrants.length && this.quadrants[0].children.length) {
-      var children = this.quadrants.map(function(quadrant) {
-        return quadrant.children;
-      });
-    }
-  }
-  this.quadrants = [];
-  return children;
-}
+
 
 
 */

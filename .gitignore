@@ -1,3 +1,11 @@
 node_modules/
 server/lib/config/aws.json
 .DS_Store
+
+#ignore
+/shout/www/lib/
+/shout/www/platforms/
+/shout/www/config.json
+.DS_Store
+/shout/platforms/
+/shout/plugins/
