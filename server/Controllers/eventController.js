@@ -23,9 +23,8 @@ var eventController = {
       y: +data.y,
       userId: data.userId
     };
-    var nodes = gpsController.getNodes(searchParams);
-
-    var recipients = nodes.map(function(user) {
+    var node = gpsController.getNodes(searchParams);
+    var recipients = node.children.map(function(user) {
       return user.userId;
     });
 
@@ -61,9 +60,8 @@ var eventController = {
   },
 
   broadcastEvent: function(req, res) {
-
+    console.log(req.body);
     var photoId = req.body.photoId;
-    var recipients;
     this.broadcast(req.body, function(photoId, recipients) {
       Photo.findOne({photoId: photoId}, function(err, photo) {
         if (err) {
@@ -73,17 +71,25 @@ var eventController = {
           console.log('finding recipientList')
           console.log(photo.recipientList);
           var recipientList = photo.recipientList;
+
           recipients.forEach(function(userId) {
             if (recipientList.indexOf(userId) === -1) {
               console.log('adding user to photo recipient list')
               recipientList.push(userId);
             }
+            else {
+              console.log(userId);
+            }
+
           });
           photo.recipientList = recipientList;
           photo.save();
           res.end();
         }
-
+        else {
+          console.log('photo not found');
+          res.send('photo not found');
+        }
       }) 
     });
   },

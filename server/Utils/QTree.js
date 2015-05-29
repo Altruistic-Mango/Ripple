@@ -283,6 +283,8 @@ curl -H "Content-Type:application/json" -X POST -d '{"username" : "henry"}' http
 curl -H "Content-Type: application/json" -X POST -d '{"x": "-122.515" , "y" : "37.615"}' http://localhost:3000/gps/distance
 
 
+{"photoId":"1","TTL":"5","radius":"5","userId":"1173252","y":"37.7836915","x":"-122.4093423","timestamp":"1432915086240"}'
+
 
 
     // Quadtree.prototype.addData = function() {
