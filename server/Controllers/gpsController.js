@@ -18,9 +18,11 @@ var gpsController = {
     var timestamp = new Date().getTime();
 
     var node = {
+
       x: +req.body.x,
       y: +req.body.y,
       userId: userId
+
     };
     quadtree.update(node);
 

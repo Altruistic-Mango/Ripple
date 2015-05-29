@@ -9,4 +9,4 @@ var genRndLat = function(){
 var genRndLong = function(){
   var genLong = JSON.stringify(Math.random()*(37.808712 - 37.709369) + 37.709369);
   return genLong.slice(0, 9);
-} 
+}  
