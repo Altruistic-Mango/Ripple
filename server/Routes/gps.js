@@ -27,4 +27,9 @@ router.post('/remove', function(req, res) {
   gpsController.initRemove(req, res);
 });
 
+router.get('/timeout', function(req, res) {
+  console.log('calling set timeout');
+  gpsController.deleteNodes(req, res);
+})
+
 module.exports = router;

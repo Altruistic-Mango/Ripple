@@ -106,6 +106,17 @@ var gpsController = {
     res.end();
   },
 
+  deleteNodes: function(req, res) {
+    var self = this;
+    setTimeout(function() {
+      if (queue.cleanUp()) {
+        console.log('got item');
+      };
+      self.deleteNodes(req, res);
+    }, 1000);
+    res.end();
+  },
+
 };
 
 module.exports = gpsController;

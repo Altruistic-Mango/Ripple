@@ -6,7 +6,7 @@ function Quadtree(boundaries, maxChildren, root) {
     width: 0.2,
     height: 0.2
   };
-  this.maxChildren = maxChildren || 4;
+  this.maxChildren = maxChildren || 10;
   this.root = root || this;
   this.quadrants = [];
   this.children = [];
@@ -149,7 +149,7 @@ Quadtree.prototype.remove = function(item) {
   item.x = +item.x;
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
-    if (results[i].x === item.x && results[i].y === item.y) {
+    if (results[i].userId === item.userId) {
       var removedItem = results.splice(i, 1);
     }
   }
