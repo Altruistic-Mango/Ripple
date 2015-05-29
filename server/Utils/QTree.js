@@ -156,7 +156,7 @@ Quadtree.prototype.remove = function(item) {
     }
   }
   // first perform check on child elements for threshold
-  if (results.length < this.maxChildren / 2) {
+  if (this.quadrants.length && results.length < this.maxChildren / 2) {
     this.unfold(quadrant);
   }
   return removedItem;
