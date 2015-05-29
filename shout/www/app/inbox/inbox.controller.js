@@ -16,24 +16,22 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.obj = CameraFactory.obj;
   vm.takePicture = CameraFactory.takePicture;
   vm.query = CameraFactory.query;
-  vm.addPhotos = addPhotos; 
+  vm.addPhotos = addPhotos;
   vm.doRefresh = doRefresh;
-  vm.loadMore = loadMore; 
+  vm.loadMore = loadMore;
   vm.reBroadcast = reBroadcast;
-  vm.clearInbox = clearInbox; 
-  vm.morePhotosVar;
-  vm.canScroll; 
+  vm.clearInbox = clearInbox;
+  vm.morePhotosVar = false;
+  vm.canScroll = false;
 
-  vm.addPhotos(InboxFactory.photos); 
+  vm.addPhotos(InboxFactory.photos);
 
-
-  $scope.$on('updateInbox', function (event, data) {
-    console.log('update inbox event heard!!!'); 
+  $scope.$on('updateInbox', function(event, data) {
+    console.log('update inbox event heard!!!');
     newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    vm.clearInbox(); 
+    vm.clearInbox();
     vm.addPhotos(newPhotos);
   });
-
 
   function doRefresh() {
     console.log('doRefresh called');
@@ -41,19 +39,19 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
     $scope.$broadcast('scroll.refreshComplete');
   }
 
-  function loadMore () {
+  function loadMore() {
     console.log('loadMore called');
     if (vm.morePhotosVar) {
-      vm.canScroll = true; 
+      vm.canScroll = true;
     } else {
-      vm.canScroll = false; 
+      vm.canScroll = false;
     }
     $scope.$broadcast('scroll.infiniteScrollComplete');
   }
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
-    vm.morePhotosVar = true; 
+    vm.morePhotosVar = true;
   }
 
   function clearInbox() {
@@ -62,7 +60,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   }
 
   function reBroadcast(index) {
-    if (InboxFactory.checkValidPhoto(vm.photos[index])){
+    if (InboxFactory.checkValidPhoto(vm.photos[index])) {
       BroadcastFactory.reBroadcast(vm.photos[index]);
     } else {
       console.log('that photo is expired, refresh your inbox!');
@@ -70,7 +68,3 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   }
 
 }
-
-
-
-

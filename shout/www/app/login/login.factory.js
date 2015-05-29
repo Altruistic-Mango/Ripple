@@ -9,8 +9,8 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
     successfulLogin: successfulLogin,
     loginUser: loginUser
   };
-  
-  function loginUser (data) {
+
+  function loginUser(data) {
     return $http({
       method: 'POST',
       url: API_HOST + '/users/signin',
@@ -18,12 +18,12 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
     });
   }
 
-  function successfulLogin (data) {
+  function successfulLogin(data) {
     console.log('login factory successfulLogin called');
     $localstorage.set('userId', data.userId);
     // InboxFactory.updateInbox(data.inbox)
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
     LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
   }
-  
+
 }

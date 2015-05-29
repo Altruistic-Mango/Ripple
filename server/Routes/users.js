@@ -33,8 +33,7 @@ router.post('/clearInbox', function(req, res) {
   if (req.body.username) {
     console.log('clearing ' + req.body.username + '\'s inbox');
     userController.cullInbox(req, res);
-  }
-  else {
+  } else {
     console.log('clearing all inboxes');
     userController.cullInbox(req, res);
   }

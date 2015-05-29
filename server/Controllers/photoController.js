@@ -16,27 +16,25 @@ var photoController = {
       TTL: +req.body.TTL
     };
 
-    Photo.findOne({photoId: photoId}, function(err, photo) {
-        if (err) console.log(err);
-        
-        else if (photo) {
-            console.log('Photo already exists');
-            res.send(500);
-        }
+    Photo.findOne({
+      photoId: photoId
+    }, function(err, photo) {
+      if (err) console.log(err);
 
-        else {
-          console.log('creating photo now');
-          Photo.create(data, function(err, result) {
-            if (err) {
-              res.send(500, err);
-            }
-
-            else {
-              console.log('photo saved');
-              eventController.broadcastEvent(req, res);
-            }
-          })
-        }
+      else if (photo) {
+        console.log('Photo already exists');
+        res.send(500);
+      } else {
+        console.log('creating photo now');
+        Photo.create(data, function(err, result) {
+          if (err) {
+            res.send(500, err);
+          } else {
+            console.log('photo saved');
+            eventController.broadcastEvent(req, res);
+          }
+        });
+      }
     });
   },
 

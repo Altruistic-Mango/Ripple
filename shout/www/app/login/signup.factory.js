@@ -4,13 +4,13 @@ angular
 
 SignupFactory.$inject = ['$http', '$localstorage', 'API_HOST'];
 
-function SignupFactory ($http, $localstorage, API_HOST) {
+function SignupFactory($http, $localstorage, API_HOST) {
   var services = {};
   services.signupUser = signupUser;
 
-  return services; 
+  return services;
 
-  function signupUser (data) {
+  function signupUser(data) {
     console.log('signup data: ', data);
     return $http({
       method: 'POST',

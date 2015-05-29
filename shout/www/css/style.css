@@ -3,34 +3,32 @@
 .loginView {
   /*background-image: url('../img/loginBackground.svg');*/
   background-image: url('../img/bg.png');
-  background-size:100% 100%;
+  background-size: 100% 100%;
 }
-
 .loginTitleContainer {
   display: flex;
   justify-content: center;
   height: 20vh;
 }
-
 /* Title */
+
 .loginTitle {
   font-family: DINCondensed-Bold;
   font-size: 8vh;
   color: #4B3F32;
   line-height: 1em;
   letter-spacing: 4vh;
-  padding-left:3vh;
-  align-self:center;
+  padding-left: 3vh;
+  align-self: center;
 }
-
 .loginInputContainer {
   display: flex;
   justify-content: center;
   height: 50vh;
   padding: 5px;
 }
-
 /* LoginContainer: */
+
 .loginInputBox {
   align-self: flex-start;
   display: flex;
@@ -38,13 +36,12 @@
   flex-direction: column;
   background: #D8D8D8;
   max-width: 90%;
-  width:50vw;
+  width: 50vw;
   height: 26vh;
 }
-
 /* Input: */
+
 .loginInputItem {
-  
   display: block;
   background: #FFFFFF;
   font-family: Avenir-Book;
@@ -56,12 +53,12 @@
   padding-right: 5%;
   margin: 2vh 2vh;
 }
-
 .loginButtonContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
 }
 /* LoginButton */
+
 .loginButton {
   background: #49B6D3;
   font-family: Avenir-Book;
@@ -69,9 +66,8 @@
   color: #FFFFFF;
   line-height: 1.25em;
   letter-spacing: 2.5vw;
-  padding-left:5vw;
+  padding-left: 5vw;
 }
-
 /* Review Page */
 
 /*
@@ -84,9 +80,5 @@
 .picturePreview {
   width: 50vw;
   height: 50vh;
-  align-self:center;
+  align-self: center;
 }
-
-
-
-
