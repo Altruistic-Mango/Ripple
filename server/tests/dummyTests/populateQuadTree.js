@@ -90,6 +90,6 @@ var populateApp = function(num){
 };
 
 
-populateApp(5);
+populateApp(100);
 
 
