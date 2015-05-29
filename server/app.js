@@ -10,20 +10,21 @@ var bodyParser = require('body-parser');
 var userController = require('./Controllers/userController.js');
 var app = express();
 
-var routes = require('./Routes/index');
+// Initialize AWS
+var AWS = require('aws-sdk');
+AWS.config.loadFromPath(path.join(__dirname + '/lib/config/aws.json'));
 
+var routes = require('./Routes/index');
 /* allows access to users file in routes*/
 var users = require('./Routes/users');
-
 /* allows access to photos file in routes*/
 var photos = require('./Routes/photos');
-
 var gps = require('./Routes/gps');
-
 var events = require('./Routes/events');
+var api = require('./Routes/api');
 
-// Headers set for testing 
 
+// Headers set for testing
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
@@ -38,6 +39,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use('/api', api);
 app.use(express.static(path.join(__dirname, '../shout/www/')));
 
 app.use('/users', users);
