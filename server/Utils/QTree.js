@@ -196,23 +196,23 @@ Quadtree.prototype.subDivide = function() {
   }, this.maxChildren);
 };
 
-    Quadtree.prototype.addData = function() {
-      this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
-      this.put({x: -122.515, y: 37.615, userId: 3145326});
-      this.put({x: -122.515, y: 37.619, userId: 1745118});
-      this.put({x: -122.515, y: 37.618, userId: 1353996});
-    };
+    // Quadtree.prototype.addData = function() {
+    //   this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
+    //   this.put({x: -122.515, y: 37.615, userId: 3145326});
+    //   this.put({x: -122.515, y: 37.619, userId: 1745118});
+    //   this.put({x: -122.515, y: 37.618, userId: 1353996});
+    // };
 
 
 module.exports = new Quadtree();
