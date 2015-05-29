@@ -5,73 +5,70 @@ var Q = require('q');
 
 var userController = {
 
-signupUser: function(req, res) {  
+  signupUser: function(req, res) {
 
+    var username = req.body.username;
+    var password = bcrypt.hashSync(req.body.password);
+    var randInt = function() {
+      var id = "";
+      while (id.length < 7) {
+        id += Math.floor(Math.random() * (10 - 1) + 1);
+      }
+      return id;
+    };
 
-  var username = req.body.username;
-  var password = bcrypt.hashSync(req.body.password);
-  var randInt = function() {
-    var id = "";
-    while (id.length < 7) {
-      id +=  Math.floor(Math.random() * (10 - 1) + 1);
-    }
-    return id;
-  };
-
-
-  var user = this.getUserFromDB({ username: req.body.username });
+    var user = this.getUserFromDB({
+      username: req.body.username
+    });
     if (!user) {
       var newUser = new User({
         username: username,
         password: password,
         userId: randInt(),
-        });
-        newUser.save(function(err, newUser) { 
-          if (err) {
-            console.log(err);
-            res.status(500).send(err);
-          }
-            res.status(200).end();
-        });
-      } else {
-        console.log('Account already exists');
-        res.status(500).end();
-      }
-},
+      });
+      newUser.save(function(err, newUser) {
+        if (err) {
+          console.log(err);
+          res.status(500).send(err);
+        }
+        res.status(200).end();
+      });
+    } else {
+      console.log('Account already exists');
+      res.status(500).end();
+    }
+  },
 
   retrieveUsers: function(req, res, cb) {
     User.find({}, function(err, data) {
-      if (!err && cb) { 
-          cb(data);
-      } 
-      else if (err) throw err;
+      if (!err && cb) {
+        cb(data);
+      } else if (err) throw err;
       else {
         res.send(data);
       }
     });
   },
 
-
   signinUser: function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
 
-    var user = this.getUserFromDB({ username: req.body.username }, function(user) {
+    var user = this.getUserFromDB({
+      username: req.body.username
+    }, function(user) {
 
       if (!user) {
         console.log('user not found');
         res.status(500).end();
-      }
-
-      else {
+      } else {
         var hashedPassword = user.password;
         bcrypt.compare(password, hashedPassword, function(err, match) {
           if (err) return (err);
           console.log(match);
           if (match) {
             res.status(200).send(user);
-          }
-          else {
+          } else {
             console.log('not a match');
             res.status(500).end();
           }
@@ -80,30 +77,29 @@ signupUser: function(req, res) {
     });
   },
 
-  getUserFromDB: function(person, cb) {   
+  getUserFromDB: function(person, cb) {
     if (person.uuId) {
-      User.findOne({uuId: person.uuId}, function(err, person) {
+      User.findOne({
+        uuId: person.uuId
+      }, function(err, person) {
         if (err) console.log(err);
         else if (person) {
           return person;
-        }
-        else return null;
+        } else return null;
       });
-    }
-
-    else if (person.username) {
-      User.findOne({username: person.username}, function(err, person) {
+    } else if (person.username) {
+      User.findOne({
+        username: person.username
+      }, function(err, person) {
         if (err) console.log(err);
         else if (person) {
           if (cb) {
             cb(person);
-          }
-          else {
+          } else {
             console.log('User already exists');
             return 'User already exists';
           }
-        }
-        else return null;
+        } else return null;
       });
     }
   },
@@ -111,26 +107,24 @@ signupUser: function(req, res) {
   updateInbox: function(userId, eventObj) {
     this.retrieveInbox(userId, eventObj, function(inbox) {
       console.log(inbox);
-    })
-
-
-
+    });
   },
 
   retrieveInbox: function(userId, eventObj, cb) {
-    User.findOne({userId: userId}, function(err, user) {
+    User.findOne({
+      userId: userId
+    }, function(err, user) {
       if (err) {
         console.log(err);
         return err;
-      }
-      else if (user) {
+      } else if (user) {
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
-            console.log(acc);
-            if (inboxItem.TTL > 50) {
-              acc.push(inboxItem);
-            }
-            return acc;
-          }, []);
+          console.log(acc);
+          if (inboxItem.TTL > 50) {
+            acc.push(inboxItem);
+          }
+          return acc;
+        }, []);
 
         if (eventObj) {
           var broadcastEvent = {
@@ -144,49 +138,48 @@ signupUser: function(req, res) {
           newInbox.reduce(function(bool, eventItem) {
             if (bool && eventItem.photoId !== eventObj.photoId) {
               return true;
-            }  
-            else return false;
-          }, true)
+            } else return false;
+          }, true);
 
           if (bool) {
-              console.log('check did not find a match in user inbox, saving')
-              newInbox.push(broadcastEvent);
-              user.inbox = newInbox;
-              user.save();
+            console.log('check did not find a match in user inbox, saving');
+            newInbox.push(broadcastEvent);
+            user.inbox = newInbox;
+            user.save();
           }
         }
 
-
-        user.update({inbox: newInbox}, function(err, data) {
+        user.update({
+          inbox: newInbox
+        }, function(err, data) {
           console.log(user.inbox);
           cb(user.inbox);
         });
 
-      }
-
-      else return null;
-    })
+      } else return null;
+    });
   },
 
   cullInbox: function(req, res) {
-    var query = req.body.username ? {username: req.body.username} : {};
+    var query = req.body.username ? {
+      username: req.body.username
+    } : {};
     User.find(query, function(err, users) {
       if (err) console.log(err);
-      
+
       else {
         users.forEach(function(user) {
           var newInbox = [];
 
           user.inbox = newInbox;
           user.save();
-        })
+        });
       }
-    })
+    });
     res.end();
   },
 
 };
-
 
 module.exports = userController;
 

@@ -1,9 +1,7 @@
 var quadtree = require('../Utils/QTree.js');
 var userController = require('../Controllers/userController.js');
 
-
 var gpsController = {
-
 
   // this will insert a coordinate to the quadtree for insertion
   insertCoords: function(req, res) {
@@ -16,7 +14,7 @@ var gpsController = {
       x: +req.body.x, 
       y: +req.body.y, 
       userId: userId
-    }
+    };
 
     quadtree.update(node);
 
@@ -45,7 +43,7 @@ var gpsController = {
     if (typeof(Number.prototype.toRad) === "undefined") {
       Number.prototype.toRad = function() {
       return this * Math.PI / 180;
-      }
+      };
     }
     var R = 6371;
     var nodes = this.getNodes(item1);
@@ -81,8 +79,8 @@ var gpsController = {
 
   // Invoke calculate distance function
   getDist: function(req, res) {
-    var result = this.calculateDist(req.body)
-    res.send(result)
+    var result = this.calculateDist(req.body);
+    res.send(result);
   },
 
   // remove nodes from quadtree if they match the item sent
