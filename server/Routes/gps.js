@@ -22,9 +22,9 @@ router.get('/postdata', function(req, res) {
   gpsController.loadData(req, res);
 });
 
-router.post('/remove', function(req, res) {
-  console.log('removing item');
-  gpsController.initRemove(req, res);
+router.get('/getQueue', function(req, res) {
+  console.log('show queue');
+  gpsController.listQueue(req, res);
 });
 
 router.get('/timeout', function(req, res) {

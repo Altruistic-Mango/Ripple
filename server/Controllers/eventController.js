@@ -21,10 +21,12 @@ var eventController = {
     var searchParams = {
       x: +data.x, 
       y: +data.y,
-      userId: data.userId
+      userId: data.userId,
+      radius: radius
     };
     var node = gpsController.getNodes(searchParams);
-    var recipients = node.children.map(function(user) {
+    var recipients = gpsController.calculateDist(searchParams, node.children).map(function(user) {
+      // get distance calculation true/false
       return user.userId;
     });
 

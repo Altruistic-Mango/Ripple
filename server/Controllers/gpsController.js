@@ -1,5 +1,12 @@
 var quadtree = require('../Utils/QTree.js');
+var queue = require('../Utils/Queue.js');
 var userController = require('../Controllers/userController.js');
+
+    if (typeof(Number.prototype.toRad) === "undefined") {
+      Number.prototype.toRad = function() {
+      return this * Math.PI / 180;
+      };
+    }
 
 var gpsController = {
 
@@ -18,7 +25,7 @@ var gpsController = {
       y: +req.body.y, 
       userId: userId
     };
-
+    queue.insert(node);
     quadtree.update(node);
 
     node.timestamp = timestamp
@@ -45,14 +52,10 @@ var gpsController = {
   },
 
   // This will get the distance between two coordinates
-  calculateDist: function(item1) {
-    if (typeof(Number.prototype.toRad) === "undefined") {
-      Number.prototype.toRad = function() {
-      return this * Math.PI / 180;
-      };
-    }
+  calculateDist: function(item1, nodes) {
+
     var R = 6371;
-    var nodes = this.getNodes(item1);
+    var nodes = nodes || this.getNodes(item1);
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;
@@ -71,7 +74,10 @@ var gpsController = {
       var d = R * c;
       d = d * 0.621371;
       console.log(d);
-      result.push(d);
+      
+      if (d < item1.radius) {
+        result.push(d);
+      }
     });
 
     return result;
@@ -106,15 +112,20 @@ var gpsController = {
     res.end();
   },
 
+  listQueue: function(req, res) {
+    res.send(queue.listQueue());
+  },
+
   deleteNodes: function(req, res) {
     var self = this;
     setTimeout(function() {
-      if (queue.cleanUp()) {
+      var item = queue.cleanUp()
+      if (item) {
         console.log('got item');
+        self.removeNode(item)
       };
       self.deleteNodes(req, res);
     }, 1000);
-    res.end();
   },
 
 };

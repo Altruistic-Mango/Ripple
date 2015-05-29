@@ -11,9 +11,13 @@ function Queue(timeLimit) {
     return _storage.shift();
   };
 
+  this.listQueue = function() {
+    return _storage;
+  };
+
   this.cleanUp = function() {
     var time = new Date();
-    if (time - _storage[0].timestamp > 60000) {
+    if (_storage.length && time - _storage[0].timestamp > 60000) {
       return this.remove();
     }
   }

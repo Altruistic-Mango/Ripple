@@ -129,28 +129,28 @@ var userController = {
           return acc;
         }, []);
 
-        // if (eventObj && eventObj.photoId) {
-        //   var broadcastEvent = {
-        //     photoId: eventObj.photoId,
-        //     TTL: eventObj.TTL,
-        //     radius: eventObj.radius
-        //   };
+        if (eventObj && eventObj.photoId) {
+          var broadcastEvent = {
+            photoId: eventObj.photoId,
+            TTL: eventObj.TTL,
+            radius: eventObj.radius
+          };
 
-        //   var bool = true;
+          var bool = true;
 
-        //   newInbox.reduce(function(bool, eventItem) {
-        //     if (bool && eventItem.photoId !== eventObj.photoId) {
-        //       return true;
-        //     } else return false;
-        //   }, true);
+          newInbox.reduce(function(bool, eventItem) {
+            if (bool && eventItem.photoId !== eventObj.photoId) {
+              return true;
+            } else return false;
+          }, true);
 
-        //   if (bool) {
-        //     console.log('check did not find a match in user inbox, saving');
-        //     newInbox.push(broadcastEvent);
-        //     user.inbox = newInbox;
-        //     user.save();
-        //   }
-        // }
+          if (bool) {
+            console.log('check did not find a match in user inbox, saving');
+            newInbox.push(broadcastEvent);
+            user.inbox = newInbox;
+            user.save();
+          }
+        }
 
         user.update({
           inbox: newInbox
