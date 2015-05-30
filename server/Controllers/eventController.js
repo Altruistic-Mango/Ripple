@@ -17,9 +17,9 @@ var eventController = {
     var userId = data.userId;
     var TTL = +data.TTL;
     var radius = +data.radius;
-    
+
     var searchParams = {
-      x: +data.x, 
+      x: +data.x,
       y: +data.y,
       userId: data.userId,
       radius: radius
@@ -32,7 +32,7 @@ var eventController = {
     //   return user.userId;
     // });
 
-    console.log('recipients mapped by gps controller and calculate distance are ' + recipients)
+    console.log('recipients mapped by gps controller and calculate distance are ' + recipients);
 
     var eventItem = {
         photoId: photoId,
@@ -56,7 +56,7 @@ var eventController = {
       }
 
       else {
-        console.log('now calling ')
+        console.log('now calling ');
         // enter the photo object to the user's inbox array
           // for each loop to enter object
           recipients.forEach(function(recipient) {
@@ -64,7 +64,7 @@ var eventController = {
           });
       }
     });
-    console.log('calling events callback')
+    console.log('calling events callback');
     cb(photoId, recipients);
   },
 
@@ -77,13 +77,13 @@ var eventController = {
           console.log(err);
         }
         else if (photo) {
-          console.log('finding recipientList')
+          console.log('finding recipientList');
           console.log(photo.recipientList);
           var recipientList = photo.recipientList;
 
           recipients.forEach(function(userId) {
             if (recipientList.indexOf(userId) === -1) {
-              console.log('adding user to photo recipient list')
+              console.log('adding user to photo recipient list');
               recipientList.push(userId);
             }
             else {
@@ -99,7 +99,7 @@ var eventController = {
           console.log('photo not found');
           res.send('photo not found');
         }
-      }) 
+      });
     });
   },
 

@@ -5,8 +5,6 @@ angular
 TabsCtrl.$inject = ['CameraFactory'];
 
 function TabsCtrl(CameraFactory){
-  vm = this; 
-
-  vm.takePicture = CameraFactory.takePicture; 
-
-}  
+  vm = this;
+  vm.takePicture = CameraFactory.takePicture;
+}

@@ -15,13 +15,13 @@ var PhotoSchema = new mongoose.Schema({
   },
 
   radius: {
-    type: Number, 
+    type: Number,
     required: true,
     unique: false
   },
 
   TTL: {
-    type: Number, 
+    type: Number,
     required: true,
     unique: false
   },

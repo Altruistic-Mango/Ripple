@@ -8,9 +8,9 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
   console.log('AlbumCtrl');
   var vm = this;
   vm.photos = [];
-  vm.addPhotos = addPhotos; 
+  vm.addPhotos = addPhotos;
 
-  AlbumFactory.getAlbum(); 
+  AlbumFactory.getAlbum();
 
   $scope.$on('updateAlbum', function(event, data) {
     vm.photos = vm.photos.concat(data);

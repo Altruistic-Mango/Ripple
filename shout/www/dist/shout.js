@@ -15,6 +15,8 @@ angular.module('shout', [
   //list the other modules that contain factories and controllers that you will use
 ]);
 
+angular.module('shout.album', []);
+
 angular.module('shout.broadcast', [
 ]);
 
@@ -30,16 +32,18 @@ angular.module('shout.inbox', [
 
 angular.module('shout.tabs', [
   'shout.camera'
-]);  
+]);
+
 angular.module('shout.localstorage', [
-  ]);
+]);
+
 angular.module('shout.location', [
   //list the other modules that contain factories and controllers that you will use
 ]);
 
 angular.module('shout.login', [
   //list the other modules that contain factories and controllers that you will use
-  'shout.location', 
+  'shout.location',
   'shout.localstorage'
 ]);
 
@@ -57,8 +61,6 @@ angular.module('s3UploadApp', [
   'ngSanitize',
   'angularFileUpload'
 ]);
-
-angular.module('shout.album', []);
 
 angular.module('shout.settings', [
   's3UploadApp',
@@ -188,234 +190,105 @@ function run($http, $rootScope, API_HOST) {
   });
 }
 
-/*
-xml2json v 1.1
-copyright 2005-2007 Thomas Frank
+angular
+  .module('shout.album')
+  .controller('AlbumCtrl', AlbumCtrl);
 
-This program is free software under the terms of the 
-GNU General Public License version 2 as published by the Free 
-Software Foundation. It is distributed without any warranty.
-*/
+AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory'];
 
-xml2json = {
-  parser: function(xmlcode, ignoretags, debug) {
-    if (!ignoretags) {
-      ignoretags = "";
-    }
-    xmlcode = xmlcode.replace(/\s*\/>/g, '/>');
-    xmlcode = xmlcode.replace(/<\?[^>]*>/g, "").replace(/<\![^>]*>/g, "");
-    if (!ignoretags.sort) {
-      ignoretags = ignoretags.split(",");
-    }
-    var x = this.no_fast_endings(xmlcode);
-    x = this.attris_to_tags(x);
-    x = escape(x);
-    x = x.split("%3C").join("<").split("%3E").join(">").split("%3D").join("=").split("%22").join("\"");
-    for (var i = 0; i < ignoretags.length; i++) {
-      x = x.replace(new RegExp("<" + ignoretags[i] + ">", "g"), "*$**" + ignoretags[i] + "**$*");
-      x = x.replace(new RegExp("</" + ignoretags[i] + ">", "g"), "*$***" + ignoretags[i] + "**$*")
-    }
-    x = '<JSONTAGWRAPPER>' + x + '</JSONTAGWRAPPER>';
-    this.xmlobject = {};
-    var y = this.xml_to_object(x).jsontagwrapper;
-    if (debug) {
-      y = this.show_json_structure(y, debug);
-    }
-    return y;
-  },
-  xml_to_object: function(xmlcode) {
-    var x = xmlcode.replace(/<\//g, "§");
-    x = x.split("<");
-    var y = [];
-    var level = 0;
-    var opentags = [];
-    for (var i = 1; i < x.length; i++) {
-      var tagname = x[i].split(">")[0];
-      opentags.push(tagname);
-      level++;
-      y.push(level + "<" + x[i].split("§")[0]);
-      while (x[i].indexOf("§" + opentags[opentags.length - 1] + ">") >= 0) {
-        level--;
-        opentags.pop();
-      }
-    }
-    var oldniva = -1;
-    var objname = "this.xmlobject";
-    for (i = 0; i < y.length; i++) {
-      var preeval = "";
-      var niva = y[i].split("<")[0];
-      var tagnamn = y[i].split("<")[1].split(">")[0];
-      tagnamn = tagnamn.toLowerCase();
-      var rest = y[i].split(">")[1];
-      if (niva <= oldniva) {
-        var tabort = oldniva - niva + 1;
-        for (var j = 0; j < tabort; j++) {
-          objname = objname.substring(0, objname.lastIndexOf("."));
-        }
-      }
-      objname += "." + tagnamn;
-      var pobject = objname.substring(0, objname.lastIndexOf("."));
-      if (eval("typeof " + pobject) != "object") {
-        preeval += pobject + "={value:" + pobject + "};\n";
-      }
-      var objlast = objname.substring(objname.lastIndexOf(".") + 1);
-      var already = false;
-      for (var k in eval(pobject)) {
-        if (k == objlast) {
-          already = true
-        }
-      };
-      var onlywhites = true;
-      for (var s = 0; s < rest.length; s += 3) {
-        if (rest.charAt(s) != "%") {
-          onlywhites = false
-        }
-      };
-      if (rest != "" && !onlywhites) {
-        if (rest / 1 != rest) {
-          rest = "'" + rest.replace(/\'/g, "\\'") + "'";
-          rest = rest.replace(/\*\$\*\*\*/g, "</");
-          rest = rest.replace(/\*\$\*\*/g, "<");
-          rest = rest.replace(/\*\*\$\*/g, ">")
-        }
-      } else {
-        rest = "{}"
-      };
-      if (rest.charAt(0) == "'") {
-        rest = 'unescape(' + rest + ')'
-      };
-      if (already && !eval(objname + ".sort")) {
-        preeval += objname + "=[" + objname + "];\n"
-      };
-      var before = "=";
-      after = "";
-      if (already) {
-        before = ".push(";
-        after = ")"
-      };
-      var toeval = preeval + objname + before + rest + after;
-      eval(toeval);
-      if (eval(objname + ".sort")) {
-        objname += "[" + eval(objname + ".length-1") + "]"
-      };
-      oldniva = niva
-    };
-    return this.xmlobject
-  },
-  show_json_structure: function(obj, debug, l) {
-    var x = '';
-    if (obj.sort) {
-      x += "[\n"
-    } else {
-      x += "{\n"
-    };
-    for (var i in obj) {
-      if (!obj.sort) {
-        x += i + ":"
-      };
-      if (typeof obj[i] == "object") {
-        x += this.show_json_structure(obj[i], false, 1)
-      } else {
-        if (typeof obj[i] == "function") {
-          var v = obj[i] + "";
-          //v=v.replace(/\t/g,"");
-          x += v
-        } else if (typeof obj[i] != "string") {
-          x += obj[i] + ",\n"
-        } else {
-          x += "'" + obj[i].replace(/\'/g, "\\'").replace(/\n/g, "\\n").replace(/\t/g, "\\t").replace(/\r/g, "\\r") + "',\n"
-        }
-      }
-    };
-    if (obj.sort) {
-      x += "],\n"
-    } else {
-      x += "},\n"
-    };
-    if (!l) {
-      x = x.substring(0, x.lastIndexOf(","));
-      x = x.replace(new RegExp(",\n}", "g"), "\n}");
-      x = x.replace(new RegExp(",\n]", "g"), "\n]");
-      var y = x.split("\n");
-      x = "";
-      var lvl = 0;
-      for (var i = 0; i < y.length; i++) {
-        if (y[i].indexOf("}") >= 0 || y[i].indexOf("]") >= 0) {
-          lvl--
-        };
-        tabs = "";
-        for (var j = 0; j < lvl; j++) {
-          tabs += "\t"
-        };
-        x += tabs + y[i] + "\n";
-        if (y[i].indexOf("{") >= 0 || y[i].indexOf("[") >= 0) {
-          lvl++
-        }
-      };
-      if (debug == "html") {
-        x = x.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        x = x.replace(/\n/g, "<BR>").replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;")
-      };
-      if (debug == "compact") {
-        x = x.replace(/\n/g, "").replace(/\t/g, "")
-      }
-    };
-    return x
-  },
-  no_fast_endings: function(x) {
-    x = x.split("/>");
-    for (var i = 1; i < x.length; i++) {
-      var t = x[i - 1].substring(x[i - 1].lastIndexOf("<") + 1).split(" ")[0];
-      x[i] = "></" + t + ">" + x[i]
-    };
-    x = x.join("");
-    return x
-  },
-  attris_to_tags: function(x) {
-    var d = ' ="\''.split("");
-    x = x.split(">");
-    for (var i = 0; i < x.length; i++) {
-      var temp = x[i].split("<");
-      for (var r = 0; r < 4; r++) {
-        temp[0] = temp[0].replace(new RegExp(d[r], "g"), "_jsonconvtemp" + r + "_")
-      };
-      if (temp[1]) {
-        temp[1] = temp[1].replace(/'/g, '"');
-        temp[1] = temp[1].split('"');
-        for (var j = 1; j < temp[1].length; j += 2) {
-          for (var r = 0; r < 4; r++) {
-            temp[1][j] = temp[1][j].replace(new RegExp(d[r], "g"), "_jsonconvtemp" + r + "_")
-          }
-        };
-        temp[1] = temp[1].join('"')
-      };
-      x[i] = temp.join("<")
-    };
-    x = x.join(">");
-    x = x.replace(/ ([^=]*)=([^ |>]*)/g, "><$1>$2</$1");
-    x = x.replace(/>"/g, ">").replace(/"</g, "<");
-    for (var r = 0; r < 4; r++) {
-      x = x.replace(new RegExp("_jsonconvtemp" + r + "_", "g"), d[r])
-    };
-    return x
+function AlbumCtrl($scope, $state, AlbumFactory) {
+  console.log('AlbumCtrl');
+  var vm = this;
+  vm.photos = [];
+  vm.addPhotos = addPhotos;
+
+  AlbumFactory.getAlbum();
+
+  $scope.$on('updateAlbum', function(event, data) {
+    vm.photos = vm.photos.concat(data);
+  });
+
+  function addPhotos(photos) {
+    vm.photos = vm.photos.concat(photos);
   }
-};
+
+}
 
 
-if (!Array.prototype.push) {
-  Array.prototype.push = function(x) {
-    this[this.length] = x;
-    return true
+angular
+  .module('shout.album')
+  .factory('AlbumFactory', AlbumFactory);
+
+AlbumFactory.$inject = ['$rootScope', '$http', '$localstorage', 'API_HOST'];
+
+function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
+  console.log('AlbumFactory');
+  var services = {};
+
+  services.photos = [{
+    photoId: 1,
+    //for testing it has a url
+    src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg'
+  }, {
+    photoId: 2,
+    //for testing it has a url
+    src: 'http://images.wisegeek.com/mango.jpg'
+  }, {
+    photoId: 3,
+    //for testing it has a url
+    src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
+  }];
+  services.savePhoto = savePhoto;
+  services.getAlbum = getAlbum;
+  services.checkCollision = checkCollision;
+  services.updateAlbum = updateAlbum;
+
+
+  return services;
+
+  function updateAlbum(photos) {
+    console.log('updateAlbum called');
+    services.photos = services.photos.concat(photos);
+    console.log('services.photos after concat: ', services.photos);
+    $rootScope.$broadcast('updateAlbum', photos);
   }
-};
 
-if (!Array.prototype.pop) {
-  Array.prototype.pop = function() {
-    var response = this[this.length - 1];
-    this.length--;
-    return response
+  function savePhoto(photo) {
+    if (!checkCollision(photo)) {
+      var photoIdObj = {
+        userId: $localstorage.get('userId'),
+        photoId: photo.photoId
+      };
+      console.log('asking server to add photo to album: ', photoIdObj);
+      $http.post(API_HOST + '/users/album', photoIdObj)
+        .success(function(data) {
+          services.updateAlbum([{
+            photoId: photo.photoId
+          }]);
+        });
+    }
   }
-};
+
+
+  function getAlbum() {
+    var userId = $localstorage.get('userId');
+    $http.get(API_HOST + '/users/album/' + userId)
+      .success(function(data) {
+        console.log('success getting album!!');
+        services.updateAlbum(services.photos);
+      });
+  }
+
+  function checkCollision(photo) {
+    var idArray = [];
+    services.photos.forEach(function(item) {
+      idArray.push(item.photoId);
+    });
+    return _.contains(idArray, photo.photoId);
+  }
+
+
+}
 
 angular
   .module('shout.broadcast')
@@ -431,10 +304,10 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
 
   function reBroadcast(photo) {
     console.log('currentPosition: ', LocationFactory.currentPosition);
-    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId && 
+    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId &&
         LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
       photo = _.extend(photo, LocationFactory.currentPosition);
-      photo.timestamp = new Date().getTime(); 
+      photo.timestamp = new Date().getTime();
       console.log('reBroadcast this photo: ', photo);
       services.sendBroadcastEvent(photo);
     } else {
@@ -445,15 +318,6 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
   function sendBroadcastEvent (broadcastEvent) {
     $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
   }
-} 
-angular
-  .module('shout.camera')
-  .controller('CameraCtrl', CameraCtrl);
-
-CameraCtrl.$inject = ['$scope', '$state', '$location'];
-
-function CameraCtrl($scope, $state, $location) {
-  console.log('CameraCtrl');
 }
 
 angular
@@ -465,7 +329,7 @@ CameraFactory.$inject = ['$state'];
 function CameraFactory($state) {
   console.log('CameraFactory');
   var services = {};
-  
+
   var uploadurl = "http://localhost/upl";
   var pictureSource;
   var destinationType; // sets the format of returned value
@@ -533,9 +397,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadcastFactory', 'AlbumFactory'];
+InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadcastFactory'];
 
-function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadcastFactory, AlbumFactory) {
+function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadcastFactory) {
   console.log('InboxCtrl');
   var vm = this;
   var currentStart = 0;
@@ -550,7 +414,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.doRefresh = doRefresh;
   vm.loadMore = loadMore;
   vm.reBroadcast = reBroadcast;
-  vm.saveToAlbum = saveToAlbum; 
+  vm.saveToAlbum = saveToAlbum;
   vm.clearInbox = clearInbox;
   vm.morePhotosVar = false;
   vm.canScroll = false;
@@ -608,7 +472,7 @@ angular
   .module('shout.inbox')
   .factory('InboxFactory', InboxFactory);
 
-InboxFactory.$inject = ['$rootScope'];  
+InboxFactory.$inject = ['$rootScope'];
 
 function InboxFactory($rootScope) {
   console.log('InboxFactory');
@@ -617,28 +481,28 @@ function InboxFactory($rootScope) {
   services.photos = [
     {
       photoId: 1,
-      TTL: 5, 
+      TTL: 5,
       radius: 5,
       //for testing it has a url
       src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg'
     },
     {
       photoId: 2,
-      TTL: 5, 
+      TTL: 5,
       radius: 5,
       //for testing it has a url
       src: 'http://images.wisegeek.com/mango.jpg'
     },
     {
       photoId: 3,
-      TTL: 5, 
+      TTL: 5,
       radius: 5,
       //for testing it has a url
       src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
     },
     {
       photoId: 4,
-      TTL: 5, 
+      TTL: 5,
       radius: 5,
       //for testing it has a url
       src: 'http://www.mumbairangers.com/wp-content/uploads/2015/04/kkk.jpg'
@@ -648,62 +512,62 @@ function InboxFactory($rootScope) {
   services.newInbox = [
         {
           photoId: 2,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'http://images.wisegeek.com/mango.jpg'
         },
         {
           photoId: 100,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'https://nuts.com/images/auto/801x534/assets/8610c9770444a3c4.jpg'
         },
         {
           photoId: 3,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
         },
         {
           photoId: 200,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'http://www.nutstop.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/m/a/mango-fancy.jpg'
         },
         {
           photoId: 300,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'https://www.nuttyandfruity.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/d/r/dried_mango_slices_extra_low_sugar.jpg'
         },
         {
           photoId: 400,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'http://www.foodsubs.com/Photos/driedfruit-mango.jpg'
         },
         {
           photoId: 4,
-          TTL: 5, 
+          TTL: 5,
           radius: 5,
           //for testing it has a url
           src: 'http://www.mumbairangers.com/wp-content/uploads/2015/04/kkk.jpg'
         }
       ];
 
-  services.updateInbox = updateInbox; 
+  services.updateInbox = updateInbox;
   services.getPhotos = getPhotos;
-  services.removeExpired = removeExpired; 
+  services.removeExpired = removeExpired;
   services.filterForNew = filterForNew;
   services.checkValidPhoto = checkValidPhoto;
 
-  //for testing: 
+  //for testing:
   // setInterval(services.updateInbox, 5000, services.newInbox);
 
   return services;
@@ -711,11 +575,11 @@ function InboxFactory($rootScope) {
   function updateInbox(data) {
     console.log('update inbox called');
     services.photos = data;
-    $rootScope.$broadcast('updateInbox', services.photos); 
+    $rootScope.$broadcast('updateInbox', services.photos);
   }
-  
+
   function getPhotos(){
-    return services.photos; 
+    return services.photos;
   }
 
   function removeExpired(oldInbox, newData){
@@ -726,7 +590,7 @@ function InboxFactory($rootScope) {
     });
     console.log('removeExpired called!');
     var newInbox = _.filter(oldInbox, function(photo) {
-      return _.contains(idArray, photo.photoId); 
+      return _.contains(idArray, photo.photoId);
     });
     console.log('new inbox: ', newInbox);
     return newInbox;
@@ -743,7 +607,7 @@ function InboxFactory($rootScope) {
       return !_.contains(oldIdArray, photo.photoId);
     });
     console.log('the new photos: ', newPhotos);
-    return newPhotos; 
+    return newPhotos;
   }
 
   function checkValidPhoto(photo){
@@ -764,11 +628,10 @@ angular
 TabsCtrl.$inject = ['CameraFactory'];
 
 function TabsCtrl(CameraFactory){
-  vm = this; 
+  vm = this;
+  vm.takePicture = CameraFactory.takePicture;
+}
 
-  vm.takePicture = CameraFactory.takePicture; 
-
-}  
 angular
   .module('shout.localstorage')
   .factory('$localstorage', LocalStorageFactory);
@@ -778,12 +641,12 @@ LocalStorageFactory.$inject = ['$window'];
 function LocalStorageFactory ($window) {
   var services = {};
 
-  services.set = set; 
-  services.get = get; 
-  services.setObject = setObject; 
+  services.set = set;
+  services.get = get;
+  services.setObject = setObject;
   services.getObject = getObject;
 
-  return services; 
+  return services;
 
   function set(key, value) {
     $window.localStorage[key] = value;
@@ -801,7 +664,8 @@ function LocalStorageFactory ($window) {
       return JSON.parse($window.localStorage[key] || '{}');
   }
 
-}  
+}
+
 angular
   .module('shout.location')
   .factory('LocationFactory', LocationFactory);
@@ -819,9 +683,9 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     watchSuccessCallback: watchSuccessCallback,
     errorCallback: errorCallback,
     currentPosition: currentPosition,
-    clearWatch: clearWatch, 
+    clearWatch: clearWatch,
     triggerPingInterval: triggerPingInterval,
-    clearPingInterval: clearPingInterval, 
+    clearPingInterval: clearPingInterval,
     intervalId: intervalId
   };
 
@@ -831,33 +695,33 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   return services;
 
-  function getCurrentPosition (successCallback, errorCallback) {
+  function getCurrentPosition(successCallback, errorCallback) {
     console.log('about to grab the initial position');
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
-  function setWatch (successCallback, errorCallback) {
+  function setWatch(successCallback, errorCallback) {
     console.log('setting watch on position');
     watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
   }
 
-  function setPosition (position) {
-
+  function setPosition(position) {
     services.currentPosition = {
-                      userId: $localstorage.get('userId'),
-                      y: position.coords.latitude,
-                      x: position.coords.longitude,
-                      timestamp: new Date().getTime()
-                      };
+      userId: $localstorage.get('userId'),
+      y: position.coords.latitude,
+      x: position.coords.longitude,
+      timestamp: new Date().getTime()
+    };
     console.log(' currentPosition set! ', services.currentPosition);
 
   }
 
-  function sendPosition () {
-    if (services.currentPosition && services.currentPosition.userId 
-      && services.currentPosition.x && services.currentPosition.y){
+  function sendPosition() {
+    if (services.currentPosition && services.currentPosition.userId && services.currentPosition.x && services.currentPosition.y) {
       // $http.post(API_HOST + '/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
-      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(){console.log('sent position to server!!!');});
+      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function() {
+        console.log('sent position to server!!!');
+      });
     } else {
       console.log('not sending incomplete position object to server');
     }
@@ -867,16 +731,16 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     console.log('error getting position: ', error);
   }
 
-  function getSuccessCallback (position) {
+  function getSuccessCallback(position) {
     setPosition(position);
     sendPosition();
   }
 
-  function watchSuccessCallback (position) {
+  function watchSuccessCallback(position) {
     setPosition(position);
   }
 
-  function clearWatch () {
+  function clearWatch() {
     navigator.geolocation.clearWatch(watchId);
   }
 
@@ -887,7 +751,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
   function clearPingInterval() {
     console.log('clear ping interval called with id: ', intervalId);
     clearInterval(intervalId);
-    intervalId = null; 
+    intervalId = null;
   }
 
 }
@@ -1138,108 +1002,6 @@ function s3Upload($http, $location, $upload, $rootScope, $localstorage, API_HOST
 }
 
 angular
-  .module('shout.album')
-  .controller('AlbumCtrl', AlbumCtrl);
-
-AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory'];
-
-function AlbumCtrl($scope, $state, AlbumFactory) {
-  console.log('AlbumCtrl');
-  var vm = this;
-  vm.photos = [];
-  vm.addPhotos = addPhotos; 
-
-  AlbumFactory.getAlbum(); 
-
-  $scope.$on('updateAlbum', function(event, data) {
-    vm.photos = vm.photos.concat(data);
-  });
-
-  function addPhotos(photos) {
-    vm.photos = vm.photos.concat(photos);
-  }
-
-}
-
-
-angular
-  .module('shout.album')
-  .factory('AlbumFactory', AlbumFactory);
-
-AlbumFactory.$inject = ['$rootScope', '$http', '$localstorage', 'API_HOST'];  
-
-function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
-  console.log('AlbumFactory');
-  var services = {};
-
-  services.photos = [
-    {
-      photoId: 1,
-      //for testing it has a url
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg'
-    },
-    {
-      photoId: 2,
-      //for testing it has a url
-      src: 'http://images.wisegeek.com/mango.jpg'
-    },
-    {
-      photoId: 3,
-      //for testing it has a url
-      src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
-    }
-  ];
-  services.savePhoto = savePhoto;
-  services.getAlbum = getAlbum;
-  services.checkCollision = checkCollision;
-  services.updateAlbum = updateAlbum;
-
-
-  return services;
-
-  function updateAlbum (photos) {
-    console.log('updateAlbum called');
-    services.photos = services.photos.concat(photos);
-    console.log('services.photos after concat: ', services.photos);
-    $rootScope.$broadcast('updateAlbum', photos);
-  }
-
-  function savePhoto(photo) {
-    if (!checkCollision(photo)) {
-      var photoIdObj = {
-        userId: $localstorage.get('userId'),
-        photoId: photo.photoId
-      }
-      console.log('asking server to add photo to album: ', photoIdObj);
-      $http.post(API_HOST + '/users/album', photoIdObj)
-            .success(function(data){
-              services.updateAlbum([{photoId: photo.photoId}]);
-            });
-    }
-  }
-
-
-  function getAlbum() {
-    var userId = $localstorage.get('userId');
-    $http.get(API_HOST + '/users/album/'+userId)
-         .success(function(data){
-          console.log('success getting album!!');
-            services.updateAlbum(services.photos);
-          });
-  }
-
-  function checkCollision(photo) {
-    var idArray = []; 
-    services.photos.forEach(function(item) {
-      idArray.push(item.photoId);
-    });
-    return _.contains(idArray, photo.photoId);
-  }
-
-
-}
-
-angular
   .module('shout.settings')
   .controller('SettingsCtrl', SettingsCtrl);
 
@@ -1269,23 +1031,23 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
   }
 
   function sharePhoto() {
-    var files =  document.getElementById('photos').files[0];
+    var files = document.getElementById('photos').files[0];
     console.log(files);
-    var filepath =  CameraFactory.getPicture(); 
+    var filepath = CameraFactory.getPicture();
 
-    if(files) {
+    if (files) {
       s3Upload.uploadFile(files);
     } else {
       window.resolveLocalFileSystemURL(filepath, gotFile, fail);
     }
 
-    var win = function (r) {
+    var win = function(r) {
       console.log("Code = " + r.responseCode);
       console.log("Response = " + r.response);
       console.log("Sent = " + r.bytesSent);
     };
 
-    var fail = function (error) {
+    var fail = function(error) {
       console.log("upload error source " + error.source);
       console.log("upload error target " + error.target);
       console.log(error);
@@ -1301,12 +1063,12 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
         var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
 
         var options = new FileUploadOptions();
-          options.fileKey = 'file';
-          options.fileName = photoId+'.jpeg';
-          options.mimeType = 'image/jpeg';
-          options.chunkedMode = false;
+        options.fileKey = 'file';
+        options.fileName = photoId + '.jpeg';
+        options.mimeType = 'image/jpeg';
+        options.chunkedMode = false;
 
-        var params = { 
+        var params = {
           'key': 's3Upload/' + photoId + '.jpeg',
           'acl': 'public-read',
           'Content-Type': 'image/jpeg',
@@ -1338,7 +1100,7 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
         data.TTL = vm.TTL;
         data.radius = vm.radius;
         data.timestamp = $localstorage.get('timestamp');
-        $http.post(API_HOST+'/photos/newPhoto', data);
+        $http.post(API_HOST + '/photos/newPhoto', data);
       });
     }
   }
@@ -1357,35 +1119,35 @@ SettingsFactory.$inject = ['LocationFactory'];
 
 function SettingsFactory(LocationFactory) {
   var radius = 5,
-      TTL = 5; //initial values 
+    TTL = 5; //initial values
   var services = {
-    setSettings : setSettings,
+    setSettings: setSettings,
     setWatch: setWatch,
     radius: radius,
     TTL: TTL
   };
 
-  return services; 
+  return services;
 
   function setWatch(watch) {
     console.log('settings factory set watch called with watch: ', watch);
     if (!watch) {
       LocationFactory.clearWatch();
-      LocationFactory.clearPingInterval(); 
+      LocationFactory.clearPingInterval();
     } else {
       LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
       LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
-      LocationFactory.triggerPingInterval(); 
+      LocationFactory.triggerPingInterval();
     }
   }
 
   function setSettings(userRadius, userTTL) {
     console.log('settings set in factory: ', TTL, radius);
-    if (userRadius !== radius){
-      radius = userRadius; 
+    if (userRadius !== radius) {
+      radius = userRadius;
     }
-    if (userTTL !== TTL ){
-      TTL = userTTL; 
+    if (userTTL !== TTL) {
+      TTL = userTTL;
     }
   }
 

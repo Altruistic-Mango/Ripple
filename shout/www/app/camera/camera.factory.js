@@ -7,7 +7,7 @@ CameraFactory.$inject = ['$state'];
 function CameraFactory($state) {
   console.log('CameraFactory');
   var services = {};
-  
+
   var uploadurl = "http://localhost/upl";
   var pictureSource;
   var destinationType; // sets the format of returned value
