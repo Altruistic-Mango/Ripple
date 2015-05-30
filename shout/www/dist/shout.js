@@ -15,6 +15,15 @@ angular.module('shout', [
   //list the other modules that contain factories and controllers that you will use
 ]);
 
+angular.module('shout.album', []);
+
+angular.module('shout.broadcast', [
+]);
+
+angular.module('shout.camera', [
+  //list the other modules that contain factories and controllers that you will use
+]);
+
 angular.module('shout.inbox', [
   //list the other modules that contain factories and controllers that you will use
   'shout.album',
@@ -25,9 +34,7 @@ angular.module('shout.tabs', [
   'shout.camera'
 ]);
 
-angular.module('shout.album', []);
-
-angular.module('shout.broadcast', [
+angular.module('shout.localstorage', [
 ]);
 
 angular.module('shout.location', [
@@ -44,8 +51,15 @@ angular.module('shout.signup', [
 //list the other modules that contain factories and controllers that you will use
 ]);
 
-angular.module('shout.camera', [
+angular.module('shout.review', [
   //list the other modules that contain factories and controllers that you will use
+  'shout.camera'
+]);
+
+angular.module('s3UploadApp', [
+  'ngCookies',
+  'ngSanitize',
+  'angularFileUpload'
 ]);
 
 angular.module('shout.settings', [
@@ -56,20 +70,6 @@ angular.module('shout.settings', [
   'shout.constants'
   // 'shout.login'
   //list the other modules that contain factories and controllers that you will use
-]);
-
-angular.module('shout.localstorage', [
-]);
-
-angular.module('shout.review', [
-  //list the other modules that contain factories and controllers that you will use
-  'shout.camera'
-]);
-
-angular.module('s3UploadApp', [
-  'ngCookies',
-  'ngSanitize',
-  'angularFileUpload'
 ]);
 
 angular.module("shout.constants", [])
@@ -194,167 +194,6 @@ function run($http, $rootScope, API_HOST) {
 }
 
 angular
-  .module('shout.inbox')
-  .controller('InboxCtrl', InboxCtrl);
-
-InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadcastFactory'];
-
-function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadcastFactory) {
-  console.log('InboxCtrl');
-  var vm = this;
-  var currentStart = 0;
-
-  vm.photos = [];
-  vm.newPhotos = [];
-  vm.data = CameraFactory.data;
-  vm.obj = CameraFactory.obj;
-  vm.takePicture = CameraFactory.takePicture;
-  vm.query = CameraFactory.query;
-  vm.addPhotos = addPhotos;
-  vm.doRefresh = doRefresh;
-  vm.loadMore = loadMore;
-  vm.reBroadcast = reBroadcast;
-  vm.saveToAlbum = saveToAlbum;
-  vm.clearInbox = clearInbox;
-  vm.getSrc = getSrc;
-  vm.morePhotosVar = false;
-  vm.canScroll = false;
-
-  vm.addPhotos(InboxFactory.photos);
-
-  $scope.$on('updateInbox', function(event, data) {
-    console.log('update inbox event heard!!!');
-    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    vm.clearInbox();
-    vm.addPhotos(newPhotos);
-  });
-
-  function doRefresh() {
-    console.log('doRefresh called');
-    vm.clearInbox();
-    $scope.$broadcast('scroll.refreshComplete');
-  }
-
-  function loadMore() {
-    console.log('loadMore called');
-    if (vm.morePhotosVar) {
-      vm.canScroll = true;
-    } else {
-      vm.canScroll = false;
-    }
-    $scope.$broadcast('scroll.infiniteScrollComplete');
-  }
-
-  function addPhotos(photos) {
-    vm.photos = vm.photos.concat(photos);
-    vm.morePhotosVar = true;
-  }
-
-  function clearInbox() {
-    vm.photos = InboxFactory.removeExpired(vm.photos, InboxFactory.photos);
-
-  }
-
-  function reBroadcast(index) {
-    if (InboxFactory.checkValidPhoto(vm.photos[index])) {
-      BroadcastFactory.reBroadcast(vm.photos[index]);
-    } else {
-      console.log('that photo is expired, refresh your inbox!');
-    }
-  }
-
-  function saveToAlbum(index) {
-    AlbumFactory.savePhoto(vm.photos[index]);
-  }
-
-  function getSrc(photoId){
-    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
-  }
-
-}
-
-angular
-  .module('shout.inbox')
-  .factory('InboxFactory', InboxFactory);
-
-InboxFactory.$inject = ['$rootScope'];
-
-function InboxFactory($rootScope) {
-  console.log('InboxFactory');
-  var services = {};
-  services.photos = [];
-  services.updateInbox = updateInbox;
-  services.getPhotos = getPhotos;
-  services.removeExpired = removeExpired;
-  services.filterForNew = filterForNew;
-  services.checkValidPhoto = checkValidPhoto;
-
-  //for testing:
-  // setTimeout(services.updateInbox, 10000, services.newInbox);
-
-  return services;
-
-  function updateInbox(data) {
-    console.log('update inbox called');
-    services.photos = data;
-    $rootScope.$broadcast('updateInbox', services.photos);
-  }
-
-  function getPhotos(){
-    return services.photos;
-  }
-
-  function removeExpired(oldInbox, newData){
-    console.log('removeExpired called with oldInbox: ', oldInbox);
-    var idArray = [];
-    newData.forEach(function(item) {
-      idArray.push(item.photoId);
-    });
-    console.log('removeExpired called!');
-    var newInbox = _.filter(oldInbox, function(photo) {
-      return _.contains(idArray, photo.photoId);
-    });
-    console.log('new inbox: ', newInbox);
-    return newInbox;
-  }
-
-  function filterForNew(oldInbox, newData){
-    var oldIdArray = [];
-    console.log('filterForNew called with oldInbox: ', oldInbox);
-    oldInbox.forEach(function(item) {
-      oldIdArray.push(item.photoId);
-    });
-    console.log('oldIdArray: ', oldIdArray);
-    var newPhotos = _.filter(newData, function(photo) {
-      return !_.contains(oldIdArray, photo.photoId);
-    });
-    console.log('the new photos: ', newPhotos);
-    return newPhotos;
-  }
-
-  function checkValidPhoto(photo){
-    currIdArray = [];
-    services.photos.forEach(function(item) {
-      currIdArray.push(item.photoId);
-    });
-    return _.contains(currIdArray, photo.photoId);
-  }
-
-}
-
-
-angular
-  .module('shout.tabs')
-  .controller('TabsCtrl', TabsCtrl);
-
-TabsCtrl.$inject = ['CameraFactory'];
-
-function TabsCtrl(CameraFactory){
-  vm = this;
-  vm.takePicture = CameraFactory.takePicture;
-}
-
-angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
@@ -475,6 +314,283 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
   function sendBroadcastEvent (broadcastEvent) {
     $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
   }
+}
+
+angular
+  .module('shout.camera')
+  .factory('CameraFactory', CameraFactory);
+
+CameraFactory.$inject = ['$state'];
+
+function CameraFactory($state) {
+  console.log('CameraFactory');
+  var services = {};
+
+  var uploadurl = "http://localhost/upl";
+  var pictureSource;
+  var destinationType; // sets the format of returned value
+  var picture;
+  initialize();
+
+  services.query = query;
+  services.takePicture = takePicture;
+  services.getPicture = getPicture;
+
+  return services;
+
+  function initialize() {
+    ionic.Platform.ready(function() {
+      if (!navigator.camera) {
+        // error handling
+        console.log('no camera found');
+        return;
+      }
+      //pictureSource=navigator.camera.PictureSourceType.PHOTOLIBRARY;
+      pictureSource = navigator.camera.PictureSourceType.CAMERA;
+      destinationType = navigator.camera.DestinationType.FILE_URI;
+    });
+  }
+
+  function query() {
+    console.log('query');
+    return uploadurl;
+  }
+
+  function takePicture() {
+    console.log('takePicture');
+    var options = {
+      quality: 50,
+      destinationType: destinationType,
+      sourceType: pictureSource,
+      encodingType: 0
+    };
+    if (!navigator.camera) {
+      // error handling
+      console.log('no camera found');
+      $state.go('review');
+      return;
+    }
+    navigator.camera.getPicture(
+      function(imageURI) {
+        console.log('got camera success');
+        picture = imageURI;
+        $state.go('review');
+      },
+      function(err) {
+        // error handling camera plugin
+        console.log('got camera error ', err);
+        $state.go('review');
+      },
+      options);
+  }
+
+  function getPicture() {
+    return picture;
+  }
+}
+
+angular
+  .module('shout.inbox')
+  .controller('InboxCtrl', InboxCtrl);
+
+InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadcastFactory'];
+
+function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadcastFactory) {
+  console.log('InboxCtrl');
+  var vm = this;
+  var currentStart = 0;
+
+  vm.photos = [];
+  vm.newPhotos = [];
+  vm.data = CameraFactory.data;
+  vm.obj = CameraFactory.obj;
+  vm.takePicture = CameraFactory.takePicture;
+  vm.query = CameraFactory.query;
+  vm.addPhotos = addPhotos;
+  vm.doRefresh = doRefresh;
+  vm.loadMore = loadMore;
+  vm.reBroadcast = reBroadcast;
+  vm.saveToAlbum = saveToAlbum;
+  vm.clearInbox = clearInbox;
+  vm.getSrc = getSrc;
+  vm.morePhotosVar = false;
+  vm.canScroll = false;
+
+  vm.addPhotos(InboxFactory.photos);
+
+  $scope.$on('updateInbox', function(event, data) {
+    console.log('update inbox event heard!!!');
+    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
+    vm.clearInbox();
+    vm.addPhotos(newPhotos);
+  });
+
+  function doRefresh() {
+    console.log('doRefresh called');
+    InboxFactory.requestInbox();     
+    $scope.$broadcast('scroll.refreshComplete');
+  }
+
+  function loadMore() {
+    console.log('loadMore called');
+    if (vm.morePhotosVar) {
+      vm.canScroll = true;
+    } else {
+      vm.canScroll = false;
+    }
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  }
+
+  function addPhotos(photos) {
+    vm.photos = vm.photos.concat(photos);
+    vm.morePhotosVar = true;
+  }
+
+  function clearInbox() {
+    vm.photos = InboxFactory.removeExpired(vm.photos, InboxFactory.photos);
+
+  }
+
+  function reBroadcast(index) {
+    if (InboxFactory.checkValidPhoto(vm.photos[index])) {
+      BroadcastFactory.reBroadcast(vm.photos[index]);
+    } else {
+      console.log('that photo is expired, refresh your inbox!');
+    }
+  }
+
+  function saveToAlbum(index) {
+    AlbumFactory.savePhoto(vm.photos[index]);
+  }
+
+  function getSrc(photoId){
+    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
+  }
+
+}
+
+angular
+  .module('shout.inbox')
+  .factory('InboxFactory', InboxFactory);
+
+InboxFactory.$inject = ['$rootScope', '$http', '$localstorage', 'API_HOST'];
+
+function InboxFactory($rootScope, $http, $localstorage, API_HOST) {
+  console.log('InboxFactory');
+  var services = {};
+  services.photos = [];
+  services.updateInbox = updateInbox;
+  services.getPhotos = getPhotos;
+  services.removeExpired = removeExpired;
+  services.filterForNew = filterForNew;
+  services.checkValidPhoto = checkValidPhoto;
+  services.requestInbox = requestInbox; 
+
+
+  return services;
+
+  function updateInbox(data) {
+    console.log('update inbox called');
+    services.photos = data;
+    $rootScope.$broadcast('updateInbox', services.photos);
+  }
+
+  function getPhotos(){
+    return services.photos;
+  }
+
+  function removeExpired(oldInbox, newData){
+    console.log('removeExpired called with oldInbox: ', oldInbox);
+    var idArray = [];
+    newData.forEach(function(item) {
+      idArray.push(item.photoId);
+    });
+    console.log('removeExpired called!');
+    var newInbox = _.filter(oldInbox, function(photo) {
+      return _.contains(idArray, photo.photoId);
+    });
+    console.log('new inbox: ', newInbox);
+    return newInbox;
+  }
+
+  function filterForNew(oldInbox, newData){
+    var oldIdArray = [];
+    console.log('filterForNew called with oldInbox: ', oldInbox);
+    oldInbox.forEach(function(item) {
+      oldIdArray.push(item.photoId);
+    });
+    console.log('oldIdArray: ', oldIdArray);
+    var newPhotos = _.filter(newData, function(photo) {
+      return !_.contains(oldIdArray, photo.photoId);
+    });
+    console.log('the new photos: ', newPhotos);
+    return newPhotos;
+  }
+
+  function checkValidPhoto(photo){
+    currIdArray = [];
+    services.photos.forEach(function(item) {
+      currIdArray.push(item.photoId);
+    });
+    return _.contains(currIdArray, photo.photoId);
+  }
+
+  function requestInbox() {
+    var userId = $localstorage.get('userId');
+    $http.get(API_HOST + '/users/inbox/' + userId)
+         .success(function(data) {
+          console.log('success getting inbox');
+          services.updateInbox(data);
+         })
+         .error(function(){console.log('error getting inbox');});
+  }
+
+}
+
+
+angular
+  .module('shout.tabs')
+  .controller('TabsCtrl', TabsCtrl);
+
+TabsCtrl.$inject = ['CameraFactory'];
+
+function TabsCtrl(CameraFactory){
+  vm = this;
+  vm.takePicture = CameraFactory.takePicture;
+}
+
+angular
+  .module('shout.localstorage')
+  .factory('$localstorage', LocalStorageFactory);
+
+LocalStorageFactory.$inject = ['$window'];
+
+function LocalStorageFactory ($window) {
+  var services = {};
+
+  services.set = set;
+  services.get = get;
+  services.setObject = setObject;
+  services.getObject = getObject;
+
+  return services;
+
+  function set(key, value) {
+    $window.localStorage[key] = value;
+  }
+
+  function get(key, defaultValue) {
+    return $window.localStorage[key] || defaultValue;
+  }
+
+  function setObject (key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+  }
+
+  function getObject(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+  }
+
 }
 
 angular
@@ -623,7 +739,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   function successfulLogin(data) {
     console.log('login factory successfulLogin called');
     $localstorage.set('userId', data.userId);
-    // InboxFactory.updateInbox(data.inbox)
+    InboxFactory.updateInbox(data.inbox);
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
     LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
   }
@@ -682,75 +798,138 @@ function SignupFactory($http, $localstorage, API_HOST) {
 }
 
 angular
-  .module('shout.camera')
-  .factory('CameraFactory', CameraFactory);
+  .module('shout.review')
+  .controller('ReviewCtrl', ReviewCtrl);
 
-CameraFactory.$inject = ['$state'];
+ReviewCtrl.$inject = ['$state', 'CameraFactory', 'ReviewFactory'];
 
-function CameraFactory($state) {
-  console.log('CameraFactory');
+function ReviewCtrl($state, CameraFactory, ReviewFactory) {
+  console.log('ReviewCtrl');
+  var vm = this;
+
+  vm.photo = CameraFactory.getPicture();
+  vm.sharePhoto = ReviewFactory.sharePhoto;
+}
+
+angular
+  .module('shout.review')
+  .factory('ReviewFactory', ReviewFactory);
+
+ReviewFactory.$inject = ['$state'];
+
+function ReviewFactory($state) {
+  console.log('ReviewFactory');
   var services = {};
 
-  var uploadurl = "http://localhost/upl";
-  var pictureSource;
-  var destinationType; // sets the format of returned value
-  var picture;
-  initialize();
-
-  services.query = query;
-  services.takePicture = takePicture;
-  services.getPicture = getPicture;
+  services.photo = {};
+  services.sharePhoto = sharePhoto;
 
   return services;
 
-  function initialize() {
-    ionic.Platform.ready(function() {
-      if (!navigator.camera) {
-        // error handling
-        console.log('no camera found');
-        return;
-      }
-      //pictureSource=navigator.camera.PictureSourceType.PHOTOLIBRARY;
-      pictureSource = navigator.camera.PictureSourceType.CAMERA;
-      destinationType = navigator.camera.DestinationType.FILE_URI;
-    });
+  function sharePhoto() {
+    $state.go('tab.settings');
   }
 
-  function query() {
-    console.log('query');
-    return uploadurl;
+}
+
+//angular
+//  .module('s3UploadApp')
+//  .config(s3configure)
+//  .run(s3run);
+//
+//function s3configure($locationProvider) {
+//  $locationProvider.html5Mode(true);
+//}
+//
+//function s3run($rootScope, $location, $http) {
+//  $http.get('/api/config').success(function(config) {
+//    $rootScope.config = config;
+//  });
+//}
+
+angular
+  .module('s3UploadApp')
+  .factory('s3Upload', s3Upload);
+
+s3Upload.$inject = ['$http', '$location', '$upload', '$rootScope', '$localstorage', 'API_HOST'];
+
+function s3Upload($http, $location, $upload, $rootScope, $localstorage, API_HOST) {
+
+  var imageUploads = [];
+  var upload = [];
+  var services = {};
+  var files = [];
+
+  services.uploadFile = uploadFile;
+
+  return services;
+
+  function abort(index) {
+    upload[index].abort();
+    upload[index] = null;
   }
 
-  function takePicture() {
-    console.log('takePicture');
-    var options = {
-      quality: 50,
-      destinationType: destinationType,
-      sourceType: pictureSource,
-      encodingType: 0
-    };
-    if (!navigator.camera) {
-      // error handling
-      console.log('no camera found');
-      $state.go('review');
-      return;
+  $scope.uploadFile = uploadFile;
+
+  function uploadFile($files) {
+    $files = [$files];
+    files = $files;
+    console.log(files);
+    upload = [];
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      file.progress = parseInt(0);
+      (function(file, i) {
+        $http.get(API_HOST + '/api/s3Policy?mimeType=' + file.type).success(function(response) {
+          var s3Params = response;
+          $localstorage.set('timestamp', Date.now());
+          var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
+          upload[i] = $upload.upload({
+            url: 'https://' + $rootScope.config.awsConfig.bucket + '.s3.amazonaws.com/',
+            method: 'POST',
+            transformRequest: function(data, headersGetter) {
+              //Headers change here
+              var headers = headersGetter();
+              delete headers['Authorization'];
+              return data;
+            },
+            data: {
+              //'key': 's3Upload/' + Math.round(Math.random() * 10000) + '$$' + file.name,
+              'key': 's3Upload/' + photoId + '.jpeg',
+              'acl': 'public-read',
+              'Content-Type': file.type,
+              'AWSAccessKeyId': s3Params.AWSAccessKeyId,
+              'success_action_status': '201',
+              'Policy': s3Params.s3Policy,
+              'Signature': s3Params.s3Signature
+            },
+            file: file,
+          });
+          console.log(file);
+          upload[i]
+            .then(function(response) {
+              file.progress = parseInt(100);
+              if (response.status === 201) {
+                var data = xml2json.parser(response.data),
+                  parsedData;
+                parsedData = {
+                  location: data.postresponse.location,
+                  bucket: data.postresponse.bucket,
+                  key: data.postresponse.key,
+                  etag: data.postresponse.etag
+                };
+                imageUploads.push(parsedData);
+
+              } else {
+                alert('Upload Failed');
+              }
+            }, null, function(evt) {
+              file.progress = parseInt(100.0 * evt.loaded / evt.total);
+            });
+        });
+      }(file, i));
     }
-    navigator.camera.getPicture(
-      function(imageURI) {
-        console.log('got camera success');
-        picture = imageURI;
-        $state.go('review');
-      },
-      function(err) {
-        // error handling camera plugin
-        console.log('got camera error ', err);
-        $state.go('review');
-      },
-      options);
-  }
-
-  function getPicture() {
-    return picture;
+    console.log('done with upload for loop');
   }
 }
 
@@ -904,174 +1083,4 @@ function SettingsFactory(LocationFactory) {
     }
   }
 
-}
-
-angular
-  .module('shout.localstorage')
-  .factory('$localstorage', LocalStorageFactory);
-
-LocalStorageFactory.$inject = ['$window'];
-
-function LocalStorageFactory ($window) {
-  var services = {};
-
-  services.set = set;
-  services.get = get;
-  services.setObject = setObject;
-  services.getObject = getObject;
-
-  return services;
-
-  function set(key, value) {
-    $window.localStorage[key] = value;
-  }
-
-  function get(key, defaultValue) {
-    return $window.localStorage[key] || defaultValue;
-  }
-
-  function setObject (key, value) {
-      $window.localStorage[key] = JSON.stringify(value);
-  }
-
-  function getObject(key) {
-      return JSON.parse($window.localStorage[key] || '{}');
-  }
-
-}
-
-angular
-  .module('shout.review')
-  .controller('ReviewCtrl', ReviewCtrl);
-
-ReviewCtrl.$inject = ['$state', 'CameraFactory', 'ReviewFactory'];
-
-function ReviewCtrl($state, CameraFactory, ReviewFactory) {
-  console.log('ReviewCtrl');
-  var vm = this;
-
-  vm.photo = CameraFactory.getPicture();
-  vm.sharePhoto = ReviewFactory.sharePhoto;
-}
-
-angular
-  .module('shout.review')
-  .factory('ReviewFactory', ReviewFactory);
-
-ReviewFactory.$inject = ['$state'];
-
-function ReviewFactory($state) {
-  console.log('ReviewFactory');
-  var services = {};
-
-  services.photo = {};
-  services.sharePhoto = sharePhoto;
-
-  return services;
-
-  function sharePhoto() {
-    $state.go('tab.settings');
-  }
-
-}
-
-//angular
-//  .module('s3UploadApp')
-//  .config(s3configure)
-//  .run(s3run);
-//
-//function s3configure($locationProvider) {
-//  $locationProvider.html5Mode(true);
-//}
-//
-//function s3run($rootScope, $location, $http) {
-//  $http.get('/api/config').success(function(config) {
-//    $rootScope.config = config;
-//  });
-//}
-
-angular
-  .module('s3UploadApp')
-  .factory('s3Upload', s3Upload);
-
-s3Upload.$inject = ['$http', '$location', '$upload', '$rootScope', '$localstorage', 'API_HOST'];
-
-function s3Upload($http, $location, $upload, $rootScope, $localstorage, API_HOST) {
-
-  var imageUploads = [];
-  var upload = [];
-  var services = {};
-  var files = [];
-
-  services.uploadFile = uploadFile;
-
-  return services;
-
-  function abort(index) {
-    upload[index].abort();
-    upload[index] = null;
-  }
-
-  $scope.uploadFile = uploadFile;
-
-  function uploadFile($files) {
-    $files = [$files];
-    files = $files;
-    console.log(files);
-    upload = [];
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      file.progress = parseInt(0);
-      (function(file, i) {
-        $http.get(API_HOST + '/api/s3Policy?mimeType=' + file.type).success(function(response) {
-          var s3Params = response;
-          $localstorage.set('timestamp', Date.now());
-          var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
-          upload[i] = $upload.upload({
-            url: 'https://' + $rootScope.config.awsConfig.bucket + '.s3.amazonaws.com/',
-            method: 'POST',
-            transformRequest: function(data, headersGetter) {
-              //Headers change here
-              var headers = headersGetter();
-              delete headers['Authorization'];
-              return data;
-            },
-            data: {
-              //'key': 's3Upload/' + Math.round(Math.random() * 10000) + '$$' + file.name,
-              'key': 's3Upload/' + photoId + '.jpeg',
-              'acl': 'public-read',
-              'Content-Type': file.type,
-              'AWSAccessKeyId': s3Params.AWSAccessKeyId,
-              'success_action_status': '201',
-              'Policy': s3Params.s3Policy,
-              'Signature': s3Params.s3Signature
-            },
-            file: file,
-          });
-          console.log(file);
-          upload[i]
-            .then(function(response) {
-              file.progress = parseInt(100);
-              if (response.status === 201) {
-                var data = xml2json.parser(response.data),
-                  parsedData;
-                parsedData = {
-                  location: data.postresponse.location,
-                  bucket: data.postresponse.bucket,
-                  key: data.postresponse.key,
-                  etag: data.postresponse.etag
-                };
-                imageUploads.push(parsedData);
-
-              } else {
-                alert('Upload Failed');
-              }
-            }, null, function(evt) {
-              file.progress = parseInt(100.0 * evt.loaded / evt.total);
-            });
-        });
-      }(file, i));
-    }
-    console.log('done with upload for loop');
-  }
 }
