@@ -8,19 +8,7 @@ function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
   console.log('AlbumFactory');
   var services = {};
 
-  services.photos = [{
-    photoId: 1,
-    //for testing it has a url
-    src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg'
-  }, {
-    photoId: 2,
-    //for testing it has a url
-    src: 'http://images.wisegeek.com/mango.jpg'
-  }, {
-    photoId: 3,
-    //for testing it has a url
-    src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
-  }];
+  services.photos = [];
   services.savePhoto = savePhoto;
   services.getAlbum = getAlbum;
   services.checkCollision = checkCollision;

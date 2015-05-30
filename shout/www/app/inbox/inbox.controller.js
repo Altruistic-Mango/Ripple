@@ -21,6 +21,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.reBroadcast = reBroadcast;
   vm.saveToAlbum = saveToAlbum;
   vm.clearInbox = clearInbox;
+  vm.getSrc = getSrc;
   vm.morePhotosVar = false;
   vm.canScroll = false;
 
@@ -69,6 +70,10 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
 
   function saveToAlbum(index) {
     AlbumFactory.savePhoto(vm.photos[index]);
+  }
+
+  function getSrc(photoId){
+    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
   }
 
 }
