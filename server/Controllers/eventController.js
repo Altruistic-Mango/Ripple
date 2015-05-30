@@ -62,6 +62,16 @@ var eventController = {
     });
 
     cb(photoId, recipients, eventItem, function(recipients, eventItem) {
+
+        console.log('now calling ');
+        // enter the photo object to the user's inbox array
+          // for each loop to enter object
+          
+      }
+    });
+
+    console.log('calling events callback')
+    cb(photoId, recipients, eventItem, function(recipients) {
       recipients.forEach(function(recipient) {
           userController.updateInbox(recipient, eventItem);
         });
