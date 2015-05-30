@@ -56,15 +56,12 @@ var eventController = {
       }
 
       else {
-        console.log('now calling ');
-        // enter the photo object to the user's inbox array
-          // for each loop to enter object
-          
+        console.log('Event created');
+
       }
     });
 
-    console.log('calling events callback')
-    cb(photoId, recipients, eventItem, function(recipients) {
+    cb(photoId, recipients, eventItem, function(recipients, eventItem) {
       recipients.forEach(function(recipient) {
           userController.updateInbox(recipient, eventItem);
         });
@@ -82,10 +79,10 @@ var eventController = {
         else if (photo) {
           console.log('finding recipientList');
           console.log(photo.recipientList);
-          var recipientList = photo.recipientList;
+          var recipientList = [];
 
           recipients.forEach(function(userId) {
-            if (recipientList.indexOf(userId) === -1) {
+            if (photo.recipientList.indexOf(userId) === -1) {
               console.log('adding user to photo recipient list');
               recipientList.push(userId);
             }
@@ -94,7 +91,7 @@ var eventController = {
             }
 
           });
-          photo.recipientList = recipientList;
+          photo.recipientList = photo.recipientList.concat(recipientList);
           photo.save();
           cb(recipientList, eventItem);
           res.end();
