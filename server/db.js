@@ -11,4 +11,4 @@ db.once('open', function() {
   console.log('Mongodb connection open');
 });
 
-// module.exports = db;
+module.exports = db;

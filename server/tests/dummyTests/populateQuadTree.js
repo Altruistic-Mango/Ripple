@@ -41,6 +41,16 @@ var populateApp = function(num){
       var genLong = JSON.stringify(Math.random()*(37.808712 - 37.709369) + 37.709369);
       return genLong.slice(0, 9);
     }
+    var injectConstantUser = function(){
+      var constantUser = {};
+        constantUser.body = {};
+        constantUser.body.userId = 7654321;
+        constantUser.body.x = genRndLong();
+        constantUser.body.y = genRndLat();
+        constantUser.body.username = 'Eden';
+        constantUser.body.password = 'edenrules';
+      userArr.push(constantUser);
+    }();
 
     for(var i=0; i<num; i++){
       var createUser = function(){
@@ -90,6 +100,6 @@ var populateApp = function(num){
 };
 
 
-populateApp(100);
+populateApp(10);
 
 
