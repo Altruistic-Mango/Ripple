@@ -34,6 +34,7 @@ var photoController = {
         console.log('creating photo now');
         Photo.create(data, function(err, result) {
           if (err) {
+            console.log(err);
             res.send(500, err);
           } else {
             console.log('photo saved');
