@@ -26,6 +26,12 @@ var UserSchema = new mongoose.Schema({
     unique: false
   },
 
+  album: {
+    type: Array,
+    required: false,
+    unique: false
+  }
+
 });
 
 module.exports = mongoose.model('User', UserSchema);

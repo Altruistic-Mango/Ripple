@@ -183,6 +183,30 @@ var userController = {
     res.end();
   },
 
+  addToAlbum: function(req, res) {
+    console.log('addToAlbum: ', req.body);
+    User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId}}}, function(error, user){
+      if (error) {
+        res.status(500).send(); 
+      } else {
+        res.status(200).send();
+      }
+    });
+  }, 
+
+  getAlbum: function(req, res) {
+    console.log('USERID: ', req.params.userId);
+    var userId = req.params.userId;
+    User.findOne({userId: userId}, function(error, user){
+      if (error) {
+        res.status(500).send(); 
+      } else {
+        console.log('USER.ALBUM: ', user.album);
+        res.status(200).send(user.album);
+      }
+    });
+  }
+
 };
 
 module.exports = userController;

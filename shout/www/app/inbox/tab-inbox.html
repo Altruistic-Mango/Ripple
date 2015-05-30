@@ -4,7 +4,7 @@
   <ion-list can-swipe="true">
     <ion-item ng-repeat="photo in vm.photos track by $index" >
       <ion-option-button class="button-light icon ion-ios-trash" ></ion-option-button>
-      <ion-option-button class="button-light icon ion-ios-book" ></ion-option-button>
+      <ion-option-button class="button-light icon ion-ios-book" ng-click="vm.saveToAlbum($index)"></ion-option-button>
       <ion-option-button class="button-light icon ion-ios-world" ng-click="vm.reBroadcast($index)"></ion-option-button>
       <img ng-src="{{photo.src}}" />
       <p>{{photo.photoId}}</p>
