@@ -107,6 +107,7 @@ function InboxFactory($rootScope) {
     services.photos = data;
     $rootScope.$broadcast('updateInbox', services.photos); 
   }
+  
   function getPhotos(){
     return services.photos; 
   }

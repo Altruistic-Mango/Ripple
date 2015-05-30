@@ -39,4 +39,14 @@ router.post('/clearInbox', function(req, res) {
   }
 });
 
+router.get('/album/:userId', function(req, res) {
+  console.log('getting album');
+  userController.getAlbum(req, res);
+});
+
+router.post('/album', function(req, res) {
+  console.log('adding another photo to album');
+  userController.addToAlbum(req, res);
+});
+
 module.exports = router;
