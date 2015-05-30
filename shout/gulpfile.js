@@ -16,13 +16,13 @@ var ngConstant = require('gulp-ng-constant');
 var paths = {
   sass: ['./scss/**/*.scss'],
   js:   ['./www/app/**/*module.js',
-         './www/app/**/*.js', 
+         './www/app/**/*.js',
          '.www/app/config.js'],
   dist: ['./www/dist/*.js']
 };
 
 //Main gulp task
-gulp.task('default', ['scripts']);
+gulp.task('default', ['scripts', 'watch']);
 
 //Script for all gulp tasks, used in default and watch
 gulp.task('scripts', ['sass', 'jshint', 'clean', 'concat']);
@@ -85,7 +85,7 @@ gulp.task('git-check', function(done) {
 gulp.task('constant', function() {
   gulp.src('./config.json')
     .pipe(ngConstant())
-    .pipe(gulp.dest("./www/app/"))
+    .pipe(gulp.dest("./www/app/"));
 });
 
 
