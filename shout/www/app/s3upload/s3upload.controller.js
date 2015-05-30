@@ -2,9 +2,9 @@ angular
   .module('s3UploadApp')
   .factory('s3Upload', s3Upload);
 
-s3Upload.$inject = ['$http', '$location', '$upload', '$rootScope'];
+s3Upload.$inject = ['$http', '$location', '$upload', '$rootScope', '$localstorage', 'API_HOST'];
 
-function s3Upload($http, $location, $upload, $rootScope) {
+function s3Upload($http, $location, $upload, $rootScope, $localstorage, API_HOST) {
 
   var imageUploads = [];
   var upload = [];
@@ -23,14 +23,18 @@ function s3Upload($http, $location, $upload, $rootScope) {
   $scope.uploadFile = uploadFile;
 
   function uploadFile($files) {
+    $files = [$files];
     files = $files;
+    console.log(files);
     upload = [];
     for (var i = 0; i < $files.length; i++) {
       var file = $files[i];
       file.progress = parseInt(0);
       (function(file, i) {
-        $http.get('/api/s3Policy?mimeType=' + file.type).success(function(response) {
+        $http.get(API_HOST + '/api/s3Policy?mimeType=' + file.type).success(function(response) {
           var s3Params = response;
+          $localstorage.set('timestamp', Date.now());
+          var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
           upload[i] = $upload.upload({
             url: 'https://' + $rootScope.config.awsConfig.bucket + '.s3.amazonaws.com/',
             method: 'POST',
@@ -41,7 +45,8 @@ function s3Upload($http, $location, $upload, $rootScope) {
               return data;
             },
             data: {
-              'key': 's3Upload/' + Math.round(Math.random() * 10000) + '$$' + file.name,
+              //'key': 's3Upload/' + Math.round(Math.random() * 10000) + '$$' + file.name,
+              'key': 's3Upload/' + photoId + '.jpeg',
               'acl': 'public-read',
               'Content-Type': file.type,
               'AWSAccessKeyId': s3Params.AWSAccessKeyId,
@@ -51,6 +56,7 @@ function s3Upload($http, $location, $upload, $rootScope) {
             },
             file: file,
           });
+          console.log(file);
           upload[i]
             .then(function(response) {
               file.progress = parseInt(100);
@@ -74,5 +80,6 @@ function s3Upload($http, $location, $upload, $rootScope) {
         });
       }(file, i));
     }
+    console.log('done with upload for loop');
   }
 }

@@ -25,15 +25,24 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
+    "cordova-plugin-camera",
+    "cordova-plugin-console",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-file",
+    "cordova-plugin-file-transfer",
     "cordova-plugin-geolocation",
     "cordova-plugin-device",
-    "cordova-plugin-console",
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
     "com.ionic.keyboard"
   ],
   "cordovaPlatforms": [
     "ios",
     "android"
-  ]
+  ],
+  "scripts": {
+    "postinstall": "bower install && node scripts/platforms.js && node scripts/plugins.js",
+    "postuninstall": "node scripts/platforms.js && node scripts/plugins.js"
+  }
 }

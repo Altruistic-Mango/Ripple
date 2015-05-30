@@ -11,4 +11,4 @@ config.json
 .DS_Store
 platforms/
 plugins/
-
+resources/
