@@ -2,10 +2,9 @@
   <ion-content class="padding">
   <!-- <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher> -->
   <ion-list can-swipe="true">
-    <ion-item ng-repeat="photo in vm.photos track by $index" >
+    <ion-item class="photoDisplay" ng-repeat="photo in vm.photos track by $index" >
       <ion-option-button class="button-light icon ion-ios-trash" ></ion-option-button>
-      <img ng-src="{{photo.src}}" />
-      <p>{{photo.photoId}}</p>
+      <img class="albumPhoto" ng-src="{{vm.getSrc(photo.photoId)}}"/>
     </ion-item>
   </ion-list>
   </ion-content>

@@ -9,6 +9,7 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
   var vm = this;
   vm.photos = [];
   vm.addPhotos = addPhotos;
+  vm.getSrc = getSrc; 
 
   AlbumFactory.getAlbum();
 
@@ -18,6 +19,10 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
+  }
+
+  function getSrc(photoId){
+    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
   }
 
 }
