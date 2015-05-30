@@ -205,7 +205,6 @@ var userController = {
       }
     });
   },
-<<<<<<< HEAD
 
   addToAlbum: function(req, res) {
     console.log('addToAlbum: ', req.body);
@@ -279,9 +278,6 @@ var userController = {
     });
   }
 
-=======
-  
->>>>>>> rebase
 };
 
 module.exports = userController;
