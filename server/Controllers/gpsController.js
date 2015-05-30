@@ -66,7 +66,6 @@ var gpsController = {
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;
-
     var result = [];
 
     nodes.forEach(function(item2) {
