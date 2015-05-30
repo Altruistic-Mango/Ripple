@@ -21,7 +21,7 @@ var EventSchema = new mongoose.Schema({
   },
 
   TTL: {
-    type: Number, 
+    type: Number,
     required: true,
     unique: false
   },

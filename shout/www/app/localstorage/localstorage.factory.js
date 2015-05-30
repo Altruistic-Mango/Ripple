@@ -7,12 +7,12 @@ LocalStorageFactory.$inject = ['$window'];
 function LocalStorageFactory ($window) {
   var services = {};
 
-  services.set = set; 
-  services.get = get; 
-  services.setObject = setObject; 
+  services.set = set;
+  services.get = get;
+  services.setObject = setObject;
   services.getObject = getObject;
 
-  return services; 
+  return services;
 
   function set(key, value) {
     $window.localStorage[key] = value;
@@ -30,4 +30,4 @@ function LocalStorageFactory ($window) {
       return JSON.parse($window.localStorage[key] || '{}');
   }
 
-}  
+}

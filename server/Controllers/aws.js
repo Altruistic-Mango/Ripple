@@ -22,7 +22,8 @@ createS3Policy = function(contentType, callback) {
       },
       ['starts-with', '$Content-Type', contentType], {
         'success_action_status': '201'
-      }
+      },
+    ["content-length-range", 0, 5242880]
     ]
   };
 

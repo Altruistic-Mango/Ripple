@@ -12,10 +12,10 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
 
   function reBroadcast(photo) {
     console.log('currentPosition: ', LocationFactory.currentPosition);
-    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId && 
+    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId &&
         LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
       photo = _.extend(photo, LocationFactory.currentPosition);
-      photo.timestamp = new Date().getTime(); 
+      photo.timestamp = new Date().getTime();
       console.log('reBroadcast this photo: ', photo);
       services.sendBroadcastEvent(photo);
     } else {
@@ -26,4 +26,4 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
   function sendBroadcastEvent (broadcastEvent) {
     $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
   }
-} 
+}

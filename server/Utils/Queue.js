@@ -20,7 +20,7 @@ function Queue(timeLimit) {
     if (_storage.length && time - _storage[0].timestamp > 60000) {
       return this.remove();
     }
-  }
+  };
 
 }
 

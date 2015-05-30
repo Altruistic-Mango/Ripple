@@ -28,23 +28,23 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
   }
 
   function sharePhoto() {
-    var files =  document.getElementById('photos').files[0];
+    var files = document.getElementById('photos').files[0];
     console.log(files);
-    var filepath =  CameraFactory.getPicture(); 
+    var filepath = CameraFactory.getPicture();
 
-    if(files) {
+    if (files) {
       s3Upload.uploadFile(files);
     } else {
       window.resolveLocalFileSystemURL(filepath, gotFile, fail);
     }
 
-    var win = function (r) {
+    var win = function(r) {
       console.log("Code = " + r.responseCode);
       console.log("Response = " + r.response);
       console.log("Sent = " + r.bytesSent);
     };
 
-    var fail = function (error) {
+    var fail = function(error) {
       console.log("upload error source " + error.source);
       console.log("upload error target " + error.target);
       console.log(error);
@@ -60,12 +60,12 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
         var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
 
         var options = new FileUploadOptions();
-          options.fileKey = 'file';
-          options.fileName = photoId+'.jpeg';
-          options.mimeType = 'image/jpeg';
-          options.chunkedMode = false;
+        options.fileKey = 'file';
+        options.fileName = photoId + '.jpeg';
+        options.mimeType = 'image/jpeg';
+        options.chunkedMode = false;
 
-        var params = { 
+        var params = {
           'key': 's3Upload/' + photoId + '.jpeg',
           'acl': 'public-read',
           'Content-Type': 'image/jpeg',
@@ -97,7 +97,7 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
         data.TTL = vm.TTL;
         data.radius = vm.radius;
         data.timestamp = $localstorage.get('timestamp');
-        $http.post(API_HOST+'/photos/newPhoto', data);
+        $http.post(API_HOST + '/photos/newPhoto', data);
       });
     }
   }
