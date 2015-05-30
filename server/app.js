@@ -49,7 +49,7 @@ app.use('/users', users);
 app.use('/photos', photos);
 app.use('/gps', gps);
 app.use('/events', events);
-// gpsController.deleteNodes();
+gpsController.pruneTree();
 
 
 module.exports = app;
