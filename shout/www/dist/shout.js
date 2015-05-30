@@ -1257,7 +1257,8 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
         var data = {};
         data.x = pos.x;
         data.y = pos.y;
-        data.userId = pos.UserId;
+        data.userId = $locationstorage.get('userId');
+        data.photoId = photoId;
         data.TTL = vm.TTL;
         data.radius = vm.radius;
         data.timestamp = $localstorage.get('timestamp');
