@@ -39,6 +39,11 @@ router.post('/clearInbox', function(req, res) {
   }
 });
 
+router.get('/inbox/:userId', function(req, res) {
+  console.log('getting user inbox');
+  userController.getInbox(req, res);
+});
+
 router.get('/album/:userId', function(req, res) {
   console.log('getting album');
   userController.getAlbum(req, res);

@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .factory('InboxFactory', InboxFactory);
 
-InboxFactory.$inject = ['$rootScope'];
+InboxFactory.$inject = ['$rootScope', '$http', '$localstorage', 'API_HOST'];
 
-function InboxFactory($rootScope) {
+function InboxFactory($rootScope, $http, $localstorage, API_HOST) {
   console.log('InboxFactory');
   var services = {};
   services.photos = [];
@@ -13,9 +13,8 @@ function InboxFactory($rootScope) {
   services.removeExpired = removeExpired;
   services.filterForNew = filterForNew;
   services.checkValidPhoto = checkValidPhoto;
+  services.requestInbox = requestInbox; 
 
-  //for testing:
-  // setTimeout(services.updateInbox, 10000, services.newInbox);
 
   return services;
 
@@ -63,6 +62,16 @@ function InboxFactory($rootScope) {
       currIdArray.push(item.photoId);
     });
     return _.contains(currIdArray, photo.photoId);
+  }
+
+  function requestInbox() {
+    var userId = $localstorage.get('userId');
+    $http.get(API_HOST + '/users/inbox/' + userId)
+         .success(function(data) {
+          console.log('success getting inbox');
+          services.updateInbox(data);
+         })
+         .error(function(){console.log('error getting inbox');});
   }
 
 }

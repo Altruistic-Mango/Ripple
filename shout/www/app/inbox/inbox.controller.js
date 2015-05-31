@@ -36,7 +36,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
 
   function doRefresh() {
     console.log('doRefresh called');
-    vm.clearInbox();
+    InboxFactory.requestInbox();     
     $scope.$broadcast('scroll.refreshComplete');
   }
 
