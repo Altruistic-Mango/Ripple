@@ -18,7 +18,8 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     clearWatch: clearWatch,
     triggerPingInterval: triggerPingInterval,
     clearPingInterval: clearPingInterval,
-    intervalId: intervalId
+    intervalId: intervalId,
+    getUsersPosition: getUsersPosition
   };
 
   userId = $localstorage.get('userId');
@@ -50,7 +51,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   function sendPosition() {
     if (services.currentPosition && services.currentPosition.userId && services.currentPosition.x && services.currentPosition.y) {
-      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(datain) {
+      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(data) {
         console.log('server got user position');
         InboxFactory.updateInbox(data);
       });
@@ -84,6 +85,10 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
     console.log('clear ping interval called with id: ', intervalId);
     clearInterval(intervalId);
     intervalId = null;
+  }
+
+  function getUsersPosition(){
+    return services.currentPosition;
   }
 
 }
