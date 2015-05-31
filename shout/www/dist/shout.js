@@ -74,18 +74,21 @@ angular.module('shout.settings', [
 
 angular.module("shout.constants", [])
 
-.constant("API_HOST", "https://34921346.ngrok.com")
+.constant("API_HOST", "http://3a44f86.ngrok.com")
 
 ;
 angular
   .module('shout')
   .config(configure);
 
-configure.$injector = ['$stateProvider', '$urlRouterProvider', '$compileProvider'];
+configure.$injector = ['$stateProvider', '$urlRouterProvider', '$compileProvider', '$sceDelegateProvider'];
 
-function configure($stateProvider, $urlRouterProvider, $compileProvider) {
+function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDelegateProvider) {
   console.log('shout configure');
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+  $sceDelegateProvider.resourceUrlWhitelist([
+    'self',
+    'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/**']);
 
   // Ionic uses AngularUI Router which uses the concept of states
   $stateProvider
@@ -201,6 +204,7 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
   var vm = this;
   vm.photos = [];
   vm.addPhotos = addPhotos;
+  vm.getSrc = getSrc; 
 
   AlbumFactory.getAlbum();
 
@@ -210,6 +214,10 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
+  }
+
+  function getSrc(photoId){
+    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
   }
 
 }
@@ -225,19 +233,7 @@ function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
   console.log('AlbumFactory');
   var services = {};
 
-  services.photos = [{
-    photoId: 1,
-    //for testing it has a url
-    src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg'
-  }, {
-    photoId: 2,
-    //for testing it has a url
-    src: 'http://images.wisegeek.com/mango.jpg'
-  }, {
-    photoId: 3,
-    //for testing it has a url
-    src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
-  }];
+  services.photos = [];
   services.savePhoto = savePhoto;
   services.getAlbum = getAlbum;
   services.checkCollision = checkCollision;
@@ -416,6 +412,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.reBroadcast = reBroadcast;
   vm.saveToAlbum = saveToAlbum;
   vm.clearInbox = clearInbox;
+  vm.getSrc = getSrc;
   vm.morePhotosVar = false;
   vm.canScroll = false;
 
@@ -466,6 +463,10 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
     AlbumFactory.savePhoto(vm.photos[index]);
   }
 
+  function getSrc(photoId){
+    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
+  }
+
 }
 
 angular
@@ -477,90 +478,7 @@ InboxFactory.$inject = ['$rootScope'];
 function InboxFactory($rootScope) {
   console.log('InboxFactory');
   var services = {};
-  //this is some dummy data for testing the inbox functionality
-  services.photos = [
-    {
-      photoId: 1,
-      TTL: 5,
-      radius: 5,
-      //for testing it has a url
-      src: 'http://www.alldayfitness.com/wp-content/uploads/2014/01/Mango.jpg'
-    },
-    {
-      photoId: 2,
-      TTL: 5,
-      radius: 5,
-      //for testing it has a url
-      src: 'http://images.wisegeek.com/mango.jpg'
-    },
-    {
-      photoId: 3,
-      TTL: 5,
-      radius: 5,
-      //for testing it has a url
-      src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
-    },
-    {
-      photoId: 4,
-      TTL: 5,
-      radius: 5,
-      //for testing it has a url
-      src: 'http://www.mumbairangers.com/wp-content/uploads/2015/04/kkk.jpg'
-    }
-  ];
-
-  services.newInbox = [
-        {
-          photoId: 2,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'http://images.wisegeek.com/mango.jpg'
-        },
-        {
-          photoId: 100,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'https://nuts.com/images/auto/801x534/assets/8610c9770444a3c4.jpg'
-        },
-        {
-          photoId: 3,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'http://goodfruitguide.co.uk/wp-content/uploads/2010/10/Mango-general-cut.jpg'
-        },
-        {
-          photoId: 200,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'http://www.nutstop.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/m/a/mango-fancy.jpg'
-        },
-        {
-          photoId: 300,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'https://www.nuttyandfruity.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/d/r/dried_mango_slices_extra_low_sugar.jpg'
-        },
-        {
-          photoId: 400,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'http://www.foodsubs.com/Photos/driedfruit-mango.jpg'
-        },
-        {
-          photoId: 4,
-          TTL: 5,
-          radius: 5,
-          //for testing it has a url
-          src: 'http://www.mumbairangers.com/wp-content/uploads/2015/04/kkk.jpg'
-        }
-      ];
-
+  services.photos = [];
   services.updateInbox = updateInbox;
   services.getPhotos = getPhotos;
   services.removeExpired = removeExpired;
@@ -568,7 +486,7 @@ function InboxFactory($rootScope) {
   services.checkValidPhoto = checkValidPhoto;
 
   //for testing:
-  // setInterval(services.updateInbox, 5000, services.newInbox);
+  // setTimeout(services.updateInbox, 10000, services.newInbox);
 
   return services;
 
@@ -718,9 +636,9 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   function sendPosition() {
     if (services.currentPosition && services.currentPosition.userId && services.currentPosition.x && services.currentPosition.y) {
-      // $http.post(API_HOST + '/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
       $http.post(API_HOST + '/gps/position', services.currentPosition).success(function() {
-        console.log('sent position to server!!!');
+        console.log('server got user position');
+        InboxFactory.updateInbox(data);
       });
     } else {
       console.log('not sending incomplete position object to server');

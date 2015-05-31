@@ -56,22 +56,32 @@ var eventController = {
       }
 
       else {
+        console.log('Event created');
+
+      }
+    });
+
+    cb(photoId, recipients, eventItem, function(recipients, eventItem) {
+
         console.log('now calling ');
         // enter the photo object to the user's inbox array
           // for each loop to enter object
-          recipients.forEach(function(recipient) {
-            userController.updateInbox(recipient, eventItem);
-          });
+          
       }
     });
-    console.log('calling events callback');
-    cb(photoId, recipients);
+
+    console.log('calling events callback')
+    cb(photoId, recipients, eventItem, function(recipients) {
+      recipients.forEach(function(recipient) {
+          userController.updateInbox(recipient, eventItem);
+        });
+    });
   },
 
   broadcastEvent: function(req, res) {
     console.log('broadcast event request body = ', req.body);
     var photoId = req.body.photoId;
-    this.broadcast(req.body, function(photoId, recipients) {
+    this.broadcast(req.body, function(photoId, recipients, eventItem, cb) {
       Photo.findOne({photoId: photoId}, function(err, photo) {
         if (err) {
           console.log(err);
@@ -79,10 +89,10 @@ var eventController = {
         else if (photo) {
           console.log('finding recipientList');
           console.log(photo.recipientList);
-          var recipientList = photo.recipientList;
+          var recipientList = [];
 
           recipients.forEach(function(userId) {
-            if (recipientList.indexOf(userId) === -1) {
+            if (photo.recipientList.indexOf(userId) === -1) {
               console.log('adding user to photo recipient list');
               recipientList.push(userId);
             }
@@ -91,8 +101,9 @@ var eventController = {
             }
 
           });
-          photo.recipientList = recipientList;
+          photo.recipientList = photo.recipientList.concat(recipientList);
           photo.save();
+          cb(recipientList, eventItem);
           res.end();
         }
         else {
