@@ -50,7 +50,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   function sendPosition() {
     if (services.currentPosition && services.currentPosition.userId && services.currentPosition.x && services.currentPosition.y) {
-      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function() {
+      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(datain) {
         console.log('server got user position');
         InboxFactory.updateInbox(data);
       });
