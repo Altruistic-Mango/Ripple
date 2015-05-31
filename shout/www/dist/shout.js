@@ -74,7 +74,7 @@ angular.module('shout.settings', [
 
 angular.module("shout.constants", [])
 
-.constant("API_HOST", "http://3a44f86.ngrok.com")
+.constant("API_HOST", "http://6d11d4ab.ngrok.com")
 
 ;
 angular
@@ -636,7 +636,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
 
   function sendPosition() {
     if (services.currentPosition && services.currentPosition.userId && services.currentPosition.x && services.currentPosition.y) {
-      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function() {
+      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(datain) {
         console.log('server got user position');
         InboxFactory.updateInbox(data);
       });
