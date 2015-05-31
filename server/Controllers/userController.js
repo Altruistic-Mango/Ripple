@@ -209,6 +209,18 @@ var userController = {
         res.status(200).send(user.album);
       }
     });
+  },
+
+  getInbox: function(req, res) {
+    var userId = req.params.userId; 
+    User.findOne({userId: userId}, function(error, user){
+      if (error) {
+        res.status(500).send(); 
+      } else {
+        console.log('USER.INBOX: ', user.inbox);
+        res.status(200).send(user.inbox);
+      }
+    });
   }
 
 };
