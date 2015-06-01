@@ -3,7 +3,32 @@ var User = require('../../Models/User.js');
 var photoController = require('../../Controllers/photoController.js');
 var Photo = require('../../Models/Photo.js');
 var mocha = require('mocha');
+var Promise = require('bluebird');
 
+var photoFind = function(){
+  Photo.find({}, function(err, res){
+    if(err){
+      console.log('This is the error');
+      console.log(err);
+    } else {
+      console.log('this is the find in dummy bcast');
+      console.log(res);
+    }
+  });
+}
+
+var fireStorePhoto = function(){
+  var dummyPhoto = { body:{} }
+  dummyPhoto.body.photoId = 43772621432956654430,
+  dummyPhoto.body.userId = 7654321,
+  dummyPhoto.body.radius = 7,
+  dummyPhoto.body.TTL = 10,
+  dummyPhoto.body.timestamp = new Date().getTime();
+
+  photoController.storePhoto(dummyPhoto, function(){
+    photoFind();
+  });
+};
 
 var constantUser = function(){
   User.find({}, function(err, results){
@@ -14,28 +39,8 @@ var constantUser = function(){
       return results[0][userId]; 
     }
   });
+  fireStorePhoto();
 }();
 
-var fireStorePhoto = function(){
-  var dummyPhoto = { body:{} }
-  dummyPhoto.body.photoId = 43772621432956654430,
-  dummyPhoto.body.radius = 2,
-  dummyPhoto.body.TTL = 10
-
-  photoController.storePhoto(dummyPhoto);
-}();
-
-Photo.find({}, function(err, res){
-  if(err){
-    console.log(err);
-  } else {
-    console.log(res);
-  }
-});
 
 
-
-//query the database for a photo
-//query database for random user 
-//query the Quad tree for the users location.
-//user that 

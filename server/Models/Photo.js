@@ -35,7 +35,7 @@ var PhotoSchema = new mongoose.Schema({
   timestamp: {
     type: Number,
     required: true,
-    unique: true
+    unique: true 
   }
 
 });
