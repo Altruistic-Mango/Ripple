@@ -21,6 +21,7 @@ angular.module('shout.broadcast', [
 ]);
 
 angular.module('shout.camera', [
+  'shout.localstorage'
   //list the other modules that contain factories and controllers that you will use
 ]);
 
@@ -293,10 +294,28 @@ angular
 BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
 
 function BroadcastFactory(LocationFactory, $http, API_HOST) {
+
   var services = {};
-    services.reBroadcast = reBroadcast;
-    services.sendBroadcastEvent = sendBroadcastEvent;
+  services.newPhoto = newPhoto;
+  services.reBroadcast = reBroadcast;
+  services.sendBroadcastEvent = sendBroadcastEvent;
+
   return services;
+
+  function newPhoto() {
+    console.log('newPhoto');
+    var pos = LocationFactory.currentPosition;
+    var data = {};
+    data.x = pos.x;
+    data.y = pos.y;
+    data.userId = userId;
+    data.photoId = photoId;
+    data.TTL = vm.TTL;
+    data.radius = vm.radius;
+    data.timestamp = timestamp;
+    $http.post(API_HOST + '/photos/newPhoto', data)
+      .success(callback);
+  }
 
   function reBroadcast(photo) {
     console.log('currentPosition: ', LocationFactory.currentPosition);
@@ -320,72 +339,83 @@ angular
   .module('shout.camera')
   .factory('CameraFactory', CameraFactory);
 
-CameraFactory.$inject = ['$state'];
+CameraFactory.$inject = [];
 
-function CameraFactory($state) {
+function CameraFactory() {
   console.log('CameraFactory');
-  var services = {};
 
-  var uploadurl = "http://localhost/upl";
   var pictureSource;
-  var destinationType; // sets the format of returned value
-  var picture;
-  initialize();
+  var destinationType; 
+  var options;
 
-  services.query = query;
+  var services = {};
   services.takePicture = takePicture;
-  services.getPicture = getPicture;
+  services.getFile = getFile;
+  services.filePath = '';
 
   return services;
 
-  function initialize() {
+
+  function takePicture(callback) {
+    console.log('CameraFactory.takePicture');
+    initialize(function() {
+      getPicture(callback);
+    });
+  }
+
+  function initialize(callback) {
+    console.log('CameraFactory.initialize');
     ionic.Platform.ready(function() {
       if (!navigator.camera) {
         // error handling
         console.log('no camera found');
-        return;
+      } else {
+        //pictureSource=navigator.camera.PictureSourceType.PHOTOLIBRARY;
+        pictureSource = navigator.camera.PictureSourceType.CAMERA;
+        destinationType = navigator.camera.DestinationType.FILE_URI;
+        options = {
+          quality: 50,
+          destinationType: destinationType,
+          sourceType: pictureSource,
+          encodingType: Camera.EncodingType.JPEG 
+        };
       }
-      //pictureSource=navigator.camera.PictureSourceType.PHOTOLIBRARY;
-      pictureSource = navigator.camera.PictureSourceType.CAMERA;
-      destinationType = navigator.camera.DestinationType.FILE_URI;
+      callback();
     });
   }
 
-  function query() {
-    console.log('query');
-    return uploadurl;
-  }
+  function getPicture(callback) {
+    console.log('CameraFactory.getPicture');
+    navigator.camera.getPicture(success, failure, options);
 
-  function takePicture() {
-    console.log('takePicture');
-    var options = {
-      quality: 50,
-      destinationType: destinationType,
-      sourceType: pictureSource,
-      encodingType: 0
-    };
-    if (!navigator.camera) {
-      // error handling
-      console.log('no camera found');
-      $state.go('review');
-      return;
+    function success(imageURI) {
+      console.log('getPicture success with:' + imageURI);
+      services.filePath = imageURI;
+      callback(imageURI);
     }
-    navigator.camera.getPicture(
-      function(imageURI) {
-        console.log('got camera success');
-        picture = imageURI;
-        $state.go('review');
-      },
-      function(err) {
-        // error handling camera plugin
-        console.log('got camera error ', err);
-        $state.go('review');
-      },
-      options);
+
+    function failure(message) {
+      console.log('getPicture failed because: ' + message);
+    }
   }
 
-  function getPicture() {
-    return picture;
+  function getFile(callback) {
+    console.log('CameraFactory.getFile');
+    window.resolveLocalFileSystemURL(services.filePath, success, failure);
+
+    function success(fileEntry) {
+      console.log('getFile success');
+
+      fileEntry.file(function(file) {
+        services.photo = file; 
+        console.log('File Object', file);
+        callback(file);
+      });
+    }
+
+    function failure(message) {
+        console.log('getFile failed because: ' + message);
+    }
   }
 }
 
