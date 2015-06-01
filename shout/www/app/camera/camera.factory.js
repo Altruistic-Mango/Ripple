@@ -8,13 +8,15 @@ function CameraFactory() {
   console.log('CameraFactory');
 
   var pictureSource;
-  var destinationType; 
+  var destinationType;
   var options;
+  var observerCallbacks = [];
 
   var services = {};
   services.takePicture = takePicture;
   services.getFile = getFile;
   services.filePath = '';
+  services.registerObserverCallback = registerObserverCallback;
 
   return services;
 
@@ -40,7 +42,7 @@ function CameraFactory() {
           quality: 50,
           destinationType: destinationType,
           sourceType: pictureSource,
-          encodingType: Camera.EncodingType.JPEG 
+          encodingType: Camera.EncodingType.JPEG
         };
       }
       callback();
@@ -54,6 +56,7 @@ function CameraFactory() {
     function success(imageURI) {
       console.log('getPicture success with:' + imageURI);
       services.filePath = imageURI;
+      notifyObservers();
       callback(imageURI);
     }
 
@@ -70,14 +73,24 @@ function CameraFactory() {
       console.log('getFile success');
 
       fileEntry.file(function(file) {
-        services.photo = file; 
+        services.photo = file;
         console.log('File Object', file);
         callback(file);
       });
     }
 
     function failure(message) {
-        console.log('getFile failed because: ' + message);
+      console.log('getFile failed because: ' + message);
     }
+  }
+
+  function registerObserverCallback(callback) {
+    observerCallbacks.push(callback);
+  }
+
+  function notifyObservers() {
+     observerCallbacks.forEach(function(callback) {
+       callback();
+     });
   }
 }
