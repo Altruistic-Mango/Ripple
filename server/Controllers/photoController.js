@@ -18,7 +18,7 @@ var photoController = {
     var data = {
       photoId: photoId,
       radius: +req.body.radius,
-      TTL: +req.body.TTL,
+      TTL: +req.body.TTL * 60,
       timestamp: +req.body.timestamp,
       userId: userId,
       recipientList: [userId]
