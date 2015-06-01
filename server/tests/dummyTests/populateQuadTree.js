@@ -33,12 +33,12 @@ var populateApp = function(num){
     
     //generates random Lat in SF
     var genRndLat = function(){
-      var genLat = JSON.stringify(Math.random()*(122.510728 - 122.387475) + 122.387475 * -1);
+      var genLat = JSON.stringify(Math.random()*(122.525999 - 122.325999) - 122.525999);
       return genLat.slice(0, 11);
     }
     //generates random Long in SF
     var genRndLong = function(){
-      var genLong = JSON.stringify(Math.random()*(37.808712 - 37.709369) + 37.709369);
+      var genLong = JSON.stringify(Math.random()*(37.813500 - 37.613500) + 37.613500);
       return genLong.slice(0, 9);
     }
     var injectConstantUser = function(){
@@ -76,6 +76,7 @@ var populateApp = function(num){
   // calls the insertCoords method from gps conroller for all dummy users
   var populateQuadTree = function(){
     for(var i=0; i<userArr.length; i++){
+      console.log(userArr[i]);
       gpsController.insertCoords(userArr[i]);
     }
   }();
