@@ -8,28 +8,34 @@ var PhotoSchema = new mongoose.Schema({
     unique: true
   },
 
+  userId: {
+    type: String,
+    required: true,
+    unique: false
+  },
+
   radius: {
-    type: Number, 
+    type: Number,
     required: true,
     unique: false
   },
 
   TTL: {
-    type: Number, 
+    type: Number,
     required: true,
     unique: false
-  },
-
-  photoURL: {
-    type: String,
-    required: true,
-    unique: true
   },
 
   recipientList: {
     type: Array,
     required: false,
     unique: false
+  },
+
+  timestamp: {
+    type: Number,
+    required: true,
+    unique: true
   }
 
 });

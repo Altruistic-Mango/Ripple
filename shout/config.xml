@@ -8,7 +8,10 @@
       Ionic Framework Team
     </author>
   <content src="index.html"/>
+  <!-- TODO: change this access origin to limite to amazon S3 URLs -->
   <access origin="*"/>
+  <allow-navigation href="http://1c7f837f.ngrok.com/*" />
+  <allow-navigation href="https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>

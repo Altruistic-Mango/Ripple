@@ -3,51 +3,39 @@
     <ul class="list">
       <li>
         <div class="item item-toggle">
-           Watch my Location
-           <label class="toggle toggle-calm">
-             <input type="checkbox" 
-                    ng-model="vm.watch"
-                    ng-change="vm.userSetWatch()"
-                    >
-             <div class="track">
-               <div class="handle"></div>
-             </div>
-           </label>
-        </div> 
+          Watch my Location
+          <label class="toggle toggle-calm">
+            <input type="checkbox" ng-model="vm.watch" ng-change="vm.userSetWatch()">
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </div>
       </li>
 
       <li>
         <div class="item range">
-          Broadcast Radius </br><div class="item">
-          {{vm.radius}} miles</div>
+          Broadcast Radius</br>
+          <div class="item">
+            {{vm.radius}} miles</div>
 
-          <input type="range" 
-                 ng-model="vm.radius"
-                 min="5" 
-                 step="5"
-                 max="100" 
-                 value="{{vm.radius}}"
-                 ng-init="5"
-                 >
+          <input type="range" ng-model="vm.radius" min="5" step="5" max="100" value="{{vm.radius}}"
+          ng-init="5">
           <i class="icon ion-ios-world-outline"></i>
         </div>
-      </li>  
+      </li>
 
       <li>
         <div class="item range">
-          Image Lifetime  </br><div class="item">{{vm.TTL}} min</div>
-          <input type="range" 
-                 ng-model="vm.TTL"
-                 min="5" 
-                 max="20" 
-                 value="{{vm.TTL}}"
-                 ng-init="5"
-                 >
+          Image Lifetime</br>
+          <div class="item">{{vm.TTL}} min</div>
+          <input type="range" ng-model="vm.TTL" min="5" max="20" value="{{vm.TTL}}" ng-init="5">
           <i class="icon ion-ios-stopwatch-outline"></i>
         </div>
-      </li>  
+      </li>
     </ul>
     <button class="button button-block button-calm" ng-click="vm.acceptSettings()">Accept Settings</button>
+    <button class="button button-block button-calm" ng-click="vm.sharePhoto()">Share Photo</button>
+    <input id="photos" type="file">
   </ion-content>
 </ion-view>
-

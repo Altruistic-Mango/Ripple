@@ -10,6 +10,11 @@
         <input class="loginInputItem" type="password" placeholder="Password" ng-model="vm.data.password">
       </div>
     </div>
+    <div class="padding">
+      <button ng-if="vm.badCombo" class="button button-outline button-assertive">
+        Incorrect username/password combination
+      </button>
+    </div>
     <div class="loginButtonContainer">
       <button class="item button loginButton" ng-click="vm.login()">Login</button>
       <button class="item button loginButton" ng-hide=false ui-sref="signup">Sign Up</button>

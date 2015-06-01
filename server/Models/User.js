@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
-  
+
   userId: {
     type: String,
     required: true,
@@ -26,8 +26,8 @@ var UserSchema = new mongoose.Schema({
     unique: false
   },
 
-  s3key: {
-    type: String,
+  album: {
+    type: Array,
     required: false,
     unique: false
   }

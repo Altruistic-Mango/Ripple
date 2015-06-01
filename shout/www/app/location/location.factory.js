@@ -2,9 +2,9 @@ angular
   .module('shout.location')
   .factory('LocationFactory', LocationFactory);
 
-LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage'];
+LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage', 'API_HOST'];
 
-function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
+function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API_HOST) {
   console.log('LocationFactory');
   var currentPosition, watchId, intervalId, userId;
   var services = {
@@ -15,59 +15,65 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
     watchSuccessCallback: watchSuccessCallback,
     errorCallback: errorCallback,
     currentPosition: currentPosition,
-    clearWatch: clearWatch, 
+    clearWatch: clearWatch,
     triggerPingInterval: triggerPingInterval,
-    clearPingInterval: clearPingInterval, 
-    intervalId: intervalId
+    clearPingInterval: clearPingInterval,
+    intervalId: intervalId,
+    getUsersPosition: getUsersPosition
   };
 
   userId = $localstorage.get('userId');
 
-  triggerPingInterval()
+  triggerPingInterval();
 
   return services;
 
-  function getCurrentPosition (successCallback, errorCallback) {
+  function getCurrentPosition(successCallback, errorCallback) {
     console.log('about to grab the initial position');
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 
-  function setWatch (successCallback, errorCallback) {
+  function setWatch(successCallback, errorCallback) {
     console.log('setting watch on position');
     watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
   }
 
-  function setPosition (position) {
-
-    currentPosition = {
-                      userId: userId,
-                      x: position.coords.latitude,
-                      y: position.coords.longitude
-                      };
-    console.log(' currentPosition set! ', currentPosition);
+  function setPosition(position) {
+    services.currentPosition = {
+      userId: $localstorage.get('userId'),
+      y: position.coords.latitude,
+      x: position.coords.longitude,
+      timestamp: new Date().getTime()
+    };
+    console.log(' currentPosition set! ', services.currentPosition);
 
   }
 
-  function sendPosition () {
-    // $http.post('http://localhost:3000/gps/position', currentPosition).success(InboxFactory.updateInbox(data.inbox));
-    $http.post('http://localhost:3000/gps/position', currentPosition).success(function(){console.log('sent position to server!!!')});
-
+  function sendPosition() {
+    if (services.currentPosition && services.currentPosition.userId && services.currentPosition.x && services.currentPosition.y) {
+      $http.post(API_HOST + '/gps/position', services.currentPosition).success(function(data) {
+        console.log('server got user position');
+        InboxFactory.updateInbox(data);
+      });
+    } else {
+      console.log('not sending incomplete position object to server');
+    }
   }
 
   function errorCallback(error) {
     console.log('error getting position: ', error);
   }
 
-  function getSuccessCallback (position) {
+  function getSuccessCallback(position) {
     setPosition(position);
     sendPosition();
   }
 
-  function watchSuccessCallback (position) {
+  function watchSuccessCallback(position) {
     setPosition(position);
   }
 
-  function clearWatch () {
+  function clearWatch() {
     navigator.geolocation.clearWatch(watchId);
   }
 
@@ -77,8 +83,12 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage) {
 
   function clearPingInterval() {
     console.log('clear ping interval called with id: ', intervalId);
-    clearInterval(intervalId)
-    intervalId = null; 
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+
+  function getUsersPosition(){
+    return services.currentPosition;
   }
 
 }

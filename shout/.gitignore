@@ -1,7 +1,14 @@
-# Ignore everything in this directory
-*
 # Don't ignore this file
 !.gitignore
 
 # Don't ignore directories so we can recurse into them
-!*/www/
+!/www/*
+
+# Ignore
+www/lib/
+www/platforms/
+config.json
+.DS_Store
+platforms/
+plugins/
+resources/

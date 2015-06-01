@@ -10,6 +10,11 @@
       <label class="item item-input">
         <input type="password" placeholder="Password" ng-model="vm.data.password">
       </label>
+      <div class="padding">
+        <button ng-if="vm.badUsername" class="button button-outline button-assertive">
+          That username is already taken
+        </button>
+      </div>
     </div>
     <button class="button button-block button-calm" ng-click="vm.signup()">Sign Up</button>
   </ion-content>

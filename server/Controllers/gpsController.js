@@ -1,50 +1,92 @@
 var quadtree = require('../Utils/QTree.js');
 var userController = require('../Controllers/userController.js');
 
+    if (typeof(Number.prototype.toRad) === "undefined") {
+      Number.prototype.toRad = function() {
+      return this * Math.PI / 180;
+      };
+    }
 
 var gpsController = {
-
 
   // this will insert a coordinate to the quadtree for insertion
   insertCoords: function(req, res) {
 
-    var node = {
-      x: +req.body.x, 
-      y: +req.body.y, 
-      userId: req.body.userId
-    }
 
+    var userId = req.body.userId;
+
+    console.log('inserting coordinates ' + typeof userId);
+
+    var timestamp = new Date().getTime();
+
+    var node = {
+      x: +req.body.x,
+      y: +req.body.y,
+      userId: userId
+    };
     quadtree.update(node);
-    var inbox = userController.retrieveInbox(node.userId)
-    res.send(inbox);
+
+    node.timestamp = timestamp;
+
+
+    var inbox = userController.retrieveInbox(userId, node, function(inbox) {
+      console.log(inbox);
+      res.send(inbox);
+      });
   },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
   findNearbyNodes: function(req, res) {
     console.log(req.body);
-    
+
     var searchParams = {
-      x: req.body.x, 
+      x: req.body.x,
       y: req.body.y,
       userId: req.body.userId
     };
 
     var nearbyNodes = this.getNodes(searchParams);
-    res.send(nearbyNodes);
+    res.send(nearbyNodes.children);
+  },
+
+  pruneTree: function() {
+    var timestamp = new Date().getTime();
+    quadtree.clearOut(timestamp)
+    var self = this;
+    setTimeout(function() {
+      self.pruneTree();
+    }, 60000);
   },
 
   // This will get the distance between two coordinates
-  calculateDist: function(item1) {
+  calculateDist: function(item1, nodes) {
 
-    var nodes = this.getNodes(item1);
-    item1.x = Math.abs(item1.x);
+    var R = 6371;
+    nodes = nodes || this.getNodes(item1);
+    var lat1 = +item1.x;
+    var lon1 = +item1.y;
+    var lat2, lon2, dlat, dlon;
+    var result = [];
+
     nodes.forEach(function(item2) {
-    var hyp = Math.abs((item1.x + item2.x) * (item1.x + item2.x)) + 
-              Math.abs((item1.y - item2.y) * (item1.y - item2.y));
-    hyp = Math.sqrt(hyp);    
+      lat2 = item2.x;
+      lon2 = item2.y;
+      dLat = (lat2 - lat1).toRad();
+      dLon = (lon2 - lon1).toRad();
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      var d = R * c;
+      d = d * 0.621371;
+      console.log(d);
+
+      if (d < item1.radius) {
+        result.push(item2.userId);
+      }
     });
 
-    return hyp;
+    return result;
   },
 
   // Find nodes in Quadtree
@@ -55,8 +97,8 @@ var gpsController = {
 
   // Invoke calculate distance function
   getDist: function(req, res) {
-    var result = this.calculateDist(req.body)
-    res.send(result)
+    var result = this.calculateDist(req.body);
+    res.send(result);
   },
 
   // remove nodes from quadtree if they match the item sent

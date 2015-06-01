@@ -4,16 +4,18 @@
   "description": "shout: An Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",
-    "gulp-sass": "^1.3.3",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
-    "gulp-rename": "^1.2.0"
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^1.3.3",
+    "lodash": "^3.9.3"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.15",
     "bower": "^1.3.3",
     "gulp-clean": "^0.3.1",
     "gulp-jshint": "^1.11.0",
+    "gulp-ng-constant": "^0.3.0",
     "gulp-util": "^2.2.14",
     "jasmine-core": "^2.3.4",
     "karma": "^0.12.32",
@@ -23,15 +25,24 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
+    "cordova-plugin-camera",
+    "cordova-plugin-console",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-file",
+    "cordova-plugin-file-transfer",
     "cordova-plugin-geolocation",
     "cordova-plugin-device",
-    "cordova-plugin-console",
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
     "com.ionic.keyboard"
   ],
   "cordovaPlatforms": [
     "ios",
     "android"
-  ]
+  ],
+  "scripts": {
+    "postinstall": "bower install && node scripts/platforms.js && node scripts/plugins.js",
+    "postuninstall": "node scripts/platforms.js && node scripts/plugins.js"
+  }
 }
