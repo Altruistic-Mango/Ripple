@@ -1,6 +1,5 @@
 node_modules/
 server/lib/config/aws.json
-.DS_Store
 
 #ignore
 shout/www/lib/
