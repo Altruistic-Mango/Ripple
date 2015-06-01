@@ -1,5 +1,2 @@
-angular.module('s3UploadApp', [
-  'ngCookies',
-  'ngSanitize',
-  'angularFileUpload'
+angular.module('s3Upload', [
 ]);

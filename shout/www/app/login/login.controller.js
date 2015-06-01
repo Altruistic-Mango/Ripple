@@ -7,7 +7,11 @@ LoginCtrl.$inject = ['$scope', '$state', 'LoginFactory'];
 function LoginCtrl($scope, $state, LoginFactory) {
   console.log('LoginCtrl');
   var vm = this;
-  vm.data = null;
+  vm.data = {};
+  vm.data.username = 'mb';
+  vm.data.email = 'm@b.com';
+  vm.data.password = 'mb';
+
   vm.login = login;
   vm.badCombo = false;
 

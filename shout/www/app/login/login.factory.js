@@ -5,10 +5,12 @@ angular
 LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST'];
 
 function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST) {
-  return {
-    successfulLogin: successfulLogin,
-    loginUser: loginUser
-  };
+
+  var services = {};
+  services.successfulLogin = successfulLogin;
+  services.loginUser = loginUser;
+
+  return services;
 
   function loginUser(data) {
     return $http({
@@ -19,7 +21,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   }
 
   function successfulLogin(data) {
-    console.log('login factory successfulLogin called');
+    console.log('successfulLogin');
     $localstorage.set('userId', data.userId);
     InboxFactory.updateInbox(data.inbox);
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);

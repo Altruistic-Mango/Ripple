@@ -5,10 +5,28 @@ angular
 BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
 
 function BroadcastFactory(LocationFactory, $http, API_HOST) {
+
   var services = {};
-    services.reBroadcast = reBroadcast;
-    services.sendBroadcastEvent = sendBroadcastEvent;
+  services.newPhoto = newPhoto;
+  services.reBroadcast = reBroadcast;
+  services.sendBroadcastEvent = sendBroadcastEvent;
+
   return services;
+
+  function newPhoto() {
+    console.log('newPhoto');
+    var pos = LocationFactory.getUsersPosition;
+    var data = {};
+    data.x = pos.x;
+    data.y = pos.y;
+    data.userId = userId;
+    data.photoId = photoId;
+    data.TTL = vm.TTL;
+    data.radius = vm.radius;
+    data.timestamp = timestamp;
+    $http.post(API_HOST + '/photos/newPhoto', data)
+      .success(callback);
+  }
 
   function reBroadcast(photo) {
     console.log('currentPosition: ', LocationFactory.currentPosition);
