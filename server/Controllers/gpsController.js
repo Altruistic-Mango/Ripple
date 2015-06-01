@@ -134,7 +134,7 @@ var gpsController = {
       item.x = randIntx();
       item.y = randInty();
       item.timestamp = date;
-      item.userId = '555';
+      item.userId = Math.floor(Math.random() * 9999999);
       quadtree.put(item);
       count++;
     };
