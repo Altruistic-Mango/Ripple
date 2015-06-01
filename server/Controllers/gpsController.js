@@ -49,6 +49,7 @@ var gpsController = {
     var nodes = tree.traverse();
     console.log(nodes.length);
     res.send(nodes);
+
   },
 
   pruneTree: function() {

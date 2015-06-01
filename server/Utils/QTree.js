@@ -6,6 +6,7 @@ function Quadtree(boundaries, maxChildren, root, depth) {
     width: 0.2,
     height: 0.2
   };
+<<<<<<< Updated upstream
   this.maxChildren = maxChildren || 4;
   this.root = root || null;
   this.depth = depth || 0;
@@ -367,12 +368,6 @@ module.exports = new Quadtree();
 
 /*
 
-Generate 8 coordinate points
-
-
-
-
-
 
 
 // san francisco
@@ -413,6 +408,37 @@ Generate 8 coordinate points
 
 
 */
+
+
+
+// san francisco
+  // northwest point
+  // 37.809455, -122.525293
+
+  // northeast point
+  // 37.811552, -122.354177
+
+  // southwest point
+  // 37.613581, -122.510663
+
+  // southeast point
+  // 37.615192, -122.351613
+
+
+//california
+
+// northwest point
+// 41.9874797,-124.2301429
+
+// northeast point
+// 41.9874797, -114.7396131
+
+// southwest point
+// 32.4969499,-116.9726225
+
+// southeast point
+// 32.4969499, -114.7396131
+
 
 
 

@@ -5,6 +5,8 @@ var Photo = require('../Models/Photo.js');
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
 
+Promise.promisifyAll(mongoose);
+
 var eventController = {
 
 
@@ -35,70 +37,55 @@ var eventController = {
         timestamp: timestamp
     };
 
-    Event.create({
+    var event = new Event({
       x: searchParams.x,
       y: searchParams.y,
       userId: userId,
       photoId: photoId,
       TTL: TTL,
       timestamp: timestamp,
-      radius: radius
-    }, function(err, event) {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-
-      else {
-        console.log('Event created');
-
-      }
+      radius: radius,
+      recipientList: node.children
     });
 
-    console.log('calling events callback')
-    cb(photoId, recipients, eventItem, function(recipients) {
-      recipients.forEach(function(recipient) {
-        console.log('recipient is a ' + typeof recipient);
-          userController.updateInbox(recipient, eventItem);
+
+    event
+    .saveAsync()
+    .then(function(data) {
+      console.log('Event created, calling events callback with photoId' + data.photoId + 
+        '\nrecipients ' + data.recipientList);
+        
+      Promise.resolve(Photo.findOne({photoId: photoId}).exec())
+    .then(function(photo) {
+        console.log('finding recipientList');
+        console.log(photo.recipientList);
+        var recipientList = [];
+
+        recipients.forEach(function(userId) {
+          if (photo.recipientList.indexOf(userId) === -1) {
+            console.log('adding user to photo recipient list');
+            recipientList.push(userId);
+          }
+          else {
+            console.log(userId);
+          }
         });
-    });
-  },
 
-  broadcastEvent: function(req, res) {
-    console.log('broadcast event request body = ', req.body);
-    var photoId = req.body.photoId;
-    this.broadcast(req.body, function(photoId, recipients, eventItem, cb) {
-      Photo.findOne({photoId: photoId}, function(err, photo) {
-        if (err) {
+        photo.recipientList = photo.recipientList.concat(recipientList);
+        photo.save();
+      },function(err) {
           console.log(err);
-        }
-        else if (photo) {
-          console.log('finding recipientList');
-          console.log(photo.recipientList);
-          var recipientList = [];
-
-          recipients.forEach(function(userId) {
-            if (photo.recipientList.indexOf(userId) === -1) {
-              console.log('adding user to photo recipient list');
-              recipientList.push(userId);
-            }
-            else {
-              console.log(userId);
-            }
-
-          });
-          photo.recipientList = photo.recipientList.concat(recipientList);
-          photo.save();
-          cb(recipientList, eventItem);
-          res.end();
-        }
-        else {
-          console.log('photo not found');
           res.send('photo not found');
-        }
+      })  
+    .then(function(recipients) {
+      recipients.forEach(function(recipient) {
+      console.log('recipient is a ' + typeof recipient);
+        userController.updateInbox(recipient, eventItem);
       });
+    res.end();
     });
-  },
+  })  
+  }, 
 
   getEvents: function(req, res) {
     Event.find({}, function(err, event) {
@@ -114,6 +101,8 @@ var eventController = {
 
     });
   },
+
+  updateRecipients
 
 };
 
