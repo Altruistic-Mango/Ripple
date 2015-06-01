@@ -7,7 +7,7 @@ function Quadtree(boundaries, maxChildren, root, depth) {
     height: 0.2
   };
   this.maxChildren = maxChildren || 4;
-  this.root = root || this;
+  this.root = root || null;
   this.depth = depth || 0;
   this.quadrants = [];
   this.children = [];
@@ -86,9 +86,10 @@ Quadtree.prototype.put = function(item) {
 
 // find function
 Quadtree.prototype.get = function(item, callback) {
-
   // if our quadrant is divided into sub quadrants...
-  if (this.quadrants.length) {
+  if (this.quadrants.length && this.checkRange(item)) {
+    console.log('quadtree logging item ' + item);
+
     // find the correct quadrant
     var index = this.findIndex(item);
 
@@ -97,22 +98,29 @@ Quadtree.prototype.get = function(item, callback) {
       callback(this.quadrants[index].get(item));
     }
 
-    // otherwise just return the array of coordinates
+    // otherwise just return the quadrant
     else {
       return this.quadrants[index].get(item);
     }
   }
 
   // our quadtree does not have any quadrants
-  else {
+  else if (!this.quadrants.length && this.children.length) {
+    console.log('what else if')
+
     // invoke callback if it is passed in
     if (callback) {
-      callback(this.children);
+      callback(this);
     }
-    // otherwise just return the children
+    // otherwise just return the quadrant
     else {
       return this;
     }
+  }
+
+  else {
+    console.log('returning root');
+    return this.root || this;
   }
 };
 
@@ -210,20 +218,37 @@ Quadtree.prototype.clearOut = function(timestamp) {
   }
 }; 
 
-Quadtree.prototype.traverse = function(callback) {
-    if (this.children.length) {
+Quadtree.prototype.traverse = function(callback, nodes) {
+
+    if (this.children.length && callback) {
       var length = this.children.length;
       for (var i = 0; i < length; i++) {
           callback(this.children[i]);
       }
+
+      if (this.quadrants.length) {
+        var quadLength = this.quadrants.length;
+        for (var j = 0; j < quadLength; j++) {
+          this.quadrants[j].traverse(callback);
+        }
+      }
     }
 
-  else if (this.quadrants.length) {
-    var quadLength = this.quadrants.length;
-    for (var j = 0; j < quadLength; j++) {
-      this.quadrants[j].traverse(callback);
+    else if (!callback) {
+      var nodes = nodes || [];
+
+      if (this.children.length) {
+        return nodes.concat(this.children);
+        }
+
+      else if (this.quadrants.length) {
+        var quadLength = this.quadrants.length;
+        for (var j = 0; j < quadLength; j++) {
+          nodes = this.quadrants[j].traverse(null, nodes);
+        }
+      }
+      return nodes;
     }
-  }
 }
 
 
@@ -245,7 +270,7 @@ Quadtree.prototype.subDivide = function() {
   // top left quadrant
   this.quadrants[0] = new Quadtree({
     x: x,
-    y: y,
+    y: y + height,
     width: width,
     height: height
   }, this.maxChildren, root, depth);
@@ -253,7 +278,7 @@ Quadtree.prototype.subDivide = function() {
   // top right quadrant
   this.quadrants[1] = new Quadtree({
     x: x + width,
-    y: y,
+    y: y + height,
     width: width,
     height: height
   }, this.maxChildren, root, depth);
@@ -261,7 +286,7 @@ Quadtree.prototype.subDivide = function() {
   // bottom left quadrant
   this.quadrants[2] = new Quadtree({
     x: x,
-    y: y + height,
+    y: y,
     width: width,
     height: height
   }, this.maxChildren, root, depth);
@@ -269,7 +294,7 @@ Quadtree.prototype.subDivide = function() {
   // bottom right quadrant
   this.quadrants[3] = new Quadtree({
     x: x + width,
-    y: y + height,
+    y: y,
     width: width,
     height: height
   }, this.maxChildren, root, depth);
@@ -304,12 +329,90 @@ Quadtree.prototype.unfold = function(quad) {
   };
  };
 
+Quadtree.prototype.checkRange = function(coord, range) {
+  var radius = coord.radius * 0.027065;
+
+  var range = range || 
+  {
+    north: +coord.y + radius, 
+    east: +coord.x + radius, 
+    south: +coord.y - radius, 
+    west: +coord.x - radius,
+  };
+  
+  var bounds = {
+    north: this.boundaries.y + this.boundaries.height,
+    east: this.boundaries.x + this.boundaries.width,
+    south: this.boundaries.y,
+    west: this.boundaries.x,
+  };
+
+  if (bounds.north > range.north &&
+      bounds.east > range.east &&
+      bounds.south < range.south &&
+      bounds.west < range.west) 
+    {
+      return true;
+    }
+
+    else {
+      return false;
+    }
+};
+
 
 module.exports = new Quadtree();
 
 
 
+/*
 
+Generate 8 coordinate points
+
+
+
+
+
+
+
+// san francisco
+  // northwest point
+  // 37.809455, -122.525293
+
+  // northeast point
+  // 37.811552, -122.354177
+
+  // southwest point
+  // 37.613581, -122.510663
+
+  // southeast point
+  // 37.615192, -122.351613
+
+
+//california
+
+// northwest point
+// 41.9874797,-124.2301429
+
+// northeast point
+// 41.9874797, -114.7396131
+
+// southwest point
+// 32.4969499,-116.9726225
+
+// southeast point
+// 32.4969499, -114.7396131
+
+
+    x: -122.526000,
+    y: 37.613500,
+    width: 0.2,
+    height: 0.2
+  };
+
+
+
+*/
 
 
 
@@ -323,7 +426,7 @@ curl -i http://localhost:3000/users/list
 
 curl -H "Content-Type: application/json" -X POST -d 
 curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603090", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/events/broadcast
-curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"9269851","photoId":"92698511433024170683","TTL":"20","radius":"5","timestamp":"1433024170684"}'  http://localhost:3000/events/broadcast
+curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170689","TTL":"99","radius":"99","timestamp":"1433024170689"}'  http://localhost:3000/events/broadcast
 
 
 curl -H "Content-Type: application/json" -X POST -d '{"username" : "test2", "password": "test2"}' http://localhost:3000/users/signup
@@ -332,8 +435,10 @@ curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" 
 
 curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615"}' http://localhost:3000/gps/getlocal
 
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.50933233333333", "y": "37.63016666666667", "radius": "0.25"}' http://localhost:3000/gps/getlocal
+
 curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603099", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/photos/newPhoto
-curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"9269851","photoId":"92698511433024170683","TTL":"20","radius":"5","timestamp":"1433024170683"}'  http://localhost:3000/photos/newPhoto
+curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170680","TTL":"20","radius":"5","timestamp":"1433024170680"}'  http://localhost:3000/photos/newPhoto
 
 curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "2343289", "TTL": "55", "radius": "55", "timestamp" : "1432780946323"}' http://localhost:3000/photos/newPhoto
 
