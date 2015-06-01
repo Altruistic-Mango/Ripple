@@ -32,6 +32,7 @@ angular.module('shout.inbox', [
 ]);
 
 angular.module('shout.tabs', [
+  'shout.localstorage',
   'shout.camera'
 ]);
 
@@ -53,21 +54,18 @@ angular.module('shout.signup', [
 ]);
 
 angular.module('shout.review', [
-  //list the other modules that contain factories and controllers that you will use
   'shout.camera'
+  //list the other modules that contain factories and controllers that you will use
 ]);
 
-angular.module('s3UploadApp', [
-  'ngCookies',
-  'ngSanitize',
-  'angularFileUpload'
+angular.module('s3Upload', [
 ]);
 
 angular.module('shout.settings', [
-  's3UploadApp',
+  'shout.localstorage',
   'shout.camera',
   'shout.location',
-  's3UploadApp',
+  's3Upload',
   'shout.constants'
   // 'shout.login'
   //list the other modules that contain factories and controllers that you will use
@@ -75,7 +73,11 @@ angular.module('shout.settings', [
 
 angular.module("shout.constants", [])
 
+<<<<<<< HEAD
 .constant("API_HOST", "http://6d11d4ab.ngrok.com")
+=======
+.constant("API_HOST", "https://6214a3e3.ngrok.com")
+>>>>>>> update ngrok
 
 ;
 angular
@@ -582,11 +584,18 @@ angular
   .module('shout.tabs')
   .controller('TabsCtrl', TabsCtrl);
 
-TabsCtrl.$inject = ['CameraFactory'];
+TabsCtrl.$inject = ['$state', '$localstorage', 'CameraFactory'];
 
-function TabsCtrl(CameraFactory){
+function TabsCtrl($state, $localstorage, CameraFactory){
   vm = this;
-  vm.takePicture = CameraFactory.takePicture;
+  vm.takePicture = takePicture;
+  
+  function takePicture() {
+    CameraFactory.takePicture(function(imageURI) {
+      $localstorage.set('imagePath', imageURI);
+      $state.go('review'); 
+    });
+  }
 }
 
 angular
@@ -727,7 +736,11 @@ LoginCtrl.$inject = ['$scope', '$state', 'LoginFactory'];
 function LoginCtrl($scope, $state, LoginFactory) {
   console.log('LoginCtrl');
   var vm = this;
-  vm.data = null;
+  vm.data = {};
+  vm.data.username = 'mb';
+  vm.data.email = 'm@b.com';
+  vm.data.password = 'mb';
+
   vm.login = login;
   vm.badCombo = false;
 
@@ -753,10 +766,12 @@ angular
 LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST'];
 
 function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST) {
-  return {
-    successfulLogin: successfulLogin,
-    loginUser: loginUser
-  };
+
+  var services = {};
+  services.successfulLogin = successfulLogin;
+  services.loginUser = loginUser;
+
+  return services;
 
   function loginUser(data) {
     return $http({
@@ -767,7 +782,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   }
 
   function successfulLogin(data) {
-    console.log('login factory successfulLogin called');
+    console.log('successfulLogin');
     $localstorage.set('userId', data.userId);
     InboxFactory.updateInbox(data.inbox);
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
@@ -831,14 +846,24 @@ angular
   .module('shout.review')
   .controller('ReviewCtrl', ReviewCtrl);
 
-ReviewCtrl.$inject = ['$state', 'CameraFactory', 'ReviewFactory'];
+ReviewCtrl.$inject = ['$state', 'ReviewFactory', 'CameraFactory'];
 
-function ReviewCtrl($state, CameraFactory, ReviewFactory) {
+function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   console.log('ReviewCtrl');
   var vm = this;
 
-  vm.photo = CameraFactory.getPicture();
-  vm.sharePhoto = ReviewFactory.sharePhoto;
+  vm.photo = CameraFactory.filePath;
+  vm.sharePhoto = sharePhoto;
+
+  displayPhoto();
+
+  function displayPhoto() {
+    vm.photo = CameraFactory.filePath;
+  }
+  
+  function sharePhoto(){
+    $state.go('tab.settings');
+  }
 }
 
 angular
@@ -857,6 +882,7 @@ function ReviewFactory($state) {
   return services;
 
   function sharePhoto() {
+    console.log('sharePhoto');
     $state.go('tab.settings');
   }
 
@@ -878,98 +904,88 @@ function ReviewFactory($state) {
 //}
 
 angular
-  .module('s3UploadApp')
-  .factory('s3Upload', s3Upload);
+  .module('s3Upload')
+  .factory('s3', s3);
 
-s3Upload.$inject = ['$http', '$location', '$upload', '$rootScope', '$localstorage', 'API_HOST'];
+s3.$inject = ['$http', 'API_HOST'];
 
-function s3Upload($http, $location, $upload, $rootScope, $localstorage, API_HOST) {
+function s3($http, API_HOST) {
 
-  var imageUploads = [];
-  var upload = [];
+  var userId = 'userId';
+  var url = 'https://' + 'ripple-photos' + '.s3.amazonaws.com/';
+  var file = new File(); 
+
   var services = {};
-  var files = [];
-
-  services.uploadFile = uploadFile;
+  services.upload = upload;
+  services.userId = userId;
 
   return services;
 
-  function abort(index) {
-    upload[index].abort();
-    upload[index] = null;
+  function upload(newfile, callback) {
+    file = newfile;
+    console.log('uploadToS3');
+
+    getSignedPolicy(function(response) {
+      sendFile(response, function(){
+        callback();
+      });
+    });
   }
 
-  $scope.uploadFile = uploadFile;
-
-  function uploadFile($files) {
-    $files = [$files];
-    files = $files;
-    console.log(files);
-    upload = [];
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      file.progress = parseInt(0);
-      (function(file, i) {
-        $http.get(API_HOST + '/api/s3Policy?mimeType=' + file.type).success(function(response) {
-          var s3Params = response;
-          $localstorage.set('timestamp', Date.now());
-          var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
-          upload[i] = $upload.upload({
-            url: 'https://' + $rootScope.config.awsConfig.bucket + '.s3.amazonaws.com/',
-            method: 'POST',
-            transformRequest: function(data, headersGetter) {
-              //Headers change here
-              var headers = headersGetter();
-              delete headers['Authorization'];
-              return data;
-            },
-            data: {
-              //'key': 's3Upload/' + Math.round(Math.random() * 10000) + '$$' + file.name,
-              'key': 's3Upload/' + photoId + '.jpeg',
-              'acl': 'public-read',
-              'Content-Type': file.type,
-              'AWSAccessKeyId': s3Params.AWSAccessKeyId,
-              'success_action_status': '201',
-              'Policy': s3Params.s3Policy,
-              'Signature': s3Params.s3Signature
-            },
-            file: file,
-          });
-          console.log(file);
-          upload[i]
-            .then(function(response) {
-              file.progress = parseInt(100);
-              if (response.status === 201) {
-                var data = xml2json.parser(response.data),
-                  parsedData;
-                parsedData = {
-                  location: data.postresponse.location,
-                  bucket: data.postresponse.bucket,
-                  key: data.postresponse.key,
-                  etag: data.postresponse.etag
-                };
-                imageUploads.push(parsedData);
-
-              } else {
-                alert('Upload Failed');
-              }
-            }, null, function(evt) {
-              file.progress = parseInt(100.0 * evt.loaded / evt.total);
-            });
-        });
-      }(file, i));
-    }
-    console.log('done with upload for loop');
+  function getSignedPolicy(callback) {
+    console.log('getSignedPolicy');
+    $http.get(API_HOST + '/api/s3Policy?mimeType=' + file.type)
+      .success(function(response) {
+        callback(response);
+      });
   }
+
+  function sendFile(s3Params, callback) {
+    console.log('sendFile');
+    var extension = file.type.match(/\w+$/)[0];
+    var params = {
+      'key': 's3Upload/' + file.name + '.' + extension,
+      'acl': 'public-read',
+      'Content-Type': file.type,
+      'AWSAccessKeyId': s3Params.AWSAccessKeyId,
+      'success_action_status': '201',
+      'Policy': s3Params.s3Policy,
+      'Signature': s3Params.s3Signature
+     };
+
+    var options = new FileUploadOptions();
+    options.fileKey = 'file';
+    options.fileName = file.name + '.' + extension;
+    options.mimeType = file.type;
+    options.chunkedMode = false;
+    options.params = params;
+    console.log(options);
+    var ft = new FileTransfer();
+    ft.upload(file.localURL, url, callback, fail, options);
+  }
+
+  // Helper Functions
+  function win(r) {
+    console.log("Code = " + r.responseCode);
+    console.log("Response = " + r.response);
+    console.log("Sent = " + r.bytesSent);
+  }
+
+  function fail(error) {
+    console.log("upload error source " + error.source);
+    console.log("upload error target " + error.target);
+    console.log(error);
+  }
+
 }
 
 angular
   .module('shout.settings')
   .controller('SettingsCtrl', SettingsCtrl);
 
-SettingsCtrl.$inject = ['$http', '$state', '$ionicHistory', '$localstorage', 'CameraFactory', 'SettingsFactory', 'LocationFactory', 's3Upload', 'API_HOST'];
+SettingsCtrl.$inject = ['$http', '$state', '$ionicHistory', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST'];
 
-function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory, SettingsFactory, LocationFactory, s3Upload, API_HOST) {
+function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST) {
   console.log('SettingsCtrl');
 
   var vm = this;
@@ -993,78 +1009,13 @@ function SettingsCtrl($http, $state, $ionicHistory, $localstorage, CameraFactory
   }
 
   function sharePhoto() {
-    var files = document.getElementById('photos').files[0];
-    console.log(files);
-    var filepath = CameraFactory.getPicture();
-
-    if (files) {
-      s3Upload.uploadFile(files);
-    } else {
-      window.resolveLocalFileSystemURL(filepath, gotFile, fail);
-    }
-
-    var win = function(r) {
-      console.log("Code = " + r.responseCode);
-      console.log("Response = " + r.response);
-      console.log("Sent = " + r.bytesSent);
-    };
-
-    var fail = function(error) {
-      console.log("upload error source " + error.source);
-      console.log("upload error target " + error.target);
-      console.log(error);
-    };
-
-    function gotFile(file) {
-      console.log(file);
-      //s3Upload.uploadFile(file);
-
-      $http.get(API_HOST + '/api/s3Policy?mimeType=' + 'image').success(function(response) {
-        var s3Params = response;
-        $localstorage.set('timestamp', Date.now());
-        var photoId = $localstorage.get('userId') + $localstorage.get('timestamp');
-
-        var options = new FileUploadOptions();
-        options.fileKey = 'file';
-        options.fileName = photoId + '.jpeg';
-        options.mimeType = 'image/jpeg';
-        options.chunkedMode = false;
-
-        var params = {
-          'key': 's3Upload/' + photoId + '.jpeg',
-          'acl': 'public-read',
-          'Content-Type': 'image/jpeg',
-          'AWSAccessKeyId': s3Params.AWSAccessKeyId,
-          'success_action_status': '201',
-          'Policy': s3Params.s3Policy,
-          'Signature': s3Params.s3Signature
-        };
-
-        //var headers = {'Content-Length':file.size};
-
-        console.log('headers');
-
-        options.params = params;
-        //options.headers = headers;
-
-        var url = 'https://' + 'ripple-photos' + '.s3.amazonaws.com/';
-        var ft = new FileTransfer();
-        ft.upload(filepath, url, win, fail, options);
-
-        //s3Upload.uploadFile([files]);
-        console.log('sending new photo');
-        var pos = LocationFactory.getUsersPosition();
-        var data = {};
-        data.x = pos.x;
-        data.y = pos.y;
-        data.userId = $localstorage.get('userId');
-        data.photoId = photoId;
-        data.TTL = vm.TTL;
-        data.radius = vm.radius;
-        data.timestamp = $localstorage.get('timestamp');
-        $http.post(API_HOST + '/photos/newPhoto', data);
+    console.log('SettingsCtrl.sharePhoto');
+    CameraFactory.getFile(function(file) {
+      file.name = $localstorage.get('userId') + Date.now();
+      s3.upload(file, function() {
+        $state.go('tab.inbox');
       });
-    }
+    });
   }
 
   function userSetWatch() {
