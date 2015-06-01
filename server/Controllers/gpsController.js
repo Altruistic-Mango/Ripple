@@ -54,7 +54,7 @@ var gpsController = {
 
   pruneTree: function() {
     var timestamp = new Date().getTime();
-    quadtree.clearOut(timestamp)
+    quadtree.clearOut(timestamp);
     var self = this;
     setTimeout(function() {
       self.pruneTree();

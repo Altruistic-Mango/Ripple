@@ -190,11 +190,12 @@ Quadtree.prototype.update = function(item) {
 Quadtree.prototype.remove = function(item) {
   var quadrant = this.get(item);
   var results = quadrant.children;
+  var removedItem;
   item.x = +item.x;
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
     if (results[i].userId === item.userId) {
-      var removedItem = results.splice(i, 1);
+      removedItem = results.splice(i, 1);
     }
   }
   // first perform check on child elements for threshold
@@ -261,6 +262,7 @@ Quadtree.prototype.traverse = function(callback, nodes) {
       return nodes;
     }
 }
+
 
 
 
@@ -336,8 +338,8 @@ Quadtree.prototype.unfold = function(quad) {
 
     nodes.forEach(function(node) {
       quad.put(node);
-    })
-  };
+    });
+  }
  };
 
 Quadtree.prototype.checkRange = function(coord, range) {

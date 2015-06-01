@@ -25,7 +25,7 @@ var populateApp = function(num){
       var name = "";
       var letters = "abcdefghijklmnopqrstuvwxyz";
       for(var i=0; name.length<11; i++){
-        var slice = Math.floor(Math.random()*27)
+        var slice = Math.floor(Math.random()*27);
         name += letters.slice(slice, slice+1);
       }
       return name;
@@ -33,14 +33,14 @@ var populateApp = function(num){
     
     //generates random Lat in SF
     var genRndLat = function(){
-      var genLat = JSON.stringify(Math.random()*(122.525999 - 122.325999) - 122.525999);
-      return genLat.slice(0, 11);
-    }
+      var genLat = Math.random()*(122.525999 - 122.325999) - 122.525999;
+      return genLat
+    };
     //generates random Long in SF
     var genRndLong = function(){
-      var genLong = JSON.stringify(Math.random()*(37.813500 - 37.613500) + 37.613500);
-      return genLong.slice(0, 9);
-    }
+      var genLong = Math.random()*(37.813500 - 37.613500) + 37.613500;
+      return genLong
+    };
     var injectConstantUser = function(){
       var constantUser = {};
         constantUser.body = {};
@@ -101,6 +101,6 @@ var populateApp = function(num){
 };
 
 
-populateApp(10);
+populateApp(4);
 
 
