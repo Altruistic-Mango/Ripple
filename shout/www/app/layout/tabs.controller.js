@@ -5,13 +5,14 @@ angular
 TabsCtrl.$inject = ['$state', '$localstorage', 'CameraFactory'];
 
 function TabsCtrl($state, $localstorage, CameraFactory){
-  vm = this;
-  vm.takePicture = takePicture;
-  
-  function takePicture() {
+  var vm = this;
+
+  vm.takePhoto = takePhoto;
+
+  function takePhoto() {
     CameraFactory.takePicture(function(imageURI) {
       $localstorage.set('imagePath', imageURI);
-      $state.go('review'); 
+      $state.go('review');
     });
   }
 }
