@@ -3,9 +3,7 @@ var gpsController = require('../Controllers/gpsController.js');
 var userController = require('../Controllers/userController.js');
 var Photo = require('../Models/Photo.js');
 var mongoose = require('mongoose');
-var db = require('../db.js');
 var Promise = require('bluebird');
-var Q = require('q');
 
 var eventController = {
 
@@ -64,6 +62,7 @@ var eventController = {
     console.log('calling events callback')
     cb(photoId, recipients, eventItem, function(recipients) {
       recipients.forEach(function(recipient) {
+        console.log('recipient is a ' + typeof recipient);
           userController.updateInbox(recipient, eventItem);
         });
     });

@@ -333,7 +333,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" 
 curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615"}' http://localhost:3000/gps/getlocal
 
 curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603099", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/photos/newPhoto
-curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"9269851","photoId":"92698511433024170683","TTL":"20","radius":"5","timestamp":"1433024170683"}'  http://localhost:3000/photos/newPhoto
+curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170680","TTL":"20","radius":"5","timestamp":"1433024170680"}'  http://localhost:3000/photos/newPhoto
 
 curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "2343289", "TTL": "55", "radius": "55", "timestamp" : "1432780946323"}' http://localhost:3000/photos/newPhoto
 
