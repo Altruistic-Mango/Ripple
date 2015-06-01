@@ -72,14 +72,9 @@ angular.module('shout.settings', [
 ]);
 
 angular.module("shout.constants", [])
+  .constant("API_HOST", "https://6214a3e3.ngrok.com");
 
-<<<<<<< HEAD
-.constant("API_HOST", "http://6d11d4ab.ngrok.com")
-=======
-.constant("API_HOST", "https://6214a3e3.ngrok.com")
->>>>>>> update ngrok
 
-;
 angular
   .module('shout')
   .config(configure);
