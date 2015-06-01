@@ -23,7 +23,8 @@ navigation history that also transitions its views in and out.
   </ion-tab>
 
   <!-- Camera Tab -->
-  <ion-tab title="Camera" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" href="#/tab/review" ng-click="vm.takePicture()">
+  <ion-tab title="Camera" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" href="#/tab/camera" ng-click="vm.takePhoto()">
+    <ion-nav-view name="tab-camera"></ion-nav-view>
   </ion-tab>
 
 </ion-tabs>
