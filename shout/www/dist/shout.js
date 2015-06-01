@@ -86,7 +86,8 @@ function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDel
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
-    'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/**']);
+    'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/**'
+  ]);
 
   // Ionic uses AngularUI Router which uses the concept of states
   $stateProvider
@@ -138,17 +139,16 @@ function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDel
     }
   })
 
-  /*
   .state('tab.camera', {
-      url: '/camera',
-      views: {
-        'tab-camera': {
-          templateUrl: 'app/camera/tab-camera.html',
-          controller: 'CameraCtrl'
-        }
+    url: '/camera',
+    views: {
+      'tab-camera': {
+        templateUrl: 'app/camera/tab-camera.html',
+        controller: 'CameraCtrl as vm'
       }
-    })
-    */
+    }
+  })
+
   .state('tab.album', {
     url: '/album',
     views: {
@@ -301,7 +301,7 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
 
   function newPhoto() {
     console.log('newPhoto');
-    var pos = LocationFactory.currentPosition;
+    var pos = LocationFactory.getUsersPosition;
     var data = {};
     data.x = pos.x;
     data.y = pos.y;
@@ -334,6 +334,27 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
 
 angular
   .module('shout.camera')
+  .controller('CameraCtrl', CameraCtrl);
+
+CameraCtrl.$inject = ['$rootScope', '$state', 'CameraFactory', '$localstorage'];
+
+function CameraCtrl($rootScope, $state, CameraFactory, $localstorage) {
+  console.log('CameraCtrl');
+  var vm = this;
+
+  takePhoto();
+
+  function takePhoto() {
+    CameraFactory.takePicture(function(imageURI) {
+      $localstorage.set('imagePath', imageURI);
+      $state.go('review');
+    });
+  }
+
+}
+
+angular
+  .module('shout.camera')
   .factory('CameraFactory', CameraFactory);
 
 CameraFactory.$inject = [];
@@ -342,13 +363,15 @@ function CameraFactory() {
   console.log('CameraFactory');
 
   var pictureSource;
-  var destinationType; 
+  var destinationType;
   var options;
+  var observerCallbacks = [];
 
   var services = {};
   services.takePicture = takePicture;
   services.getFile = getFile;
   services.filePath = '';
+  services.registerObserverCallback = registerObserverCallback;
 
   return services;
 
@@ -374,7 +397,7 @@ function CameraFactory() {
           quality: 50,
           destinationType: destinationType,
           sourceType: pictureSource,
-          encodingType: Camera.EncodingType.JPEG 
+          encodingType: Camera.EncodingType.JPEG
         };
       }
       callback();
@@ -388,6 +411,7 @@ function CameraFactory() {
     function success(imageURI) {
       console.log('getPicture success with:' + imageURI);
       services.filePath = imageURI;
+      notifyObservers();
       callback(imageURI);
     }
 
@@ -404,15 +428,25 @@ function CameraFactory() {
       console.log('getFile success');
 
       fileEntry.file(function(file) {
-        services.photo = file; 
+        services.photo = file;
         console.log('File Object', file);
         callback(file);
       });
     }
 
     function failure(message) {
-        console.log('getFile failed because: ' + message);
+      console.log('getFile failed because: ' + message);
     }
+  }
+
+  function registerObserverCallback(callback) {
+    observerCallbacks.push(callback);
+  }
+
+  function notifyObservers() {
+     observerCallbacks.forEach(function(callback) {
+       callback();
+     });
   }
 }
 
@@ -582,13 +616,14 @@ angular
 TabsCtrl.$inject = ['$state', '$localstorage', 'CameraFactory'];
 
 function TabsCtrl($state, $localstorage, CameraFactory){
-  vm = this;
-  vm.takePicture = takePicture;
-  
-  function takePicture() {
+  var vm = this;
+
+  vm.takePhoto = takePhoto;
+
+  function takePhoto() {
     CameraFactory.takePicture(function(imageURI) {
       $localstorage.set('imagePath', imageURI);
-      $state.go('review'); 
+      $state.go('review');
     });
   }
 }
@@ -845,17 +880,18 @@ ReviewCtrl.$inject = ['$state', 'ReviewFactory', 'CameraFactory'];
 
 function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   console.log('ReviewCtrl');
+
+  CameraFactory.registerObserverCallback(displayPhoto);
+
   var vm = this;
 
   vm.photo = CameraFactory.filePath;
   vm.sharePhoto = sharePhoto;
 
-  displayPhoto();
-
   function displayPhoto() {
     vm.photo = CameraFactory.filePath;
   }
-  
+
   function sharePhoto(){
     $state.go('tab.settings');
   }
