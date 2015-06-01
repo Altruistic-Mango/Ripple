@@ -2,12 +2,22 @@ angular
   .module('shout.review')
   .controller('ReviewCtrl', ReviewCtrl);
 
-ReviewCtrl.$inject = ['$state', 'CameraFactory', 'ReviewFactory'];
+ReviewCtrl.$inject = ['$state', 'ReviewFactory', 'CameraFactory'];
 
-function ReviewCtrl($state, CameraFactory, ReviewFactory) {
+function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   console.log('ReviewCtrl');
   var vm = this;
 
-  vm.photo = CameraFactory.getPicture();
-  vm.sharePhoto = ReviewFactory.sharePhoto;
+  vm.photo = CameraFactory.filePath;
+  vm.sharePhoto = sharePhoto;
+
+  displayPhoto();
+
+  function displayPhoto() {
+    vm.photo = CameraFactory.filePath;
+  }
+  
+  function sharePhoto(){
+    $state.go('tab.settings');
+  }
 }

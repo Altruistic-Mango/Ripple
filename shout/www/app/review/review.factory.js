@@ -14,6 +14,7 @@ function ReviewFactory($state) {
   return services;
 
   function sharePhoto() {
+    console.log('sharePhoto');
     $state.go('tab.settings');
   }
 
