@@ -62,7 +62,7 @@ Quadtree.prototype.put = function(item) {
 
   // if our quadrant is divided into sub quadrants...
   if (this.quadrants.length) {
-
+      console.log('this is called on the fifth item');
     // find the correct quadrant
     var index = this.findIndex(item);
 

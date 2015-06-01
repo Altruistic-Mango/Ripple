@@ -25,7 +25,7 @@ var populateApp = function(num){
       var name = "";
       var letters = "abcdefghijklmnopqrstuvwxyz";
       for(var i=0; name.length<11; i++){
-        var slice = Math.floor(Math.random()*27);
+        var slice = Math.floor(Math.random()*27)
         name += letters.slice(slice, slice+1);
       }
       return name;
@@ -33,14 +33,14 @@ var populateApp = function(num){
     
     //generates random Lat in SF
     var genRndLat = function(){
-      var genLat = Math.random()*(122.525999 - 122.325999) - 122.525999;
-      return genLat
-    };
+      var genLat = Math.random()*(122.510728 - 122.387475) + 122.387475 * -1;
+      return genLat;
+    }
     //generates random Long in SF
     var genRndLong = function(){
-      var genLong = Math.random()*(37.813500 - 37.613500) + 37.613500;
-      return genLong
-    };
+      var genLong = Math.random()*(37.808712 - 37.709369) + 37.709369;
+      return genLong;
+    }
     var injectConstantUser = function(){
       var constantUser = {};
         constantUser.body = {};
@@ -76,7 +76,6 @@ var populateApp = function(num){
   // calls the insertCoords method from gps conroller for all dummy users
   var populateQuadTree = function(){
     for(var i=0; i<userArr.length; i++){
-      console.log(userArr[i]);
       gpsController.insertCoords(userArr[i]);
     }
   }();
@@ -101,6 +100,6 @@ var populateApp = function(num){
 };
 
 
-populateApp(4);
+populateApp(10);
 
 

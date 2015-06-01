@@ -15,6 +15,7 @@ var gpsController = {
 
     var userId = req.body.userId;
 
+
     var timestamp = new Date().getTime();
 
     var node = {
