@@ -6,7 +6,7 @@ function Quadtree(boundaries, maxChildren, root, depth) {
     width: 0.2,
     height: 0.2
   };
-<<<<<<< Updated upstream
+
   this.maxChildren = maxChildren || 4;
   this.root = root || null;
   this.depth = depth || 0;
