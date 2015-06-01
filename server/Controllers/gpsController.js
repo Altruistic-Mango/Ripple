@@ -15,8 +15,6 @@ var gpsController = {
 
     var userId = req.body.userId;
 
-    console.log('inserting coordinates ' + typeof userId);
-
     var timestamp = new Date().getTime();
 
     var node = {
@@ -42,11 +40,15 @@ var gpsController = {
     var searchParams = {
       x: req.body.x,
       y: req.body.y,
-      userId: req.body.userId
+      userId: req.body.userId,
+      radius: +req.body.radius
     };
 
-    var nearbyNodes = this.getNodes(searchParams);
-    res.send(nearbyNodes.children);
+    var tree = this.getNodes(searchParams);
+    console.log(tree.depth);
+    var nodes = tree.traverse();
+    console.log(nodes.length);
+    res.send(nodes);
   },
 
   pruneTree: function() {
@@ -59,7 +61,7 @@ var gpsController = {
   },
 
   // This will get the distance between two coordinates
-  calculateDist: function(item1, nodes) {
+  calculateDist: function(item1, item2, nodes) {
 
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
@@ -91,8 +93,8 @@ var gpsController = {
 
   // Find nodes in Quadtree
   getNodes: function(searchParams) {
-    var nodes = quadtree.get(searchParams);
-    return nodes;
+    var node = quadtree.get(searchParams);
+    return node;
   },
 
   // Invoke calculate distance function
@@ -114,7 +116,27 @@ var gpsController = {
 
   // load dummy data for testing
   loadData: function(req, res) {
-    quadtree.addData();
+    var date = new Date();
+
+    var randIntx = function() {
+      return Math.random() * (122.525999 - 122.325999) - (122.525999)
+    };
+    
+    var randInty = function() {
+      return Math.random() * (37.813501 - 37.613501) + 37.613501
+    }
+    
+    var count = 0;
+    
+    while (count < 10000) {
+      var item = {};
+      item.x = randIntx();
+      item.y = randInty();
+      item.timestamp = date;
+      item.userId = '555';
+      quadtree.put(item);
+      count++;
+    };
     res.end();
   },
 

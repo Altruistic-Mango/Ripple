@@ -3,9 +3,7 @@ var gpsController = require('../Controllers/gpsController.js');
 var userController = require('../Controllers/userController.js');
 var Photo = require('../Models/Photo.js');
 var mongoose = require('mongoose');
-var db = require('../db.js');
 var Promise = require('bluebird');
-var Q = require('q');
 
 var eventController = {
 
@@ -15,22 +13,18 @@ var eventController = {
     var photoId = data.photoId;
     var timestamp = data.timestamp;
     var userId = data.userId;
-    var TTL = +data.TTL;
-    var radius = +data.radius;
+    var TTL = data.TTL;
+    var radius = data.radius;
 
     var searchParams = {
       x: +data.x,
       y: +data.y,
-      userId: data.userId,
+      userId: userId,
       radius: radius
     };
-    var node = gpsController.getNodes(searchParams);
-    console.log('these are nearby users in qtree ' + JSON.stringify(node.children));
-    var recipients = gpsController.calculateDist(searchParams, node.children);
-    // recipients = recipients.map(function(user) {
-    //   // get distance calculation true/false
-    //   return user.userId;
-    // });
+    var tree = gpsController.getNodes(searchParams);
+    var nodes = tree.traverse();
+    var recipients = gpsController.calculateDist(searchParams, nodes);
 
     console.log('recipients mapped by gps controller and calculate distance are ' + recipients);
 
@@ -64,6 +58,7 @@ var eventController = {
     console.log('calling events callback')
     cb(photoId, recipients, eventItem, function(recipients) {
       recipients.forEach(function(recipient) {
+        console.log('recipient is a ' + typeof recipient);
           userController.updateInbox(recipient, eventItem);
         });
     });
