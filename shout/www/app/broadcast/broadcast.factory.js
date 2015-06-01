@@ -15,7 +15,7 @@ function BroadcastFactory(LocationFactory, $http, API_HOST) {
 
   function newPhoto() {
     console.log('newPhoto');
-    var pos = LocationFactory.currentPosition;
+    var pos = LocationFactory.getUsersPosition;
     var data = {};
     data.x = pos.x;
     data.y = pos.y;
