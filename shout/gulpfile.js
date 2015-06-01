@@ -22,7 +22,7 @@ var paths = {
 };
 
 //Main gulp task
-gulp.task('default', ['scripts', 'watch']);
+gulp.task('default', ['scripts', 'constant', 'watch']);
 
 //Script for all gulp tasks, used in default and watch
 gulp.task('scripts', ['sass', 'jshint', 'clean', 'concat']);
