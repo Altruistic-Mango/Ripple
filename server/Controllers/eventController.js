@@ -62,13 +62,11 @@ var eventController = {
     .then(function(data) {
       console.log('Event created, calling events callback with photo' + data.photo + 
         '\nevent ' + data.event);
-        console.log('finding recipientList');
         console.log(data.photo.recipientList);
         var recipientList = [];
 
         data.event.recipientList.forEach(function(userId) {
           if (data.photo.recipientList.indexOf(userId) === -1) {
-            console.log('adding user to photo recipient list');
             recipientList.push(userId);
           }
           else {
@@ -85,7 +83,6 @@ var eventController = {
       })  
     .then(function(data) {
       data.recipientList.forEach(function(recipient) {
-      console.log('recipient is a ' + typeof recipient);
         userController.updateInbox(recipient, data.event);
       });
     res.end();
