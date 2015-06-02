@@ -2,6 +2,8 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var PhotoConstants = require('../constants/PhotoConstants');
 var objectAssign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
+var D3Actions = require('../actions/D3Actions');
+var D3Store = require('../stores/D3Store');
 
 var PhotoStore = objectAssign({}, EventEmitter.prototype, {
   addListener: function(eventName, callback) {
@@ -33,9 +35,8 @@ AppDispatcher.register(function (payload) {
     _fetchEvents(photo.photoId)
       .then(function(data) {
         console.log('events: ', data);
-        PhotoStore.emit(PhotoConstants.PHOTO_CLICKED, data);
-      })
-
+        D3Actions.getData(data);
+      });
   }
   
   if (actions[action.actionType]){

@@ -3,6 +3,9 @@ var Navigation = require('./components/Navigation');
 var ExploreContent = require('./components/ExploreContent');
 var AlbumContent = require('./components/AlbumContent');
 var LoginContent = require('./components/LoginContent');
+var D3Component = require('./components/D3Component');
+var D3Store = require('./stores/D3Store');
+var D3Constants = require('./constants/D3Constants');
 
 
 var Router = require('react-router');
@@ -13,6 +16,25 @@ var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
 
 var Dashboard = React.createClass({
+  getInitialState: function() {
+    return {
+      data: []
+    };
+  },
+
+  componentWillMount : function () {
+    D3Store.addListener(D3Constants.GET_DATA, this.handleNewData)
+  },
+
+  handleNewData: function(data) {
+    //set state so chart renders
+    this.setState({
+      data: data
+    }, function(){
+      console.log('set data state in dashboard: ', this.state.data);
+    })
+  },
+  
   render: function () {
     return (
       <div className="viewPort">
@@ -26,7 +48,7 @@ var Dashboard = React.createClass({
           <RouteHandler />
         </div>
         <div className="d3">
-        D3 content
+        <D3Component />
         </div>
       </div>
     );
@@ -45,3 +67,10 @@ var routes = (
 Router.run(routes, function (Handler) {
   React.render(<Handler />, document.getElementById('dashboard'));
 });
+
+
+          // <D3Component 
+          //   data={this.state.data} />
+
+
+

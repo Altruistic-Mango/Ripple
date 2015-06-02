@@ -24,7 +24,6 @@ var dashboardController = {
     })
   }
 
-
 };
 
 module.exports = dashboardController;
