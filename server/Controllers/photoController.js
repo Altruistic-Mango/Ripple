@@ -8,7 +8,6 @@ var userController = require('../Controllers/userController.js');
 var photoController = {
 
   storePhoto: function(req, res) {
-    res();
 
     // incoming photo: '{"userId: "", "photoId": "", "timestamp": "", "x":"", "y": "", "radius": "", "TTL":""}'
 // curl -H "Content-Type:application/json" -X POST -d '{"userId: "9651598", "photoId": "11111111", "timestamp": "1432937843430", "x":"-122.4093594", "y": "37.783795", "radius": "10000", "TTL":"100000000"} http://localhost:3000/photos/newPhoto
@@ -27,7 +26,7 @@ var photoController = {
       userId: userId,
       recipientList: [userId]
     };
-
+    res();
     Photo.findOne({
       photoId: photoId
     }, function(err, photo) {

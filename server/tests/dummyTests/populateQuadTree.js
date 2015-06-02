@@ -6,7 +6,6 @@ var mocha = require('mocha');
 
 
 var populateApp = function(num){
-
   var userArr = [];
 //creates an array of dummy users 
   var createDummyUserArr = function(num){ 
@@ -33,16 +32,16 @@ var populateApp = function(num){
     
     //generates random Lat in SF
     var genRndLat = function(){
-      var genLat = Math.random()*(122.510728 - 122.387475) + 122.387475 * -1;
-      return genLat;
+      var genLat = Math.random() * (122.525999 - 122.325999) - (122.525999);
+      return genLat.toFixed(6);
     }
     //generates random Long in SF
     var genRndLong = function(){
-      var genLong = Math.random()*(37.808712 - 37.709369) + 37.709369;
-      return genLong;
+      var genLong = Math.random() * (37.813501 - 37.613501) + 37.613501;
+      return genLong.toFixed(6);
     }
     var injectConstantUser = function(){
-      var constantUser = {};
+      var constantUser = {body: {}};
         constantUser.body = {};
         constantUser.body.userId = 7654321;
         constantUser.body.x = genRndLong();
@@ -52,42 +51,47 @@ var populateApp = function(num){
       userArr.push(constantUser);
     }();
 
-    for(var i=0; i<num; i++){
-      var createUser = function(){
-        var dummyUser = {body: {}}
-        dummyUser.body.userId = userId();
-        dummyUser.body.x = genRndLong();
-        dummyUser.body.y = genRndLat();
-        dummyUser.body.username = randomName();
-        dummyUser.body.password = randomName();
-        // dummyUser.body.inbox = []; 
-        userArr.push(dummyUser);
-      }();
+    var createUser = function(){
+      var dummyUser = {body: {}}
+      dummyUser.body.userId = userId();
+      dummyUser.body.x = genRndLat();
+      dummyUser.body.y = genRndLong();
+      dummyUser.body.username = randomName();
+      dummyUser.body.password = randomName();
+      // dummyUser.body.inbox = []; 
+      userArr.push(dummyUser);
+    };
+
+    while(userArr.length < num){
+      createUser();
     }
   };
 
   createDummyUserArr(num);
 
-  var populateUserDB = function(){
-    for(var i=0; i<userArr.length; i++){
-      userController.signupUser(userArr[i]);
-    }
-  }();
+  
   // calls the insertCoords method from gps conroller for all dummy users
-  var populateQuadTree = function(){
+  var populateQuadTree = function() {
     for(var i=0; i<userArr.length; i++){
       gpsController.insertCoords(userArr[i]);
     }
-  }();
+  };
+  populateQuadTree();
 
+  var populateUserDB = function(){
+    for(var i=0; i<userArr.length; i++){
 
-  User.find({}, function(err, res){
-    if(err){
-      console.log("this the error from pop: ", err);
-    } else {
-      console.log(res);
+      User.create(userArr[i].body, function(err, result){
+        if(err){
+          console.log("Dummy User Create Error: ", err);
+          return;
+        } else {
+          console.log("Successfully created dummy users: ", result);
+        }
+      });
     }
-  });
+  };
+  populateUserDB();
 
   // User.remove({}, function(err, result){
   //   if(err){
@@ -97,9 +101,16 @@ var populateApp = function(num){
   //   }
   // });
 
+  //   User.find({}, function(err, res){
+  //     if(err){
+  //       console.log("this the error from pop: ", err);
+  //     } else {
+  //       console.log(res);
+  //     }
+  //   });
 };
 
 
-populateApp(10);
+populateApp(1000);
 
 

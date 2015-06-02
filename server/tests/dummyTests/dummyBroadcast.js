@@ -19,11 +19,11 @@ var photoFind = function(){
 
 var fireStorePhoto = function(){
   var dummyPhoto = { body:{} }
-  dummyPhoto.body.photoId = 43772621432956654430,
+  dummyPhoto.body.photoId = "43772621432956654430",
   dummyPhoto.body.userId = 7654321,
   dummyPhoto.body.radius = 7,
   dummyPhoto.body.TTL = 10,
-  dummyPhoto.body.timestamp = new Date().getTime()
+  dummyPhoto.body.timestamp = new Date().getTime();
 
   photoController.storePhoto(dummyPhoto, function(){
     photoFind();
