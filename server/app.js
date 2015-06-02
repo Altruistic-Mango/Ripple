@@ -23,6 +23,7 @@ var photos = require('./Routes/photos');
 var gps = require('./Routes/gps');
 var events = require('./Routes/events');
 var api = require('./Routes/api');
+var dashboard = require('./Routes/dashboard');
 
 /* allows access to dashboard */
 var dashboard = require('./Routes/dashboard');
@@ -54,6 +55,7 @@ app.use('/users', users);
 app.use('/photos', photos);
 app.use('/gps', gps);
 app.use('/events', events);
+app.use('/dashboard', dashboard);
 gpsController.pruneTree();
 
 

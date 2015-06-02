@@ -22,3 +22,7 @@ html{
   float: left;
   margin: 5px;
 }
+
+.photo {
+  width: 300px;
+}
