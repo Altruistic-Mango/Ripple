@@ -7,4 +7,8 @@ router.get('/photos', function(req, res) {
   dashboardController.fetchPhotos(req, res);
 });
 
+router.get('/events/:photoId', function(req, res) {
+  dashboardController.fetchEvents(req, res);
+});
+
 module.exports = router;

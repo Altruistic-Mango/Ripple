@@ -1,4 +1,5 @@
 var React = require('react');
+var PhotoActions = require('../actions/PhotoActions');
 
 var PhotoEntry = React.createClass({
     handleClick: function() {
