@@ -455,7 +455,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "phot
 curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170689","TTL":"99","radius":"99","timestamp":"1433024170689"}'  http://localhost:3000/events/broadcast
 
 
-curl -H "Content-Type: application/json" -X POST -d '{"username" : "test2", "password": "test2"}' http://localhost:3000/users/signup
+curl -H "Content-Type: application/json" -X POST -d '{"username" : "henry", "password": "henry"}' http://localhost:3000/users/signup
 
 curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "-122.515", "y" : "37.615"}' http://localhost:3000/gps/position
 
@@ -466,7 +466,7 @@ curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.50933233333333",
 curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603099", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/photos/newPhoto
 curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170680","TTL":"20","radius":"5","timestamp":"1433024170680"}'  http://localhost:3000/photos/newPhoto
 
-curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "2343289", "TTL": "55", "radius": "55", "timestamp" : "1432780946323"}' http://localhost:3000/photos/newPhoto
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "3852851", "TTL": "55", "radius": "55", "timestamp" : "1432780946323", "photoId" : "38528511432780946323"}' http://localhost:3000/photos/newPhoto
 
 
 curl -H "Content-Type:application/json" -X POST -d '{"username" : "henry"}' http://localhost:3000/users/clearInbox

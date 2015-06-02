@@ -45,9 +45,9 @@ var gpsController = {
     };
 
     var tree = this.getNodes(searchParams);
-    console.log(tree.depth);
+    // console.log(tree.depth);
     var nodes = tree.traverse();
-    console.log(nodes.length);
+    // console.log(nodes.length);
     res.send(nodes);
 
   },
@@ -62,7 +62,7 @@ var gpsController = {
   },
 
   // This will get the distance between two coordinates
-  calculateDist: function(item1, item2, nodes) {
+  calculateDist: function(item1, nodes) {
 
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
@@ -72,8 +72,8 @@ var gpsController = {
     var result = [];
 
     nodes.forEach(function(item2) {
-      lat2 = item2.x;
-      lon2 = item2.y;
+      lat2 = +item2.x;
+      lon2 = +item2.y;
       dLat = (lat2 - lat1).toRad();
       dLon = (lon2 - lon1).toRad();
       var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -82,7 +82,6 @@ var gpsController = {
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       var d = R * c;
       d = d * 0.621371;
-      console.log(d);
 
       if (d < item1.radius) {
         result.push(item2.userId);
