@@ -3,6 +3,7 @@ var User = require('../../Models/User.js');
 var photoController = require('../../Controllers/photoController.js');
 var Photo = require('../../Models/Photo.js');
 var mocha = require('mocha');
+var quadtree = require('../../Utils/Qtree.js');
 var Promise = require('bluebird');
 
 var photoFind = function(){
@@ -26,7 +27,7 @@ var fireStorePhoto = function(){
   dummyPhoto.body.timestamp = new Date().getTime();
 
   photoController.storePhoto(dummyPhoto, function(){
-    photoFind();
+    quadtree.traverse();
   });
 };
 
