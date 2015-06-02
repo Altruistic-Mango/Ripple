@@ -24,6 +24,9 @@ var gps = require('./Routes/gps');
 var events = require('./Routes/events');
 var api = require('./Routes/api');
 
+/* allows access to dashboard */
+var dashboard = require('./Routes/dashboard');
+
 
 // Headers set for testing
 app.all('*', function(req, res, next) {
@@ -44,6 +47,8 @@ app.use(cookieParser());
 
 app.use('/api', api);
 app.use(express.static(path.join(__dirname, '../shout/www/')));
+app.use('/dashboard', express.static(path.join(__dirname, '../dashboard/public/')));
+
 
 app.use('/users', users);
 app.use('/photos', photos);
