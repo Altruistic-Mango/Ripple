@@ -28,14 +28,12 @@ var gpsController = {
 
 
     var inbox = userController.retrieveInbox(userId, node, function(inbox) {
-      console.log(inbox);
       res.send(inbox);
       });
   },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
   findNearbyNodes: function(req, res) {
-    console.log(req.body);
 
     var searchParams = {
       x: req.body.x,
@@ -119,16 +117,16 @@ var gpsController = {
     var date = new Date();
 
     var randIntx = function() {
-      return Math.random() * (122.525999 - 122.325999) - (122.525999)
+      return Math.random() * (125.3 - 67.8) - (125.3)
     };
     
     var randInty = function() {
-      return Math.random() * (37.813501 - 37.613501) + 37.613501
+      return Math.random() * (67.5 - 10) + 10
     }
     
     var count = 0;
     
-    while (count < 10000) {
+    while (count < 100000) {
       var item = {};
       item.x = randIntx();
       item.y = randInty();

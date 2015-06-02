@@ -40,7 +40,7 @@ var photoController = {
             res.send(500, err);
           } else {
             console.log('photo saved');
-            eventController.broadcast(req.body, res);
+            eventController.broadcast(req, res);
           }
         });
       }

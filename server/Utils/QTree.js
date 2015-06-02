@@ -1,10 +1,17 @@
 function Quadtree(boundaries, maxChildren, root, depth) {
 
+  // this.boundaries = boundaries || {
+  //   x: -122.526000,
+  //   y: 37.613500,
+  //   width: 0.2,
+  //   height: 0.2
+  // };
+
   this.boundaries = boundaries || {
-    x: -122.526000,
-    y: 37.613500,
-    width: 0.2,
-    height: 0.2
+    x: -125.3,
+    y: 10,
+    width: 57.5,
+    height: 57.5
   };
 
   this.maxChildren = maxChildren || 4;
@@ -15,20 +22,21 @@ function Quadtree(boundaries, maxChildren, root, depth) {
 
 }
 
-
-//california
+ // north america
 
 // northwest point
-// 41.9874797,-124.2301429
+// 67.5, -125.3
 
 // northeast point
-// 41.9874797, -114.7396131
+// 67.5, -67.8
 
 // southwest point
-// 32.4969499,-116.9726225
+// 10, -125.3
 
 // southeast point
-// 32.4969499, -114.7396131
+// 10, -67.8
+
+// total width 57.5
 
 
 
@@ -88,20 +96,23 @@ Quadtree.prototype.put = function(item) {
 // find function
 Quadtree.prototype.get = function(item, callback) {
   // if our quadrant is divided into sub quadrants...
-  if (this.quadrants.length && this.checkRange(item)) {
+  if (this.quadrants.length) {
     console.log('quadtree logging item ' + item);
 
     // find the correct quadrant
-    var index = this.findIndex(item);
+    if (this.checkRange(item)) {
+      var index = this.findIndex(item);
+      return this.quadrants[index].get(item);
+    }
 
     // execute callback if it exists
-    if (callback) {
+    else if (callback) {
       callback(this.quadrants[index].get(item));
     }
 
     // otherwise just return the quadrant
     else {
-      return this.quadrants[index].get(item);
+      return this;
     }
   }
 
@@ -124,7 +135,6 @@ Quadtree.prototype.get = function(item, callback) {
     return this.root || this;
   }
 };
-
 
 // get index
 Quadtree.prototype.findIndex = function(item) {
@@ -340,7 +350,7 @@ Quadtree.prototype.checkRange = function(coord, range) {
     south: +coord.y - radius, 
     west: +coord.x - radius,
   };
-  
+
   var bounds = {
     north: this.boundaries.y + this.boundaries.height,
     east: this.boundaries.x + this.boundaries.width,

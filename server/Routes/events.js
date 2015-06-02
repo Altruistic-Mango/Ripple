@@ -4,7 +4,7 @@ var eventController = require('../Controllers/eventController.js');
 
 router.post('/broadcast', function(req, res) {
   console.log('user broadcast');
-  eventController.broadcastEvent(req, res);
+  eventController.broadcast(req, res);
 });
 
 router.post('/getEvents', function(req, res) {

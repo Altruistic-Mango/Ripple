@@ -10,22 +10,21 @@ Promise.promisifyAll(mongoose);
 var eventController = {
 
 
-  broadcast: function(data, res) {
-    var photoId = data.photoId;
-    var timestamp = data.timestamp;
-    var userId = data.userId;
-    var TTL = data.TTL;
-    var radius = data.radius;
+  broadcast: function(req, res) {
+    var photoId = req.body.photoId;
+    var timestamp = req.body.timestamp;
+    var userId = req.body.userId;
+    var TTL = +req.body.TTL;
+    var radius = +req.body.radius;
 
     var searchParams = {
-      x: +data.x,
-      y: +data.y,
+      x: +req.body.x,
+      y: +req.body.y,
       userId: userId,
-      radius: radius
+      radius: +radius
     };
     var tree = gpsController.getNodes(searchParams);
     var nodes = tree.traverse();
-    console.log(searchParams)
     var recipients = gpsController.calculateDist(searchParams, nodes);
 
     var eventItem = {
@@ -62,15 +61,11 @@ var eventController = {
     .then(function(data) {
       console.log('Event created, calling events callback with photo' + data.photo + 
         '\nevent ' + data.event);
-        console.log(data.photo.recipientList);
         var recipientList = [];
 
         data.event.recipientList.forEach(function(userId) {
           if (data.photo.recipientList.indexOf(userId) === -1) {
             recipientList.push(userId);
-          }
-          else {
-            console.log(userId);
           }
         });
 
