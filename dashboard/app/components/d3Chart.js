@@ -12,9 +12,23 @@ d3Chart.create = function(el, props, state) {
       .attr('width', props.width)
       .attr('height', props.height);
 
+  var projection = d3.geo.albersUsa();
   // create the map
-  var path = d3.geo.path();
-    svg.selectAll('path')
+  var path = d3.geo.path()
+                .projection(projection);
+
+    var zoom = d3.behavior.zoom()
+        .scale(projection.scale())
+        .scaleExtent([1, 10])
+        .on("zoom", zoomed);            
+
+    svg.call(zoom)
+       .on('dblclick.zoom', null);            
+
+    var states = svg.append('g')
+                    .attr('id', 'states');
+       
+    states.selectAll('path')
        .data(usJSON.features)
        .enter()
        .append('path')
@@ -26,6 +40,16 @@ d3Chart.create = function(el, props, state) {
   var events = d3.select(el).select('svg').append('g')
       .attr('id', 'events');
 
+/////////////
+function zoomed() {
+  states.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+
+
+
+
+///////////////
   if (state.data) {
     this.update(el, state);
   }     
@@ -47,7 +71,7 @@ d3Chart._drawPoints = function(el, data) {
   var path = d3.geo.path()
 
   //draw the circles    
-  circles = d3.select(el).select('svg').select('g').selectAll('path')
+  circles = d3.select(el).select('svg').select('#events').selectAll('path')
     .data(dataObj.events.features);
 
   circles
