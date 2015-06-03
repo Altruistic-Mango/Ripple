@@ -9,6 +9,7 @@ var userController = {
 
     var username = req.body.username;
     var password = bcrypt.hashSync(req.body.password);
+    var email = req.body.email;
     var randInt = function() {
       var id = "";
       while (id.length < 7) {
@@ -25,6 +26,7 @@ var userController = {
         username: username,
         password: password,
         userId: randInt(),
+        email: email
       });
       newUser.save(function(err, newUser) {
         if (err) {
@@ -106,7 +108,7 @@ var userController = {
 
   updateInbox: function(userId, eventObj) {
     this.retrieveInbox(userId, eventObj, function(inbox) {
-      console.log('inbox ==== ' + inbox);
+      console.log('inbox = ' + inbox);
     });
   },
 

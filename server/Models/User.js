@@ -30,6 +30,12 @@ var UserSchema = new mongoose.Schema({
     type: Array,
     required: false,
     unique: false
+  },
+
+  email: {
+    type: String,
+    required: false,
+    unique: false
   }
 
 });
