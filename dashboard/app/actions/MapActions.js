@@ -1,15 +1,15 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var D3Constants = require('../constants/D3Constants');
+var MapConstants = require('../constants/MapConstants');
 
-var D3Actions = {
+var MapActions = {
 
   getData: function (data) {
     AppDispatcher.handleAction({
-      actionType: D3Constants.GET_DATA,
+      actionType: MapConstants.GET_DATA,
       data: data
     });
   }
 
 }
 
-module.exports = D3Actions; 
+module.exports = MapActions; 
