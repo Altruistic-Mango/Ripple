@@ -18,7 +18,7 @@ html{
   margin: 5px;
 }
 
-.d3 {
+.Map {
   float: left;
   margin: 5px;
 }
@@ -27,8 +27,7 @@ html{
   width: 300px;
 }
 
-.geo-node {
-  stroke-width: 0.0;
-  stroke: rgba(255, 0, 10, 0.66); 
-  fill: rgba(255, 0, 10, 0.66); 
+.Chart {
+  height: 800px;
+  width: 800px;
 }

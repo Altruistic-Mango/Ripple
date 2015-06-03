@@ -1,10 +1,10 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var D3Constants = require('../constants/D3Constants');
+var MapConstants = require('../constants/MapConstants');
 var objectAssign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
-var D3Actions = require('../actions/D3Actions');
+var MapActions = require('../actions/MapActions');
 
-var D3Store = objectAssign({}, EventEmitter.prototype, {
+var MapStore = objectAssign({}, EventEmitter.prototype, {
   addListener: function(eventName, callback) {
     this.on(eventName, callback);
   },
@@ -19,9 +19,9 @@ AppDispatcher.register(function (payload) {
   var actions = {};
   var action = payload.action; 
 
-  actions[D3Constants.GET_DATA] = function () {
+  actions[MapConstants.GET_DATA] = function () {
    var geoJSONObj = _geoJSON(action.data);
-   D3Store.emit(D3Constants.GET_DATA, geoJSONObj);
+   MapStore.emit(MapConstants.GET_DATA, geoJSONObj);
   };
   
   if (actions[action.actionType]){
@@ -31,7 +31,7 @@ AppDispatcher.register(function (payload) {
 });
 
 
-module.exports = D3Store; 
+module.exports = MapStore; 
 
 function _geoJSON (data) {
   var geoJSON = {

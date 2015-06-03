@@ -3,9 +3,9 @@ var Navigation = require('./components/Navigation');
 var ExploreContent = require('./components/ExploreContent');
 var AlbumContent = require('./components/AlbumContent');
 var LoginContent = require('./components/LoginContent');
-var D3Component = require('./components/D3Component');
-var D3Store = require('./stores/D3Store');
-var D3Constants = require('./constants/D3Constants');
+var MapComponent = require('./components/MapComponent');
+var MapStore = require('./stores/MapStore');
+var MapConstants = require('./constants/MapConstants');
 
 
 var Router = require('react-router');
@@ -23,7 +23,7 @@ var Dashboard = React.createClass({
   },
 
   componentWillMount : function () {
-    D3Store.addListener(D3Constants.GET_DATA, this.handleNewData)
+    MapStore.addListener(MapConstants.GET_DATA, this.handleNewData)
   },
 
   handleNewData: function(data) {
@@ -47,8 +47,8 @@ var Dashboard = React.createClass({
         <div className="side-content">
           <RouteHandler />
         </div>
-        <div className="d3">
-        <D3Component data={this.state.data} />
+        <div className="Map">
+        <MapComponent data={this.state.data} />
         </div>
       </div>
     );

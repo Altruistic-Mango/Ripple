@@ -1,14 +1,15 @@
 var React = require('react');
-var d3Chart = require('./d3Chart');
+var Map = require('./Map');
 
-var D3Component = React.createClass({
+var MapComponent = React.createClass({
   // propTypes: {
   //   data: React.PropTypes.array
   // },
   
   componentDidMount: function() {
     var el = this.getDOMNode();
-    d3Chart.create(el, {
+    console.log('component mounted: ', el);
+    Map.create(el, {
       width: '600px',
       height: '600px'
     }, this.getChartState());
@@ -16,7 +17,7 @@ var D3Component = React.createClass({
 
   componentDidUpdate: function() {
     var el = this.getDOMNode();
-    d3Chart.update(el, this.getChartState());
+    Map.update(el, this.getChartState());
   },
 
   getChartState: function() {
@@ -27,15 +28,15 @@ var D3Component = React.createClass({
 
   // componentWillUnmount: function() {
   //   var el = this.getDOMNode();
-  //   d3Chart.destroy(el);
+  //   Map.destroy(el);
   // },
 
   render: function() {
     return (
-      <div className="Chart"> This is a D3 chart</div>
+      <div className="Chart"> This is a Map chart</div>
     );
   }
 
 })
 
-module.exports = D3Component; 
+module.exports = MapComponent; 
