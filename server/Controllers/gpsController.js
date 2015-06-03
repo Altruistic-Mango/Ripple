@@ -66,7 +66,7 @@ var gpsController = {
 
   calculateDist: function(item1, nodes) {
 
-    console.log('Parameters passed into dist');
+    // console.log('Parameters passed into dist');
 
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
@@ -84,9 +84,10 @@ var gpsController = {
               Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
               Math.sin(dLon/2) * Math.sin(dLon/2);
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      console.log(c);
       var d = R * c;
       d = d * 0.621371;
-      console.log(d);
+      // console.log(d);
 
       if (d < item1.radius) {
         result.push({userId: item2.userId, y: item2.y, x: item2.x});

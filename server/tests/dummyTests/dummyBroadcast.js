@@ -24,10 +24,10 @@ var dummyBroadcast = {
     var dummyPhoto = { body:{} }
     dummyPhoto.body.photoId = "43772621432956654430",
     dummyPhoto.body.userId = 7654321,
-    dummyPhoto.body.radius = 10000,
+    dummyPhoto.body.radius = 5,
     dummyPhoto.body.TTL = 10,
-    dummyPhoto.body.x = Math.random() * (37.813501 - 37.613501) + 37.613501;
-    dummyPhoto.body.y = Math.random() * (122.525999 - 122.325999) - (122.525999);
+    dummyPhoto.body.x = Math.random() * (122.525999 - 122.325999) - (122.525999);
+    dummyPhoto.body.y = Math.random() * (37.813501 - 37.613501) + 37.613501;
     dummyPhoto.body.timestamp = new Date().getTime();
 
     photoController.storePhoto(dummyPhoto, {

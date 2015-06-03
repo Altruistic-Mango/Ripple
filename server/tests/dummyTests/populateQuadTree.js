@@ -113,6 +113,6 @@ var populateApp = function(num){
 };
 
 
-populateApp(50);
+populateApp(20);
 
 
