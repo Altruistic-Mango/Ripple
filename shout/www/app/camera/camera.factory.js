@@ -2,9 +2,9 @@ angular
   .module('shout.camera')
   .factory('CameraFactory', CameraFactory);
 
-CameraFactory.$inject = [];
+CameraFactory.$inject = ['$state'];
 
-function CameraFactory() {
+function CameraFactory($state) {
   console.log('CameraFactory');
 
   var pictureSource;
@@ -34,6 +34,7 @@ function CameraFactory() {
       if (!navigator.camera) {
         // error handling
         console.log('no camera found');
+        $state.go('review');
       } else {
         //pictureSource=navigator.camera.PictureSourceType.PHOTOLIBRARY;
         pictureSource = navigator.camera.PictureSourceType.CAMERA;
