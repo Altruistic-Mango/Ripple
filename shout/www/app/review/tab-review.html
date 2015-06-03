@@ -1,10 +1,22 @@
 <ion-view view-title="Review">
   <ion-content class="padding">
     <div class="list card">
-    </div>
-    <!-- Share Button-->
-    <div class="pictureContainer">
-      <img class="picturePreview" src={{vm.photo}}>
+
+      <div class="item item-avatar">
+        <img src={{vm.photo}}>
+        <h2>Preview</h2>
+        <p>Description goes here</p>
+      </div>
+
+      <div class="item item-image">
+        <img src={{vm.photo}}>
+      </div>
+
+      <a class="item item-icon-left assertive" ng-click="vm.sharePhoto()">
+        <i class="icon ion-share"></i>
+        Enter up 10 140 characters here. 
+      </a>
+
     </div>
     <button class="button button-block" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>

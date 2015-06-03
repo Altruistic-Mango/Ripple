@@ -12,13 +12,19 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   var vm = this;
 
   vm.photo = CameraFactory.filePath;
+  vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
 
   function displayPhoto() {
     vm.photo = CameraFactory.filePath;
   }
 
+  //TODO: save to album
+  function savePhoto() {
+
+  }
+
   function sharePhoto(){
-    $state.go('tab.settings');
+    $state.go('broadcast');
   }
 }
