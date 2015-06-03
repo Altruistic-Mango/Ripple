@@ -59,7 +59,7 @@ var eventController = {
       })
     })
     .then(function(data) {
-      console.log('Event created, calling events callback with photo' + data.photo + 
+      console.log('Event created, calling events callback with photo' + data.photo +
         '\nevent ' + data.event);
         var recipientList = [];
 
@@ -71,18 +71,18 @@ var eventController = {
 
         data.photo.recipientList = data.photo.recipientList.concat(recipientList);
         data.photo.save();
-        return data.event
+        return data.event;
       },function(err) {
           console.log(err);
           res.send('photo not found');
-      })  
+      })
     .then(function(data) {
       data.recipientList.forEach(function(recipient) {
         userController.updateInbox(recipient, data.event);
       });
     res.end();
     });
-  }, 
+  },
 
   getEvents: function(req, res) {
     Event.find({}, function(err, event) {
