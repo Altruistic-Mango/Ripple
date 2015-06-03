@@ -7,20 +7,21 @@
       </div>
     </div>
     <div class="padding">
+
       <ion-md-input class="loginItem" placeholder="Name" hightlight-color="positive"
-      type="text" value="{{vm.username}}"></ion-md-input>
+      type="text" type="text" ng-model="vm.data.username" value="{{vm.username}}"></ion-md-input>
       <ion-md-input class="loginItem" placeholder="Email" hightlight-color="positive"
-      type="email" value="{{vm.email}}"></ion-md-input>
+      type="email" ng-model="vm.data.email" value="{{vm.email}}"></ion-md-input>
       <ion-md-input class="loginItem" placeholder="Password" hightlight-color="positive"
-      type="password" value="{{vm.password}}"></ion-md-input>
+      type="password" ng-model="vm.data.password" value="{{vm.password}}"></ion-md-input>
     </div>
     <div class="padding">
       <button ng-click="vm.login()" class="button button-block button-positive flat ink ">Login</button>
-    <div class="flex">
-      <div>
-        <a class="signuplink" href="#/signup">Not a user? Sign up</a>
+      <div class="flex">
+        <div>
+          <a class="signuplink" href="#/signup">Not a user? Sign up</a>
+        </div>
       </div>
-    </div>
     </div>
     <div class="padding row">
       <div class="col">
