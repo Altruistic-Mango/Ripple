@@ -8,6 +8,7 @@
   "dependencies": {
     "underscore": "~1.8.3",
     "robotodraft": "~1.1.0",
-    "ion-md-input": "~0.0.2"
+    "ion-md-input": "~0.0.2",
+    "ionic-material": "~0.4.2"
   }
 }

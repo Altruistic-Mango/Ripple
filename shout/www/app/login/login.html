@@ -1,5 +1,5 @@
 <ion-view class="loginScreen" hide-nav-bar="true" view-title="Login" align-title="left">
-<!--<ion-content style="background: url(img/ripple.jpeg) center; background-size: cover;">-->
+  <!--<ion-content style="background: url(img/ripple.jpeg) center; background-size: cover;">-->
   <ion-content>
     <div class="row">
       <div class="col">
@@ -7,12 +7,18 @@
       </div>
     </div>
     <div class="padding">
-      <ion-md-input class="loginItem" placeholder="Name" hightlight-color="positive" type="text" value="{{vm.username}}"></ion-md-input>
-      <ion-md-input class="loginItem" placeholder="Email" hightlight-color="positive" type="email" value="{{vm.email}}"></ion-md-input>
-      <ion-md-input class="loginItem" placeholder="Password" hightlight-color="positive" type="password" value="{{vm.password}}"></ion-md-input>
+      <ion-md-input class="loginItem" placeholder="Name" hightlight-color="positive"
+      type="text" value="{{vm.username}}"></ion-md-input>
+      <ion-md-input class="loginItem" placeholder="Email" hightlight-color="positive"
+      type="email" value="{{vm.email}}"></ion-md-input>
+      <ion-md-input class="loginItem" placeholder="Password" hightlight-color="positive"
+      type="password" value="{{vm.password}}"></ion-md-input>
     </div>
     <div class="padding">
       <button ng-click="vm.login()" class="button button-block button-positive flat ink ">Login</button>
+    <div class="flex">
+      <a class="signuplink" href="#/signup">Not a user? Sign up</a>
+    </div>
     </div>
     <div class="padding row">
       <div class="col">
