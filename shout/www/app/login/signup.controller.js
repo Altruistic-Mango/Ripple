@@ -7,7 +7,10 @@ SignupCtrl.$inject = ['$state', 'SignupFactory'];
 function SignupCtrl($state, SignupFactory) {
   console.log('SignupCtrl');
   var vm = this;
-  vm.data = null;
+  vm.data = {};
+  vm.data.username = '';
+  vm.data.email = '';
+  vm.data.password = '';
   vm.badUsername = false;
 
   vm.signup = signup;

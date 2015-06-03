@@ -8,9 +8,9 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
   console.log('LoginCtrl');
   var vm = this;
   vm.data = {};
-  vm.data.username = 'mb';
-  vm.data.email = 'm@b.com';
-  vm.data.password = 'mb';
+  vm.data.username = '';
+  vm.data.email = '';
+  vm.data.password = '';
   vm.login = login;
   vm.splash = splash;
   vm.badCombo = false;
