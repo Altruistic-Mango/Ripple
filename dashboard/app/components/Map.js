@@ -4,7 +4,8 @@ Map.create = function(el, props, state) {
   console.log('map.create called: ', el);
   var mapOptions = {
             center: { lat: 37.7806579, lng: -122.40708},
-            zoom: 10
+            zoom: 10,
+            disableDefaultUI: true
           };
           this.map = new google.maps.Map(el,
               mapOptions);
@@ -17,12 +18,20 @@ Map.update = function(el, state) {
   console.log('update: ', state);
   var bounds = new google.maps.LatLngBounds();
   var map = this.map; 
+  //remove the points that are already on the map
   map.data.forEach(function(feature) {
           map.data.remove(feature);
   });
-  //remove any geoJSON on the map
-  //this function needs to take the data passed down and add it as geoJSON to the map
+
+  //add the points that represent the new event
   map.data.addGeoJson(state.data.events);
+
+  map.data.setStyle(function(feature) {
+    var radius = state.data.radius;
+    return {
+      icon: Map.getCircle(radius)
+    };
+  });
 
   state.data.feature.geometry.coordinates.forEach(function(coordinate) {
           a = coordinate[1];
@@ -31,9 +40,20 @@ Map.update = function(el, state) {
           point = new google.maps.LatLng(a, b);
           bounds.extend(point);
   });
-  console.log('bounds: ', bounds);
 
   map.fitBounds(bounds)
+}
+
+Map.getCircle = function(radius) {
+    var circle = {
+    path: google.maps.SymbolPath.CIRCLE,
+    scale: radius * 2,
+    fillColor: 'red',
+    fillOpacity: .2,
+    strokeColor: 'white',
+    strokeWeight: .5
+  };
+  return circle;
 }
 
 Map.styles = [
@@ -78,7 +98,6 @@ Map.styles = [
     ]
   }
 ]
-
 
 module.exports = Map; 
 

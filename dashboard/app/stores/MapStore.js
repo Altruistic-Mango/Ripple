@@ -34,6 +34,7 @@ AppDispatcher.register(function (payload) {
 module.exports = MapStore; 
 
 function _geoJSON (data) {
+  var radius = 1; 
   var geoJSON = {
     'type' : 'FeatureCollection',
     'features' : []
@@ -57,10 +58,12 @@ function _geoJSON (data) {
     });
 
     feature.geometry.coordinates.push([event.x, event.y]);
+    radius = event.radius; 
   });
 
   return {
           events: geoJSON,
-          feature: feature
+          feature: feature, 
+          radius: radius
          }
 }

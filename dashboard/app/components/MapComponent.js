@@ -33,7 +33,7 @@ var MapComponent = React.createClass({
 
   render: function() {
     return (
-      <div className="Chart"> This is a Map chart</div>
+      <div className="Chart"> </div>
     );
   }
 
