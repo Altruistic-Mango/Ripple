@@ -1,8 +1,7 @@
 angular
   .module('shout')
   .config(configure);
-
-configure.$injector = ['$stateProvider', '$urlRouterProvider', '$compileProvider', '$sceDelegateProvider'];
+configure.$inject = ['$stateProvider', '$urlRouterProvider', '$compileProvider', '$sceDelegateProvider'];
 
 function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDelegateProvider) {
   console.log('shout configure');
@@ -31,6 +30,12 @@ function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDel
     url: '/review',
     templateUrl: 'app/review/tab-review.html',
     controller: 'ReviewCtrl as vm'
+  })
+
+  .state('broadcast', {
+    url: '/broadcast',
+    templateUrl: 'app/broadcast/tab-broadcast.html',
+    controller: 'BroadCastCtrl as vm'
   })
 
   //setup an abstract state for the tabs directive

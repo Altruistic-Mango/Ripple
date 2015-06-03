@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadcastFactory'];
+InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadCastFactory'];
 
-function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadcastFactory) {
+function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadCastFactory) {
   console.log('InboxCtrl');
   var vm = this;
   var currentStart = 0;
@@ -18,7 +18,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.addPhotos = addPhotos;
   vm.doRefresh = doRefresh;
   vm.loadMore = loadMore;
-  vm.reBroadcast = reBroadcast;
+  vm.reBroadCast = reBroadCast;
   vm.saveToAlbum = saveToAlbum;
   vm.clearInbox = clearInbox;
   vm.getSrc = getSrc;
@@ -60,9 +60,9 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
 
   }
 
-  function reBroadcast(index) {
+  function reBroadCast(index) {
     if (InboxFactory.checkValidPhoto(vm.photos[index])) {
-      BroadcastFactory.reBroadcast(vm.photos[index]);
+      BroadCastFactory.reBroadCast(vm.photos[index]);
     } else {
       console.log('that photo is expired, refresh your inbox!');
     }

@@ -6,13 +6,11 @@ s3.$inject = ['$http', 'API_HOST'];
 
 function s3($http, API_HOST) {
 
-  var userId = 'userId';
   var url = 'https://' + 'ripple-photos' + '.s3.amazonaws.com/';
-  var file = new File(); 
+  var file = {}; 
 
   var services = {};
   services.upload = upload;
-  services.userId = userId;
 
   return services;
 

@@ -9,22 +9,30 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
 
   var vm = this;
 
-  vm.radius = 5; //initial value 5 miles
-  vm.TTL = 5; //initial value 5 minutes
+  vm.radius = 5.0; //initial value 5 miles
+  vm.TTL = 5.0; //initial value 5 minutes
   vm.watch = true;
-  vm.acceptSettings = acceptSettings;
+  vm.trickle = true;
+  vm.logOut = logOut;
+  vm.saveSettings = saveSettings;
   vm.userSetWatch = userSetWatch;
   vm.sharePhoto = sharePhoto;
 
-  function acceptSettings() {
-    SettingsFactory.setSettings(parseInt(vm.radius), parseInt(vm.TTL));
+  function logOut() { 
+    //TODO: remove cookieStorage session stuff
+    //TODO: remove localstorage of userId etc if need be
+    $state.go('login');
+  }
+
+  function saveSettings() {
+    SettingsFactory.setSettings(parseInt(vm.radius), parseInt(vm.TTL) );
     if ($ionicHistory.backView()) {
       $ionicHistory.goBack();
     } else {
       $state.go('tab.inbox');
     }
-    console.log('radius set to: ', parseInt(vm.radius));
-    console.log('TTL set to: ', parseInt(vm.TTL));
+    console.log('radius set to: ', parseInt(vm.radius) );
+    console.log('TTL set to: ', parseInt(vm.TTL ) );
   }
 
   function sharePhoto() {

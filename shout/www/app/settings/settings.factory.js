@@ -5,17 +5,18 @@ angular
 SettingsFactory.$inject = ['LocationFactory'];
 
 function SettingsFactory(LocationFactory) {
-  var radius = 5,
-    TTL = 5; //initial values
-  var services = {
-    setSettings: setSettings,
-    setWatch: setWatch,
-    radius: radius,
-    TTL: TTL
-  };
+  var radius = 5;
+  var TTL = 5; //initial values
+  var services = {};
 
+  services.setSettings = setSettings;
+  services.setWatch = setWatch;
+  services.radius = radius;
+  services.TTL = TTL;
+  
   return services;
 
+  //TODO: set to local storage
   function setWatch(watch) {
     console.log('settings factory set watch called with watch: ', watch);
     if (!watch) {
@@ -28,6 +29,7 @@ function SettingsFactory(LocationFactory) {
     }
   }
 
+  //TODO:  save to local storage
   function setSettings(userRadius, userTTL) {
     console.log('settings set in factory: ', TTL, radius);
     if (userRadius !== radius) {

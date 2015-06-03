@@ -1,5 +1,7 @@
 angular.module('shout', [
   'ionic',
+  'ionic-material',
+  'ionMdInput',
   'shout.constants',
   'shout.localstorage',
   'shout.tabs',
@@ -7,6 +9,7 @@ angular.module('shout', [
   'shout.signup',
   'shout.inbox',
   'shout.review',
+  'shout.broadcast',
   'shout.settings',
   'shout.camera',
   'shout.album',
