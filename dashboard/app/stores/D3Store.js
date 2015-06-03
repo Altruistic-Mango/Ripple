@@ -20,8 +20,8 @@ AppDispatcher.register(function (payload) {
   var action = payload.action; 
 
   actions[D3Constants.GET_DATA] = function () {
-   var geoJSON = _geoJSON(action.data);
-   D3Store.emit(D3Constants.GET_DATA, geoJSON);
+   var geoJSONObj = _geoJSON(action.data);
+   D3Store.emit(D3Constants.GET_DATA, geoJSONObj);
   };
   
   if (actions[action.actionType]){
@@ -39,6 +39,14 @@ function _geoJSON (data) {
     'features' : []
   };
 
+  var feature = {
+    'type' : 'Feature',
+    'geometry' : {
+      'type' : 'multipoint',
+      'coordinates' : []
+    }
+  };
+
   data.forEach(function(event) {
     geoJSON.features.push({
       'type' : 'Feature',
@@ -47,7 +55,12 @@ function _geoJSON (data) {
         'coordinates' : [event.x, event.y]
       }
     });
+
+    feature.geometry.coordinates.push([event.x, event.y]);
   });
 
-  return geoJSON; 
+  return {
+          events: geoJSON,
+          feature: feature
+         }
 }

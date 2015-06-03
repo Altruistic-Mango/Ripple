@@ -43,11 +43,12 @@ d3Chart.destroy = function(el) {
 
 d3Chart._drawPoints = function(el, data) {
   console.log('_drawPoints: ', data.data);
+  var dataObj = data.data; 
+  var path = d3.geo.path()
 
-  var path = d3.geo.path();
-
+  //draw the circles    
   circles = d3.select(el).select('svg').select('g').selectAll('path')
-    .data(data.data.features);
+    .data(dataObj.events.features);
 
   circles
     .enter()
