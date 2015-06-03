@@ -33,13 +33,13 @@ var populateApp = function(num){
     
     //generates random Lat in SF
     var genRndLat = function(){
-      var genLat = Math.random() * (122.525999 - 122.325999) - (122.525999);
-      return genLat.toFixed(6);
+      return Math.random() * (122.525999 - 122.325999) - (122.525999);
+      // return genLat.toFixed(6);
     }
     //generates random Long in SF
     var genRndLong = function(){
-      var genLong = Math.random() * (37.813501 - 37.613501) + 37.613501;
-      return genLong.toFixed(6);
+      return Math.random() * (37.813501 - 37.613501) + 37.613501;
+      // return genLong.toFixed(6);
     }
     var injectConstantUser = function(){
       var constantUser = {body: {}};

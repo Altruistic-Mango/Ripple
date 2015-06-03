@@ -63,20 +63,14 @@ var gpsController = {
   },
 
   // This will get the distance between two coordinates
+
   calculateDist: function(item1, nodes) {
-
-    for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i].userId === item1.userId) nodes.splice(i, 1);
-    }
-
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
-    console.log('these are the nodes it returns', nodes);
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;
     var result = [];
-
     nodes.forEach(function(item2) {
       lat2 = +item2.x;
       lon2 = +item2.y;

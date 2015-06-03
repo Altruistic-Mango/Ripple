@@ -26,7 +26,7 @@ var eventController = {
     console.log('calling gps controller and getting nodes')
     var tree = gpsController.getNodes(searchParams);
     var nodes = tree.traverse();
-    console.log("these are the nodes and search params", searchParams, nodes);
+    console.log("these are the nodes", nodes);
     var recipients = gpsController.calculateDist(searchParams, nodes);
 
     var eventItem = {
