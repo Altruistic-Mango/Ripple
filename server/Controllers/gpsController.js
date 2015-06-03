@@ -71,6 +71,7 @@ var gpsController = {
 
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
+    console.log('these are the nodes it returns', nodes);
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;

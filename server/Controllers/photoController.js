@@ -12,7 +12,7 @@ var photoController = {
     // incoming photo: '{"userId: "", "photoId": "", "timestamp": "", "x":"", "y": "", "radius": "", "TTL":""}'
 // curl -H "Content-Type:application/json" -X POST -d '{"userId: "9651598", "photoId": "11111111", "timestamp": "1432937843430", "x":"-122.4093594", "y": "37.783795", "radius": "10000", "TTL":"100000000"} http://localhost:3000/photos/newPhoto
 // {userId: "9651598", y: 37.783795, x: -122.4093594, timestamp: 1432937843430}
-    res();
+    // res();
     console.log(JSON.stringify(req.body));
     var TTL = +req.body.TTL * 60000;
     var userId = req.body.userId;
@@ -29,14 +29,14 @@ var photoController = {
     Photo.findOne({
       photoId: photoId
     }, function(err, photo) {
-      if (err) console.log(err);
-
-      else if (photo) {
+      if (err) {
+        console.log(err);
+      }  else if (photo) {
         console.log('Photo already exists');
         res.send(photo);
       } else {
-        console.log('creating photo now');
         Photo.create(data, function(err, result) {
+        console.log('creating photo now');
           if (err) {
             console.log('error creating photo: ', err);
             res.send(500, err);

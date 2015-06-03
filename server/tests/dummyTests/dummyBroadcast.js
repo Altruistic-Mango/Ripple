@@ -6,42 +6,53 @@ var mocha = require('mocha');
 var quadtree = require('../../Utils/Qtree.js');
 var Promise = require('bluebird');
 
-var photoFind = function(){
-  Photo.find({}, function(err, res){
-    if(err){
-      console.log('This is the error');
-      console.log(err);
-    } else {
-      console.log('this is the find in dummy bcast');
-      console.log(res);
-    }
-  });
+var dummyBroadcast = {
+
+  photoFind: function(){
+    Photo.find({}, function(err, res){
+      if(err){
+        console.log('This is the error');
+        console.log(err);
+      } else {
+        console.log('this is the find in dummy bcast');
+        console.log(res);
+      }
+    });
+  },
+
+  fireStorePhoto: function(){
+    var dummyPhoto = { body:{} }
+    dummyPhoto.body.photoId = "43772621432956654430",
+    dummyPhoto.body.userId = 7654321,
+    dummyPhoto.body.radius = 7,
+    dummyPhoto.body.TTL = 10,
+    dummyPhoto.body.x = Math.random() * (37.813501 - 37.613501) + 37.613501;
+    dummyPhoto.body.y = Math.random() * (122.525999 - 122.325999) - (122.525999);
+    dummyPhoto.body.timestamp = new Date().getTime();
+
+    photoController.storePhoto(dummyPhoto, function(err, res){
+      if(err){
+        console.log(err);
+      } else {
+        console.log(res);
+        // quadtree.traverse();
+      }
+    });
+  },
+
+  constantUser: function(){
+    User.find({}, function(err, results){
+      if(err){
+        console.log(err);
+      } else {
+        console.log(results[0]['userId']);
+        fireStorePhoto();
+        return results[0][userId]; 
+      }
+    });
+  }
+
 }
 
-var fireStorePhoto = function(){
-  var dummyPhoto = { body:{} }
-  dummyPhoto.body.photoId = "43772621432956654430",
-  dummyPhoto.body.userId = 7654321,
-  dummyPhoto.body.radius = 7,
-  dummyPhoto.body.TTL = 10,
-  dummyPhoto.body.timestamp = new Date().getTime();
 
-  photoController.storePhoto(dummyPhoto, function(){
-    quadtree.traverse();
-  });
-};
-
-var constantUser = function(){
-  User.find({}, function(err, results){
-    if(err){
-      console.log(err);
-    } else {
-      console.log(results[0]['userId']);
-      return results[0][userId]; 
-    }
-  });
-  fireStorePhoto();
-}();
-
-
-
+module.exports = dummyBroadcast;

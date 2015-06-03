@@ -3,6 +3,7 @@ var gpsController = require('../../Controllers/gpsController.js');
 var userController = require('../../Controllers/userController.js');
 var User = require('../../Models/User.js');
 var mocha = require('mocha');
+var dummyBroadcast = require('./dummyBroadcast.js');
 
 
 var populateApp = function(num){
@@ -90,6 +91,7 @@ var populateApp = function(num){
         }
       });
     }
+    dummyBroadcast.fireStorePhoto();
   };
   populateUserDB();
 
@@ -111,6 +113,6 @@ var populateApp = function(num){
 };
 
 
-populateApp(1000);
+populateApp(50);
 
 
