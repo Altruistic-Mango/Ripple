@@ -1,11 +1,19 @@
 function Quadtree(boundaries, maxChildren, root, depth) {
 
+  // this.boundaries = boundaries || {
+  //   x: -122.526000,
+  //   y: 37.613500,
+  //   width: 0.2,
+  //   height: 0.2
+  // };
+
   this.boundaries = boundaries || {
-    x: -122.526000,
-    y: 37.613500,
-    width: 0.2,
-    height: 0.2
+    x: -125.3,
+    y: 10,
+    width: 57.5,
+    height: 57.5
   };
+
   this.maxChildren = maxChildren || 4;
   this.root = root || null;
   this.depth = depth || 0;
@@ -14,20 +22,21 @@ function Quadtree(boundaries, maxChildren, root, depth) {
 
 }
 
-
-//california
+ // north america
 
 // northwest point
-// 41.9874797,-124.2301429
+// 67.5, -125.3
 
 // northeast point
-// 41.9874797, -114.7396131
+// 67.5, -67.8
 
 // southwest point
-// 32.4969499,-116.9726225
+// 10, -125.3
 
 // southeast point
-// 32.4969499, -114.7396131
+// 10, -67.8
+
+// total width 57.5
 
 
 
@@ -87,20 +96,23 @@ Quadtree.prototype.put = function(item) {
 // find function
 Quadtree.prototype.get = function(item, callback) {
   // if our quadrant is divided into sub quadrants...
-  if (this.quadrants.length && this.checkRange(item)) {
+  if (this.quadrants.length) {
     console.log('quadtree logging item ' + item);
 
     // find the correct quadrant
-    var index = this.findIndex(item);
+    if (this.checkRange(item)) {
+      var index = this.findIndex(item);
+      return this.quadrants[index].get(item);
+    }
 
     // execute callback if it exists
-    if (callback) {
+    else if (callback) {
       callback(this.quadrants[index].get(item));
     }
 
     // otherwise just return the quadrant
     else {
-      return this.quadrants[index].get(item);
+      return this;
     }
   }
 
@@ -123,7 +135,6 @@ Quadtree.prototype.get = function(item, callback) {
     return this.root || this;
   }
 };
-
 
 // get index
 Quadtree.prototype.findIndex = function(item) {
@@ -339,7 +350,7 @@ Quadtree.prototype.checkRange = function(coord, range) {
     south: +coord.y - radius, 
     west: +coord.x - radius,
   };
-  
+
   var bounds = {
     north: this.boundaries.y + this.boundaries.height,
     east: this.boundaries.x + this.boundaries.width,
@@ -366,12 +377,6 @@ module.exports = new Quadtree();
 
 
 /*
-
-Generate 8 coordinate points
-
-
-
-
 
 
 
@@ -416,6 +421,37 @@ Generate 8 coordinate points
 
 
 
+// san francisco
+  // northwest point
+  // 37.809455, -122.525293
+
+  // northeast point
+  // 37.811552, -122.354177
+
+  // southwest point
+  // 37.613581, -122.510663
+
+  // southeast point
+  // 37.615192, -122.351613
+
+
+//california
+
+// northwest point
+// 41.9874797,-124.2301429
+
+// northeast point
+// 41.9874797, -114.7396131
+
+// southwest point
+// 32.4969499,-116.9726225
+
+// southeast point
+// 32.4969499, -114.7396131
+
+
+
+
 /*
 
 work in progress
@@ -429,7 +465,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "phot
 curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170689","TTL":"99","radius":"99","timestamp":"1433024170689"}'  http://localhost:3000/events/broadcast
 
 
-curl -H "Content-Type: application/json" -X POST -d '{"username" : "test2", "password": "test2"}' http://localhost:3000/users/signup
+curl -H "Content-Type: application/json" -X POST -d '{"username" : "henry", "password": "henry"}' http://localhost:3000/users/signup
 
 curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "-122.515", "y" : "37.615"}' http://localhost:3000/gps/position
 
@@ -440,7 +476,7 @@ curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.50933233333333",
 curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603099", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/photos/newPhoto
 curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170680","TTL":"20","radius":"5","timestamp":"1433024170680"}'  http://localhost:3000/photos/newPhoto
 
-curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "2343289", "TTL": "55", "radius": "55", "timestamp" : "1432780946323"}' http://localhost:3000/photos/newPhoto
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "3852851", "TTL": "55", "radius": "55", "timestamp" : "1432780946323", "photoId" : "38528511432780946323"}' http://localhost:3000/photos/newPhoto
 
 
 curl -H "Content-Type:application/json" -X POST -d '{"username" : "henry"}' http://localhost:3000/users/clearInbox
