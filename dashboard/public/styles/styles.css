@@ -26,3 +26,9 @@ html{
 .photo {
   width: 300px;
 }
+
+.geo-node {
+  stroke-width: 0.0;
+  stroke: rgba(255, 0, 10, 0.66); 
+  fill: rgba(255, 0, 10, 0.66); 
+}

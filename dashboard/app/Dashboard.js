@@ -18,7 +18,7 @@ var RouteHandler = Router.RouteHandler;
 var Dashboard = React.createClass({
   getInitialState: function() {
     return {
-      data: []
+      data: null
     };
   },
 
@@ -48,7 +48,7 @@ var Dashboard = React.createClass({
           <RouteHandler />
         </div>
         <div className="d3">
-        <D3Component />
+        <D3Component data={this.state.data} />
         </div>
       </div>
     );
@@ -68,9 +68,6 @@ Router.run(routes, function (Handler) {
   React.render(<Handler />, document.getElementById('dashboard'));
 });
 
-
-          // <D3Component 
-          //   data={this.state.data} />
 
 
 

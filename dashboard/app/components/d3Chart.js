@@ -6,6 +6,7 @@ var usJSON = require('../res/us');
 var d3Chart = {};
 
 d3Chart.create = function(el, props, state) {
+  console.log('d3Chart.create with: ', state);
   var svg = d3.select(el).append('svg')
       .attr('class', 'd3')
       .attr('width', props.width)
@@ -13,24 +14,26 @@ d3Chart.create = function(el, props, state) {
 
   // create the map
   var path = d3.geo.path();
-    svg.selectAll("path")
+    svg.selectAll('path')
        .data(usJSON.features)
        .enter()
-       .append("path")
-       .attr("d", path)
-       .attr("stroke", '#FFFFFF')
-       .attr("stroke-width", .5);
+       .append('path')
+       .attr('d', path)
+       .attr('stroke', '#FFFFFF')
+       .attr('stroke-width', .5)
+       .attr('fill', '#132A50');
 
-  // svg.append('g')
-  //     .attr('class', 'd3-points');
+  var events = d3.select(el).select('svg').append('g')
+      .attr('id', 'events');
 
-  // this.update(el, state);
+  if (state.data) {
+    this.update(el, state);
+  }     
 };
 
+//state is the geoJSON
 d3Chart.update = function(el, state) {
-  // Re-compute the scales, and render the data points
-  var scales = this._scales(el, state.domain);
-  this._drawPoints(el, scales, state.data);
+  this._drawPoints(el, state);
 };
 
 d3Chart.destroy = function(el) {
@@ -38,25 +41,26 @@ d3Chart.destroy = function(el) {
   // in this example there is nothing to do
 };
 
-d3Chart._drawPoints = function(el, scales, data) {
-  var g = d3.select(el).selectAll('.d3-points');
+d3Chart._drawPoints = function(el, data) {
+  console.log('_drawPoints: ', data.data);
 
-  var point = g.selectAll('.d3-point')
-    .data(data, function(d) { return d.id; });
+  var path = d3.geo.path();
 
-  // ENTER
-  point.enter().append('circle')
-      .attr('class', 'd3-point');
+  circles = d3.select(el).select('svg').select('g').selectAll('path')
+    .data(data.data.features);
 
-  // ENTER & UPDATE
-  point.attr('cx', function(d) { return scales.x(d.x); })
-      .attr('cy', function(d) { return scales.y(d.y); })
-      .attr('r', function(d) { return scales.z(d.z); });
+  circles
+    .enter()
+    .append('path')
+    .attr('class', 'geo-node')
+    .attr('d', path);
 
-  // EXIT
-  point.exit()
-      .remove();
+  circles
+    .exit()
+    .remove();  
 };
 
 
 module.exports = d3Chart; 
+
+ 

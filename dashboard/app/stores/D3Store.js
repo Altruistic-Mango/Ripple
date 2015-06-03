@@ -20,8 +20,8 @@ AppDispatcher.register(function (payload) {
   var action = payload.action; 
 
   actions[D3Constants.GET_DATA] = function () {
-   console.log('D3 store got data: ', action);
-   D3Store.emit(D3Constants.GET_DATA, action.data);
+   var geoJSON = _geoJSON(action.data);
+   D3Store.emit(D3Constants.GET_DATA, geoJSON);
   };
   
   if (actions[action.actionType]){
@@ -33,3 +33,21 @@ AppDispatcher.register(function (payload) {
 
 module.exports = D3Store; 
 
+function _geoJSON (data) {
+  var geoJSON = {
+    'type' : 'FeatureCollection',
+    'features' : []
+  };
+
+  data.forEach(function(event) {
+    geoJSON.features.push({
+      'type' : 'Feature',
+      'geometry' : {
+        'type' : 'Point',
+        'coordinates' : [event.x, event.y]
+      }
+    });
+  });
+
+  return geoJSON; 
+}

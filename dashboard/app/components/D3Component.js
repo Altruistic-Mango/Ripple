@@ -2,13 +2,12 @@ var React = require('react');
 var d3Chart = require('./d3Chart');
 
 var D3Component = React.createClass({
-  propTypes: {
-    data: React.PropTypes.array
-  },
+  // propTypes: {
+  //   data: React.PropTypes.array
+  // },
   
   componentDidMount: function() {
     var el = this.getDOMNode();
-    console.log('el: ', el);
     d3Chart.create(el, {
       width: '600px',
       height: '600px'
@@ -17,7 +16,7 @@ var D3Component = React.createClass({
 
   componentDidUpdate: function() {
     var el = this.getDOMNode();
-    // d3Chart.update(el, this.getChartState());
+    d3Chart.update(el, this.getChartState());
   },
 
   getChartState: function() {
