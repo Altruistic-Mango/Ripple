@@ -42,7 +42,7 @@
     "android"
   ],
   "scripts": {
-    "postinstall": "bower install && node scripts/platforms.js && node scripts/plugins.js",
-    "postuninstall": "node scripts/platforms.js && node scripts/plugins.js"
+    "postinstall": "bower install ; node scripts/platforms.js ; node scripts/plugins.js",
+    "postuninstall": "node scripts/platforms.js ; node scripts/plugins.js"
   }
 }
