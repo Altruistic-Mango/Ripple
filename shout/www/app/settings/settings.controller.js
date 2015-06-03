@@ -18,7 +18,7 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   vm.userSetWatch = userSetWatch;
   vm.sharePhoto = sharePhoto;
 
-  function logOut() { 
+  function logOut() {
     //TODO: remove cookieStorage session stuff
     //TODO: remove localstorage of userId etc if need be
     $state.go('login');
