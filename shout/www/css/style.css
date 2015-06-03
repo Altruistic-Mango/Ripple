@@ -1,34 +1,53 @@
 /* Empty. Add your own CSS if you like */
 
-.loginView {
-  /*background-image: url('../img/loginBackground.svg');*/
-  background-image: url('../img/bg.png');
-  background-size: 100% 100%;
-}
-.loginTitleContainer {
-  display: flex;
-  justify-content: center;
-  height: 20vh;
-}
-/* Title */
-
 .loginTitle {
   font-family: DINCondensed-Bold;
   font-size: 8vh;
-  color: #4B3F32;
   line-height: 1em;
   letter-spacing: 4vh;
   padding-left: 3vh;
-  align-self: center;
+  color: #444;
+  text-align: center;
+  margin-top:10vh;
+  opacity: 0.5;
 }
+
+.loginScreen {
+  background: -webkit-linear-gradient(white, white, #d5d5d5); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(white, white, #d5d5d5); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(white, white, #d5d5d5); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(white, white, #d5d5d5); /* Standard syntax */
+}
+
+.loginItem {
+  margin: 0px;
+  border: 0;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.tabs-nav {
+  display:none;
+}
+
+.tabs-top > .tabs, .tabs.tabs-top {
+  top: 0px;
+}
+
+/*
 .loginInputContainer {
   display: flex;
   justify-content: center;
   height: 50vh;
   padding: 5px;
 }
+*/
 /* LoginContainer: */
 
+/*
 .loginInputBox {
   align-self: flex-start;
   display: flex;
@@ -39,8 +58,10 @@
   width: 50vw;
   height: 26vh;
 }
+*/
 /* Input: */
 
+/*
 .loginInputItem {
   display: block;
   background: #FFFFFF;
@@ -57,8 +78,11 @@
   display: flex;
   justify-content: center;
 }
+*/
+
 /* LoginButton */
 
+/*
 .loginButton {
   background: #49B6D3;
   font-family: Avenir-Book;
@@ -68,6 +92,7 @@
   letter-spacing: 2.5vw;
   padding-left: 5vw;
 }
+*/
 /* Review Page */
 
 /*
@@ -77,13 +102,17 @@
 }
 */
 
+/*
 .albumPhoto, .inboxPhoto {
   width:300px;
   ;
 }
+*/
 
+/*
 .picturePreview {
   width: 50vw;
   height: 50vh;
   align-self: center;
 }
+*/
