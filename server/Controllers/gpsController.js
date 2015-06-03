@@ -65,12 +65,16 @@ var gpsController = {
   // This will get the distance between two coordinates
 
   calculateDist: function(item1, nodes) {
+
+    console.log('Parameters passed into dist');
+
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;
     var result = [];
+
     nodes.forEach(function(item2) {
       lat2 = +item2.x;
       lon2 = +item2.y;
@@ -82,6 +86,7 @@ var gpsController = {
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       var d = R * c;
       d = d * 0.621371;
+      console.log(d);
 
       if (d < item1.radius) {
         result.push({userId: item2.userId, y: item2.y, x: item2.x});
@@ -118,11 +123,11 @@ var gpsController = {
     var date = new Date();
 
     var randIntx = function() {
-      return Math.random() * (125.3 - 67.8) - (125.3)
+      return Math.random() * (125.3 - 67.8) - (125.3);
     };
     
     var randInty = function() {
-      return Math.random() * (67.5 - 10) + 10
+      return Math.random() * (67.5 - 10) + 10;
     }
     
     var count = 0;
