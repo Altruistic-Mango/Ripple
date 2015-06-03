@@ -1,0 +1,34 @@
+* {
+    padding:0;
+    margin:0;
+}
+
+html{
+    font:14px normal Arial, sans-serif;
+    color:#626771;
+    background-color:#fff;
+}
+
+.viewPort {
+    overflow: hidden;
+}
+
+.side-content {
+  float: left;
+  margin: 5px;
+}
+
+.d3 {
+  float: left;
+  margin: 5px;
+}
+
+.photo {
+  width: 300px;
+}
+
+.geo-node {
+  stroke-width: 0.0;
+  stroke: rgba(255, 0, 10, 0.66); 
+  fill: rgba(255, 0, 10, 0.66); 
+}
