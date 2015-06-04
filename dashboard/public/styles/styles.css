@@ -15,14 +15,15 @@ html{
     overflow: hidden;
 }
 
-.side-content {
-  float: left;
+.home {
+  position: absolute;
+  top: 52px;
   height: 100%;
   overflow: auto; 
-  margin: 5px;
   background: rgba(0,0,0,0.6);
   border: 1px solid #979797;
 }
+
 
 .Map {
   float: left;
@@ -38,6 +39,7 @@ html{
   width: 800px;
   position: absolute;
   top: 52px;
+  left: 310px;
 }
 
 .nav-menu {
