@@ -1,33 +1,21 @@
 <ion-view view-title="Inbox">
   <ion-content class="padding">
-    <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher>
     <ion-list class="condensed-space no-padding" can-swipe="true">
+    <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher>
 
       <ion-item collection-repeat="photo in vm.photos track by $index">
         <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromInbox($index)"></ion-option-button>
         <ion-option-button class="button-light icon ion-ios-book" ng-click="vm.saveToAlbum($index)"></ion-option-button>
         <ion-option-button class="button-light icon ion-ios-world" ng-click="vm.reBroadcast($index)"></ion-option-button>
         <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
+          <!--
           <h2>{{vm.getSrc(photo.Title)}}</h2>
           <p>Broadcasts: {{vm.getSrc(photo.Broadcasts)}}</p>
+          -->
           <img class="inboxPhoto" ng-src="{{vm.getSrc(photo.photoId)}}">
           <p>{{vm.photo.timeRemaining | date : "m:ss"}}</p>
         </a>
       </ion-item>
-
-      <ion-item ng-repeat="photo in vm.dummyphotos track by $index">
-        <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromInbox($index)"></ion-option-button>
-        <ion-option-button class="button-light icon ion-ios-book" ng-click="vm.saveToAlbum($index)"></ion-option-button>
-        <ion-option-button class="button-light icon ion-ios-world" ng-click="vm.reBroadcast($index)"></ion-option-button>
-        <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
-          <h2>{{photo.title}}</h2>
-          <p>Broadcasts: {{photo.broadcasts}}</p>
-          <!--<img class="inboxPhoto" ng-src="{{vm.getSrc(photo.photoId)}}">-->
-          <img class="inboxPhoto" ng-src="{{photo.imgSrc}}">
-          <p>{{photo.timeRemaining | date : "m:ss"}}</p>
-        </a>
-      </ion-item>
-
       <ion-infinite-scroll infinite-scroll-disabled="vm.canScroll" on-infinite="vm.loadMore()"></ion-infinite-scroll>
     </ion-list>
   </ion-content>

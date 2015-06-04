@@ -29,30 +29,27 @@ function InboxCtrl($scope, $state, $interval, InboxFactory, AlbumFactory, Camera
   vm.photo = {timestamp : Date.now() - 0.7*60*1000,
               title: 'Berkeley',
               broadcasts: 11,
-              imgSrc: 'img/berkeley.jpg',
+              photoId: 'berkeley',
               TTL: 5*60};
   vm.photo2 = {timestamp : Date.now() - 2.3*60*1000,
               title: 'San Francisco',
               broadcasts: 3,
-              imgSrc: 'img/goldengate.jpg',
+              photoId: 'goldengate',
               TTL: 5*60};
 
-  vm.dummyphotos = [];
-  vm.dummyphotos.push(vm.photo, vm.photo2);
+  //vm.dummyphotos = [];
+  //vm.dummyphotos.push(vm.photo, vm.photo2);
+  vm.photos.push(vm.photo, vm.photo2);
 
   timer = $interval(updateTime, 1000);
 
   function deleteFromInbox(index) {
     console.log('deleting photo:',index);
-    vm.dummyphotos.splice(index,1);
-    console.log(vm.dummyphotos);
+    vm.photos.splice(index,1);
   }
 
   function updateTime() {
     vm.photos.forEach(function(photo) {
-      photo['timeRemaining'] = photo.TTL*1000 - (Date.now() - photo.timestamp);
-    });
-    vm.dummyphotos.forEach(function(photo) {
       photo['timeRemaining'] = photo.TTL*1000 - (Date.now() - photo.timestamp);
     });
   }
