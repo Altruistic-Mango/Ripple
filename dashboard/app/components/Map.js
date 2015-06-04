@@ -28,9 +28,15 @@ Map.update = function(el, state) {
 
   map.data.setStyle(function(feature) {
     var radius = state.data.radius;
-    return {
-      icon: Map.getCircle(radius)
-    };
+    if (feature.getProperty('isBroadcast')){
+      return {
+        icon: Map.getBroadcastCircle(radius)
+      };
+    } else if (feature.getProperty('isRecipient')){
+      return {
+        icon: Map.getRecipientCircle()
+      }
+    }
   });
 
   state.data.feature.geometry.coordinates.forEach(function(coordinate) {
@@ -44,17 +50,28 @@ Map.update = function(el, state) {
   map.fitBounds(bounds)
 }
 
-Map.getCircle = function(radius) {
-    var circle = {
-    path: google.maps.SymbolPath.CIRCLE,
-    scale: radius * 2,
-    fillColor: 'red',
-    fillOpacity: .2,
-    strokeColor: 'white',
-    strokeWeight: .5
-  };
-  return circle;
+Map.getBroadcastCircle = function(radius) {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: radius * 2,
+      fillColor: 'red',
+      fillOpacity: .5,
+      strokeColor: 'white',
+      strokeWeight: .5
+    };
 }
+
+Map.getRecipientCircle = function() {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 3,
+      fillColor: 'red',
+      fillOpacity: 1,
+      strokeColor: 'white',
+      strokeWeight: .5
+    };
+}
+
 
 Map.styles = [
   {

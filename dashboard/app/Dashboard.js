@@ -39,7 +39,7 @@ var Dashboard = React.createClass({
     return (
       <div className="viewPort">
 
-        <Navigation items={ [
+        <Navigation className="nav-bar"items={ [
           {name:'Explore'},
           {name:'Album'},
           {name: 'Login'}
