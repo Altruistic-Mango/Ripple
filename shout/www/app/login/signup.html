@@ -1,22 +1,40 @@
-<ion-view view-title="Sign Up">
-  <ion-content class="padding">
-    <div class="list list-inset">
-      <label class="item item-input">
-        <input type="text" placeholder="Username" ng-model="vm.data.username">
-      </label>
-      <label class="item item-input">
-        <input type="email" placeholder="Email" ng-model="vm.data.email">
-      </label>
-      <label class="item item-input">
-        <input type="password" placeholder="Password" ng-model="vm.data.password">
-      </label>
-      <div class="padding">
-        <button ng-if="vm.badUsername" class="button button-outline button-assertive">
-          That username is already taken
-        </button>
+<ion-view class="signupScreen" hide-nav-bar="true" view-title="Signup" align-title="left">
+<!--<ion-content style="background: url(img/ripple.jpeg) center; background-size: cover;">-->
+  <ion-content>
+    <div class="row">
+      <div class="col">
+        <div class="loginTitle">RIPPLE</div>
       </div>
     </div>
-    <button class="button button-block button-calm" ng-click="vm.signup()">Sign Up</button>
+    <div class="padding">
+      <ion-md-input class="loginItem" placeholder="Name" hightlight-color="positive" type="text" ng-model="vm.data.username" value="{{vm.data.username}}"></ion-md-input>
+      <ion-md-input class="loginItem" placeholder="Email" hightlight-color="positive" type="email" ng-model="vm.data.email" value="{{vm.data.email}}"></ion-md-input>
+      <ion-md-input class="loginItem" placeholder="Password" hightlight-color="positive" type="password" ng-model="vm.data.password" value="{{vm.data.password}}"></ion-md-input>
+    </div>
+    <div class="padding">
+      <button ng-click="vm.signup()" class="button button-block button-positive flat ink ">Sign Up</button>
+    </div>
+    <div class="padding row">
+      <div class="col">
+      </div>
+      <div class="col">
+        <div class="flex">
+          <button ng-click="vm.signup()" class="button button-positive-900 button-fab ink">
+            <i class="icon ion-social-facebook"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col">
+      </div>
+      <div class="col">
+        <div class="flex">
+          <button ng-click="vm.signup()" class="button button-assertive button-fab ink">
+            <i class="icon ion-social-google"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col">
+      </div>
+    </div>
   </ion-content>
-
 </ion-view>

@@ -4,13 +4,7 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 
-<ion-tabs class="tabs-icon-top tabs-color-active-positive">
-<!-- TODO: tabs-striped add this class and style it differently later on-->
-
-  <!-- Settings Tab -->
-  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
-    <ion-nav-view name="tab-settings"></ion-nav-view>
-  </ion-tab>
+<ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
 
   <!-- Album Tab -->
   <ion-tab title="Album" icon-off="ion-ios-book-outline" icon-on="ion-ios-book" href="#/tab/album">
@@ -21,11 +15,15 @@ navigation history that also transitions its views in and out.
   <ion-tab title="Inbox" icon-off="ion-ios-email-outline" icon-on="ion-ios-email" href="#/tab/inbox">
     <ion-nav-view name="tab-inbox"></ion-nav-view>
   </ion-tab>
-
-  <!-- Camera Tab -->
-  <ion-tab title="Camera" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" ng-click="vm.takePicture()">
+  
+  <!-- Settings Tab -->
+  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
+    <ion-nav-view name="tab-settings"></ion-nav-view>
   </ion-tab>
 
 </ion-tabs>
 
+<button ng-click="vm.takePhoto()" class="button button-positive button-fab button-fab-bottom-right ink">
+  <i class="icon ion-camera"></i>
+</button>
 

@@ -23,6 +23,10 @@ var photos = require('./Routes/photos');
 var gps = require('./Routes/gps');
 var events = require('./Routes/events');
 var api = require('./Routes/api');
+var dashboard = require('./Routes/dashboard');
+
+/* allows access to dashboard */
+var dashboard = require('./Routes/dashboard');
 
 
 // Headers set for testing
@@ -44,11 +48,14 @@ app.use(cookieParser());
 
 app.use('/api', api);
 app.use(express.static(path.join(__dirname, '../shout/www/')));
+app.use('/dashboard', express.static(path.join(__dirname, '../dashboard/public/')));
+
 
 app.use('/users', users);
 app.use('/photos', photos);
 app.use('/gps', gps);
 app.use('/events', events);
+app.use('/dashboard', dashboard);
 gpsController.pruneTree();
 
 

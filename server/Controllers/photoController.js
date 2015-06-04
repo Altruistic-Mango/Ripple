@@ -13,13 +13,15 @@ var photoController = {
 // {userId: "9651598", y: 37.783795, x: -122.4093594, timestamp: 1432937843430}
 
     console.log(JSON.stringify(req.body));
+    var userId = req.body.userId;
     var photoId = req.body.photoId;
     var data = {
       photoId: photoId,
       radius: +req.body.radius,
-      TTL: +req.body.TTL,
+      TTL: +req.body.TTL * 60,
       timestamp: +req.body.timestamp,
-      userId: req.body.userId
+      userId: userId,
+      recipientList: [userId]
     };
 
     Photo.findOne({
@@ -38,7 +40,7 @@ var photoController = {
             res.send(500, err);
           } else {
             console.log('photo saved');
-            eventController.broadcastEvent(req, res);
+            eventController.broadcast(req, res);
           }
         });
       }

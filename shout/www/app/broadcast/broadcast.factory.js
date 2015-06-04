@@ -1,29 +1,45 @@
 angular
   .module('shout.broadcast')
-  .factory('BroadcastFactory', BroadcastFactory);
+  .factory('BroadCastFactory', BroadCastFactory);
 
-BroadcastFactory.$inject = ['LocationFactory', '$http', 'API_HOST'];
+BroadCastFactory.$inject = ['$localstorage', 'LocationFactory', '$http', 'API_HOST'];
 
-function BroadcastFactory(LocationFactory, $http, API_HOST) {
+function BroadCastFactory($localstorage, LocationFactory, $http, API_HOST) {
+
   var services = {};
-    services.reBroadcast = reBroadcast;
-    services.sendBroadcastEvent = sendBroadcastEvent;
+  services.newPhoto = newPhoto;
+  services.reBroadCast = reBroadCast;
+  services.sendBroadCastEvent = sendBroadCastEvent;
+
   return services;
 
-  function reBroadcast(photo) {
-    console.log('currentPosition: ', LocationFactory.currentPosition);
-    if (LocationFactory.currentPosition && LocationFactory.currentPosition.userId &&
-        LocationFactory.currentPosition.x && LocationFactory.currentPosition.y) {
-      photo = _.extend(photo, LocationFactory.currentPosition);
+  function newPhoto(TTL, radius) {
+    console.log('newPhoto');
+    var pos = LocationFactory.getUsersPosition();
+    var data = $localstorage.getObject('photo');
+    data.x = pos.x;
+    data.y = pos.y;
+    console.log('data',data);
+    $http.post(API_HOST + '/photos/newPhoto', data)
+      .success(function() {
+        console.log('photo data sent to server');
+      });
+  }
+
+  function reBroadCast(photo) {
+    var LF = LocationFactory;
+    console.log('currentPosition: ', LF.currentPosition);
+    if (LF.currentPosition && LF.currentPosition.userId && LF.currentPosition.x && LF.currentPosition.y) {
+      photo = _.extend(photo, LF.currentPosition);
       photo.timestamp = new Date().getTime();
-      console.log('reBroadcast this photo: ', photo);
-      services.sendBroadcastEvent(photo);
+      console.log('reBroadCast this photo: ', photo);
+      services.sendBroadCastEvent(photo);
     } else {
       console.log('sorry cant broadcast that photo');
     }
   }
 
-  function sendBroadcastEvent (broadcastEvent) {
+  function sendBroadCastEvent (broadcastEvent) {
     $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
   }
 }

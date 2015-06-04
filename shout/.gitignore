@@ -1,14 +1,9 @@
-# Don't ignore this file
-!.gitignore
-
-# Don't ignore directories so we can recurse into them
-!/www/*
-
-# Ignore
-www/lib/
-www/platforms/
 config.json
-.DS_Store
+config.xml
+
 platforms/
 plugins/
-resources/
+
+www/lib/
+www/platforms/
+www/dist/

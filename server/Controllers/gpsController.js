@@ -15,8 +15,6 @@ var gpsController = {
 
     var userId = req.body.userId;
 
-    console.log('inserting coordinates ' + typeof userId);
-
     var timestamp = new Date().getTime();
 
     var node = {
@@ -30,23 +28,26 @@ var gpsController = {
 
 
     var inbox = userController.retrieveInbox(userId, node, function(inbox) {
-      console.log(inbox);
       res.send(inbox);
       });
   },
 
   // this function takes a request from the user and returns an array of nodes that are within the quadrant
   findNearbyNodes: function(req, res) {
-    console.log(req.body);
 
     var searchParams = {
       x: req.body.x,
       y: req.body.y,
-      userId: req.body.userId
+      userId: req.body.userId,
+      radius: +req.body.radius
     };
 
-    var nearbyNodes = this.getNodes(searchParams);
-    res.send(nearbyNodes.children);
+    var tree = this.getNodes(searchParams);
+    // console.log(tree.depth);
+    var nodes = tree.traverse();
+    // console.log(nodes.length);
+    res.send(nodes);
+
   },
 
   pruneTree: function() {
@@ -69,8 +70,8 @@ var gpsController = {
     var result = [];
 
     nodes.forEach(function(item2) {
-      lat2 = item2.x;
-      lon2 = item2.y;
+      lat2 = +item2.x;
+      lon2 = +item2.y;
       dLat = (lat2 - lat1).toRad();
       dLon = (lon2 - lon1).toRad();
       var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -79,7 +80,6 @@ var gpsController = {
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       var d = R * c;
       d = d * 0.621371;
-      console.log(d);
 
       if (d < item1.radius) {
         result.push(item2.userId);
@@ -91,8 +91,8 @@ var gpsController = {
 
   // Find nodes in Quadtree
   getNodes: function(searchParams) {
-    var nodes = quadtree.get(searchParams);
-    return nodes;
+    var node = quadtree.get(searchParams);
+    return node;
   },
 
   // Invoke calculate distance function
@@ -114,7 +114,27 @@ var gpsController = {
 
   // load dummy data for testing
   loadData: function(req, res) {
-    quadtree.addData();
+    var date = new Date();
+
+    var randIntx = function() {
+      return Math.random() * (125.3 - 67.8) - (125.3)
+    };
+    
+    var randInty = function() {
+      return Math.random() * (67.5 - 10) + 10
+    }
+    
+    var count = 0;
+    
+    while (count < 100000) {
+      var item = {};
+      item.x = randIntx();
+      item.y = randInty();
+      item.timestamp = date;
+      item.userId = Math.floor(Math.random() * 9999999);
+      quadtree.put(item);
+      count++;
+    };
     res.end();
   },
 
