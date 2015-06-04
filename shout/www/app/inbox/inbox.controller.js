@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$state', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadCastFactory'];
+InboxCtrl.$inject = ['$scope', '$state', '$interval', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadCastFactory'];
 
-function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, BroadCastFactory) {
+function InboxCtrl($scope, $state, $interval, InboxFactory, AlbumFactory, CameraFactory, BroadCastFactory) {
   console.log('InboxCtrl');
   var vm = this;
   var currentStart = 0;
@@ -20,10 +20,39 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
   vm.loadMore = loadMore;
   vm.reBroadCast = reBroadCast;
   vm.saveToAlbum = saveToAlbum;
+  vm.deleteFromInbox = deleteFromInbox;
   vm.clearInbox = clearInbox;
   vm.getSrc = getSrc;
   vm.morePhotosVar = false;
   vm.canScroll = false;
+
+  vm.photo = {timestamp : Date.now() - 0.7*60*1000,
+              title: 'Berkeley',
+              broadcasts: 11,
+              photoId: 'berkeley',
+              TTL: 5*60};
+  vm.photo2 = {timestamp : Date.now() - 2.3*60*1000,
+              title: 'San Francisco',
+              broadcasts: 3,
+              photoId: 'goldengate',
+              TTL: 5*60};
+
+  //vm.dummyphotos = [];
+  //vm.dummyphotos.push(vm.photo, vm.photo2);
+  vm.photos.push(vm.photo, vm.photo2);
+
+  timer = $interval(updateTime, 1000);
+
+  function deleteFromInbox(index) {
+    console.log('deleting photo:',index);
+    vm.photos.splice(index,1);
+  }
+
+  function updateTime() {
+    vm.photos.forEach(function(photo) {
+      photo['timeRemaining'] = photo.TTL*1000 - (Date.now() - photo.timestamp);
+    });
+  }
 
   vm.addPhotos(InboxFactory.photos);
 
@@ -36,7 +65,7 @@ function InboxCtrl($scope, $state, InboxFactory, AlbumFactory, CameraFactory, Br
 
   function doRefresh() {
     console.log('doRefresh called');
-    InboxFactory.requestInbox();     
+    InboxFactory.requestInbox();
     $scope.$broadcast('scroll.refreshComplete');
   }
 

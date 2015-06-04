@@ -40,7 +40,6 @@ function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
     }
   }
 
-
   function getAlbum() {
     var userId = $localstorage.get('userId');
     $http.get(API_HOST + '/users/album/' + userId)

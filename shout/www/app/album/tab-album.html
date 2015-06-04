@@ -3,8 +3,15 @@
   <!-- <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher> -->
   <ion-list can-swipe="true">
     <ion-item class="photoDisplay" ng-repeat="photo in vm.photos track by $index" >
+    <ion-list class="photoDisplay condensed-space no-padding" ng-repeat="photo in vm.photos track by $index" can-swipe="true">
       <ion-option-button class="button-light icon ion-ios-trash" ></ion-option-button>
-      <img class="albumPhoto" ng-src="{{vm.getSrc(photo.photoId)}}"/>
+        <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
+          <!--
+          <h2>{{vm.getSrc(photo.Title)}}</h2>
+          <p>Broadcasts: {{vm.getSrc(photo.Broadcasts)}}</p>
+          -->
+          <img class="albumPhoto" ng-src="{{vm.getSrc(photo.photoId)}}">
+        </a>
     </ion-item>
   </ion-list>
   </ion-content>
