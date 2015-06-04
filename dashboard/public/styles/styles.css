@@ -35,7 +35,7 @@ html{
 }
 
 .Chart {
-  height: 800px;
+  height: 650px;
   width: 800px;
   position: absolute;
   top: 52px;
@@ -77,9 +77,8 @@ html{
   display: inline-block;
   padding: 13px 20px;
   cursor:pointer;
-  background-color:#eee;
-  color:#fff;
-  background-color:#41c7c2;
+  color: #B0DCE8;
+  background: rgba(72,164,190,0.2);
 }
 
 a {
