@@ -128,8 +128,8 @@ var userController = {
             '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
             '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
 
-
-          if (eventObj.timestamp - inboxItem.timestamp < inboxItem.TTL) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+          var diff = (eventObj.timestamp - inboxItem.timestamp) / 1000;
+          if (diff ^ 60 < inboxItem.TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
             console.log('inboxItem ' + inboxItem + ' passed the test')
             acc.push(inboxItem);
           }
