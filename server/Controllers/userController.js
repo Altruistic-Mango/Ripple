@@ -164,6 +164,7 @@ var userController = {
             user.inbox = newInbox;
             user.save();
           }
+
         }
 
         user.update({
@@ -172,7 +173,6 @@ var userController = {
           console.log('sending user the inbox');
           cb(user.inbox);
         });
-
       }
       else return null;
     })
