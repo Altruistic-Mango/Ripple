@@ -118,11 +118,11 @@ var userController = {
       if (err) {
         console.log(err);
         return err;
-      } 
+      }
 
       else if (user) {
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
-          console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp + 
+          console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
             '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
             '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
 
@@ -191,19 +191,19 @@ var userController = {
     console.log('addToAlbum: ', req.body);
     User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId}}}, function(error, user){
       if (error) {
-        res.status(500).send(); 
+        res.status(500).send();
       } else {
         res.status(200).send();
       }
     });
-  }, 
+  },
 
   getAlbum: function(req, res) {
     console.log('USERID: ', req.params.userId);
     var userId = req.params.userId;
     User.findOne({userId: userId}, function(error, user){
       if (error) {
-        res.status(500).send(); 
+        res.status(500).send();
       } else {
         console.log('USER.ALBUM: ', user.album);
         res.status(200).send(user.album);
@@ -212,10 +212,10 @@ var userController = {
   },
 
   getInbox: function(req, res) {
-    var userId = req.params.userId; 
+    var userId = req.params.userId;
     User.findOne({userId: userId}, function(error, user){
       if (error) {
-        res.status(500).send(); 
+        res.status(500).send();
       } else {
         console.log('USER.INBOX: ', user.inbox);
         res.status(200).send(user.inbox);
