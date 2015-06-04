@@ -1,6 +1,6 @@
 var Map = {};
 
-Map.create = function(el, props, state) { 
+Map.create = function(el) { 
   console.log('map.create called: ', el);
   var mapOptions = {
             center: { lat: 37.7806579, lng: -122.40708},

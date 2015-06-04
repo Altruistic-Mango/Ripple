@@ -52,7 +52,7 @@ html{
 }
 
 .nav-bar{
-  height: 100%;
+  width: 100%;
 }
 
 //////////////////
@@ -84,5 +84,9 @@ html{
 a {
   text-decoration: none; 
   color: #B0DCE8;
+}
+
+.title {
+  float: right;
 }
 
