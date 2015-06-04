@@ -9,10 +9,7 @@ var MapComponent = React.createClass({
   componentDidMount: function() {
     var el = this.getDOMNode();
     console.log('component mounted: ', el);
-    Map.create(el, {
-      width: '600px',
-      height: '600px'
-    }, this.getChartState());
+    Map.create(el);
   },
 
   componentDidUpdate: function() {

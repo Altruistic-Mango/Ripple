@@ -15,14 +15,15 @@ html{
     overflow: hidden;
 }
 
-.side-content {
-  float: left;
+.home {
+  position: absolute;
+  top: 52px;
   height: 100%;
   overflow: auto; 
-  margin: 5px;
   background: rgba(0,0,0,0.6);
   border: 1px solid #979797;
 }
+
 
 .Map {
   float: left;
@@ -34,10 +35,11 @@ html{
 }
 
 .Chart {
-  height: 800px;
+  height: 650px;
   width: 800px;
   position: absolute;
   top: 52px;
+  left: 310px;
 }
 
 .nav-menu {
@@ -50,7 +52,7 @@ html{
 }
 
 .nav-bar{
-  height: 100%;
+  width: 100%;
 }
 
 //////////////////
@@ -75,13 +77,16 @@ html{
   display: inline-block;
   padding: 13px 20px;
   cursor:pointer;
-  background-color:#eee;
-  color:#fff;
-  background-color:#41c7c2;
+  color: #B0DCE8;
+  background: rgba(72,164,190,0.2);
 }
 
 a {
   text-decoration: none; 
   color: #B0DCE8;
+}
+
+.title {
+  float: right;
 }
 
