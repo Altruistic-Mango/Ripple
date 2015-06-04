@@ -28,6 +28,7 @@ var userController = {
         userId: randInt(),
         email: email
       });
+
       newUser.save(function(err, newUser) {
         if (err) {
           console.log(err);
@@ -113,6 +114,16 @@ var userController = {
   },
 
   retrieveInbox: function(userId, eventObj, cb) {
+
+    if (eventObj && eventObj.photoId) {
+          var broadcastEvent = {
+            photoId: eventObj.photoId,
+            TTL: eventObj.TTL,
+            radius: eventObj.radius,
+            timestamp: eventObj.timestamp
+          };
+        }
+
     User.findOne({
       userId: userId
     }, function(err, user) {
@@ -123,26 +134,41 @@ var userController = {
       }
 
       else if (user) {
-        var newInbox = user.inbox.reduce(function(acc, inboxItem) {
-          console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
-            '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
-            '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
+        console.log('user inbox is ' + JSON.stringify(user.inbox))
+        console.log('user is \n' + user)
+        console.log('Event object is \n' + JSON.stringify(eventObj))
 
-          var diff = (eventObj.timestamp - inboxItem.timestamp) / 1000;
-          if (diff ^ 60 < inboxItem.TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
-            console.log('inboxItem ' + inboxItem + ' passed the test')
-            acc.push(inboxItem);
+
+        if (user.inbox.length) {
+          userInbox = user.inbox;
+          console.log('user.inbox = ' + user.inbox);
+          } else {
+              userInbox = [{TTL: -1}];
           }
-          return acc;
-        }, []);
 
-        if (eventObj && eventObj.photoId) {
-          var broadcastEvent = {
-            photoId: eventObj.photoId,
-            TTL: eventObj.TTL,
-            radius: eventObj.radius,
-            timestamp: eventObj.timestamp
-          };
+        // var newInbox = userInbox.reduce(function(acc, inboxItem) {
+        //   console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
+        //     '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
+        //     '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
+
+        //   var diff = (eventObj.timestamp - inboxItem.timestamp) / 1000;
+        //   if (diff * 60 < inboxItem.TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+        //     console.log('inboxItem ' + inboxItem + ' passed the test')
+        //     acc.push(inboxItem);
+        //   }
+        //   return acc;
+        // }, []);
+
+var newInbox = [];
+for ( var i = 0; i < userInbox.length; i++) {
+    var diff = (eventObj.timestamp - userInbox[i].timestamp) / 1000;
+          if (diff * 60 < userInbox[i].TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+            console.log('inboxItem ' +  userInbox[i] + ' passed the test')
+            newInbox.push(userInbox[i]);
+}
+}
+
+        if (broadcastEvent) {
 
           var bool = true;
 
@@ -158,6 +184,7 @@ var userController = {
             user.inbox = newInbox;
             user.save();
           }
+
         }
 
         user.update({
@@ -165,9 +192,8 @@ var userController = {
         }, function(err, data) {
           cb(user.inbox);
         });
-
-      } else return null;
-    });
+      }
+    })
   },
 
   cullInbox: function(req, res) {

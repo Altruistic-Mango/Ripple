@@ -82,7 +82,7 @@ var gpsController = {
       d = d * 0.621371;
 
       if (d < item1.radius) {
-        result.push(item2.userId);
+        result.push({userID: item2.userId, y: item2.y, x: item2.x});
       }
     });
 

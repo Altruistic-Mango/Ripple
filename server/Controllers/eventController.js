@@ -23,6 +23,7 @@ var eventController = {
       userId: userId,
       radius: +radius
     };
+    console.log('calling gps controller and getting nodes')
     var tree = gpsController.getNodes(searchParams);
     var nodes = tree.traverse();
     var recipients = gpsController.calculateDist(searchParams, nodes);
@@ -63,22 +64,22 @@ var eventController = {
         '\nevent ' + data.event);
         var recipientList = [];
 
-        data.event.recipientList.forEach(function(userId) {
-          if (data.photo.recipientList.indexOf(userId) === -1) {
-            recipientList.push(userId);
+        data.event.recipientList.forEach(function(user) {
+          if (data.photo.recipientList.indexOf(user.userID) === -1) {
+            recipientList.push(user.userId);
           }
         });
 
         data.photo.recipientList = data.photo.recipientList.concat(recipientList);
         data.photo.save();
-        return data.event;
+        return data;
       },function(err) {
           console.log(err);
           res.send('photo not found');
       })
     .then(function(data) {
-      data.recipientList.forEach(function(recipient) {
-        userController.updateInbox(recipient, data.event);
+      data.event.recipientList.forEach(function(recipient) {
+        userController.updateInbox(recipient.userID, data.event);
       });
     res.end();
     });
