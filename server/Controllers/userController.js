@@ -213,6 +213,30 @@ var userController = {
     });
   },
 
+  cullAlbum: function(userId, photoId) {
+    var query = {
+      userId: userId
+    }
+
+    User.findOne(query, function(err, user) {
+      if (err) console.log(err);
+
+      else {
+        if (user) {
+          var album = user.album;
+          for (var i = 0; i < album.length; i++) {
+            if (user.album[i].photoId === photoId) {
+              user.album.splice(i, 1);
+              break;
+            }  
+          }
+          user.album = album;
+          user.save();
+        };
+      }
+    });
+  },
+
   getAlbum: function(req, res) {
     console.log('USERID: ', req.params.userId);
     var userId = req.params.userId;

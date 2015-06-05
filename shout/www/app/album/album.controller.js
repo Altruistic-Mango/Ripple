@@ -2,15 +2,15 @@ angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
-AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory'];
+AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', '$localstorage', '$http', 'API_HOST'];
 
-function AlbumCtrl($scope, $state, AlbumFactory) {
+function AlbumCtrl($scope, $state, AlbumFactory, $localstorage, $http, API_HOST) {
   console.log('AlbumCtrl');
-  var vm         = this;
-  vm.photos      = [];
-  vm.addPhotos   = addPhotos;
-  vm.deletePhoto = deletePhoto;
-  vm.getSrc      = getSrc;
+  var vm = this;
+  vm.photos = [];
+  vm.addPhotos = addPhotos;
+  vm.getSrc = getSrc; 
+  vm.deleteFromAlbum = deleteFromAlbum;
 
   AlbumFactory.getAlbum();
 
@@ -25,8 +25,19 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
   //TODO: finish this function
   //  - delete from view
   //  - tell server to remove from album
-  function deletePhoto(index) {
-
+  function deleteFromAlbum(index) {
+    console.log('deleting photo:',index);
+    var photo = vm.photos.splice(index,1)[0];
+    console.log(photo);
+    var data = {};
+    data.userId = $localstorage.get('userId');
+    data.photoId = photo.photoId;
+    console.log(data);
+    $http.post(API_HOST + '/photos/deleteFromAlbum/', data)
+         .success(function(data) {
+            console.log('success deleteing photo from inbox');
+         })
+         .error(function(){console.log('error deleting photo from inbox');});
   }
 
   function getSrc(photoId) {

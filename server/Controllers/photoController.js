@@ -71,6 +71,12 @@ var photoController = {
     var photoId = req.body.photoId;
     userController.cullInbox(userId, photoId);
     res.end();
+  },
+
+  deleteAlbumPhoto: function(req, res) {
+    var userId = req.body.userId;
+    var photoId = req.body.photoId;
+    userController.cullAlbum(userId, photoId);
   }
 };
 
