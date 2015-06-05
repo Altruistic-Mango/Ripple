@@ -13,7 +13,6 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   //TODO:kill images when TTL expires
   
   vm.photos = [];
-  vm.newPhotos = [];
   vm.data = CameraFactory.data;
   vm.obj = CameraFactory.obj;
   vm.takePicture = CameraFactory.takePicture;
@@ -27,6 +26,19 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   vm.getSrc          = getSrc;
 
 
+  //when the controller is instantiated the first thing it does is call doRefresh 
+  //which calls a function that requests the inbox from factory
+  vm.doRefresh();
+
+  //this adds a listener for the updateInbox triggered in the inbox factory whenever the server responds with an inbox
+  $scope.$on('updateInbox', function(event, data) {
+    console.log('update inbox event heard!!!');
+    vm.clearInbox();
+    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
+    if(newPhotos.length) {
+      vm.addPhotos(newPhotos);
+    }
+  });
   /*
   vm.photo = {timestamp : Date.now() - 0.7*60*1000,
               title: 'Berkeley',
@@ -82,14 +94,7 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
     }
   }
 
-  vm.addPhotos(InboxFactory.photos);
 
-  $scope.$on('updateInbox', function(event, data) {
-    console.log('update inbox event heard!!!');
-    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    vm.clearInbox();
-    vm.addPhotos(newPhotos);
-  });
 
   function doRefresh() {
     console.log('doRefresh called');
@@ -99,12 +104,12 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
-    vm.morePhotosVar = true;
   }
 
   //TODO: deprecate this, expired photos controlled by timer
   function clearInbox() {
     vm.photos = InboxFactory.removeExpired(vm.photos, InboxFactory.photos);
+    console.log('clearInbox vm.photos: ', vm.photos);
   }
 
   function reBroadCast(index) {

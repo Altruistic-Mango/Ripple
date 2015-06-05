@@ -264,8 +264,7 @@ var userController = {
 
   deleteInbox: function(req, res) {
     var userId = req.params.userId; 
-    var inbox = []; 
-    User.findOneAndUpdate({userId: userId}, {inbox : inbox}, function(error, user){
+    User.findOneAndUpdate({userId: userId}, {$set: {inbox : [] }}, { 'new' : true }, function(error, user){
       if (error) {
         res.status(500).send();
       } else {
