@@ -63,7 +63,7 @@ var PhotoFeed = React.createClass({
 
       return (
         <div className="photos">
-          PhotoFeed
+          Recent Ripples
           {photoItems}
         </div>
       );
