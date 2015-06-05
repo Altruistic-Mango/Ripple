@@ -15,6 +15,10 @@ function SignupCtrl($state, SignupFactory) {
 
   vm.signup = signup;
 
+  //TODO: response message if username exists
+  //TODO: form validation, no weird characters in username A-z0-9 only
+  //TODO: if successful, go straight to inbox
+  //TODO: store data in localstorage user object
   function signup() {
     console.log('vm.data: ', vm.data);
     SignupFactory.signupUser(vm.data)

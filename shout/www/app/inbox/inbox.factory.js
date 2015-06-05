@@ -21,6 +21,7 @@ function InboxFactory($rootScope, $http, $localstorage, API_HOST) {
   function updateInbox(data) {
     console.log('update inbox called');
     services.photos = data;
+    console.log('inbox:',data);
     $rootScope.$broadcast('updateInbox', services.photos);
   }
 

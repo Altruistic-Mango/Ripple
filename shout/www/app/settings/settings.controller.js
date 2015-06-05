@@ -7,8 +7,11 @@ SettingsCtrl.$inject = ['$http', '$state', '$ionicHistory', 'SettingsFactory', '
 function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST) {
   console.log('SettingsCtrl');
 
+  //TODO: explanations of Enable, Trickle.
+  //  Possibly with pop ups.
   var vm = this;
 
+  //TODO: load settings form localstorage initialize
   vm.radius = 5.0; //initial value 5 miles
   vm.TTL = 5.0; //initial value 5 minutes
   vm.watch = true;
@@ -18,12 +21,19 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   vm.userSetWatch = userSetWatch;
   vm.sharePhoto = sharePhoto;
 
+  //TODO: isSignedIn = false
+  //TODO: remove localstorage of userId etc if need be
   function logOut() {
-    //TODO: remove cookieStorage session stuff
-    //TODO: remove localstorage of userId etc if need be
     $state.go('login');
   }
 
+  //TODO: make settings object on user object in local storage
+  //  user = {username: 'adsf',
+  //          userId: 'asdf',
+  //          isSignedIn: 'true',
+  //          settings: {TTL, Radius, Enabled, Trickle}
+  //          }
+  //TODO: make sure TTL is in milliseconds
   function saveSettings() {
     SettingsFactory.setSettings(parseInt(vm.radius), parseInt(vm.TTL) );
     if ($ionicHistory.backView()) {
@@ -34,6 +44,7 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
     console.log('radius set to: ', parseInt(vm.radius) );
     console.log('TTL set to: ', parseInt(vm.TTL ) );
   }
+
 
   function sharePhoto() {
     console.log('SettingsCtrl.sharePhoto');

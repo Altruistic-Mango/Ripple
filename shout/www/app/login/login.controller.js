@@ -17,12 +17,14 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
 
   ionicMaterialInk.displayEffect();
 
+  //TODO:Form validation for all required fields
+  //TODO: username exists, password incorrect 
+  //TODO: no username error
+  //TODO: facebook auth
   function login() {
-    console.log('vm.data: ', vm.data);
     ionicMaterialInk.displayEffect();
     LoginFactory.loginUser(vm.data)
       .success(function(res) {
-        console.log('res from server on login: ', res);
         LoginFactory.successfulLogin(res);
         $state.go('tab.inbox');
       })

@@ -9,20 +9,8 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
   var vm = this;
   vm.photos = [];
   vm.addPhotos = addPhotos;
+  vm.deletePhoto = deletePhoto;
   vm.getSrc = getSrc; 
-  vm.photo = {timestamp : Date.now() - 0.7*60*1000,
-              title: 'Berkeley',
-              broadcasts: 11,
-              imgSrc: 'img/berkeley.jpg',
-              TTL: 5*60};
-  vm.photo2 = {timestamp : Date.now() - 2.3*60*1000,
-              title: 'San Francisco',
-              broadcasts: 3,
-              imgSrc: 'img/goldengate.jpg',
-              TTL: 5*60};
-
-  vm.dummyphotos = [];
-  vm.dummyphotos.push(vm.photo, vm.photo2);
 
   AlbumFactory.getAlbum();
 
@@ -32,6 +20,13 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
+  }
+
+  //TODO: finish this function
+  //  - delete from view
+  //  - tell server to remove from album
+  function deletePhoto(index) {
+
   }
 
   function getSrc(photoId){
