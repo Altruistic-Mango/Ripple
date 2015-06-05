@@ -9,27 +9,23 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   var vm = this;
   var currentStart = 0;
 
-  //TODO: get rid of infinite scroll on view
-  //TODO: fix pull to refresh bug
-  //  - when pulled, images disappear
-  //TODO:kill images when TTL expires
 
-  vm.photos          = [];
-  vm.newPhotos       = [];
-  vm.data            = CameraFactory.data;
-  vm.obj             = CameraFactory.obj;
-  vm.takePicture     = CameraFactory.takePicture;
-  vm.query           = CameraFactory.query;
-  vm.addPhotos       = addPhotos;
-  vm.doRefresh       = doRefresh;
-  //vm.loadMore      = loadMore;
-  vm.reBroadCast     = reBroadCast;
-  vm.saveToAlbum     = saveToAlbum;
+  //TODO:kill images when TTL expires
+  
+  vm.photos = [];
+  vm.newPhotos = [];
+  vm.data = CameraFactory.data;
+  vm.obj = CameraFactory.obj;
+  vm.takePicture = CameraFactory.takePicture;
+  vm.query = CameraFactory.query;
+  vm.addPhotos = addPhotos;
+  vm.doRefresh = doRefresh;
+  vm.reBroadCast = reBroadCast;
+  vm.saveToAlbum = saveToAlbum;
   vm.deleteFromInbox = deleteFromInbox;
   vm.clearInbox      = clearInbox;
   vm.getSrc          = getSrc;
-  vm.morePhotosVar   = false;
-  vm.canScroll       = false;
+
 
   /*
   vm.photo = {timestamp : Date.now() - 0.7*60*1000,
@@ -99,19 +95,6 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
     InboxFactory.requestInbox();
     $scope.$broadcast('scroll.refreshComplete');
   }
-
-  //TODO: Deprecate this, no longer using infinite scroll
-  /*
-  function loadMore() {
-    console.log('loadMore called');
-    if (vm.morePhotosVar) {
-      vm.canScroll = true;
-    } else {
-      vm.canScroll = false;
-    }
-    $scope.$broadcast('scroll.infiniteScrollComplete');
-  }
-  */
 
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
