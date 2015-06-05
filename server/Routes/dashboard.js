@@ -11,4 +11,8 @@ router.get('/events/:photoId', function(req, res) {
   dashboardController.fetchEvents(req, res);
 });
 
+router.get('/photos/:timestamp', function(req, res) {
+  dashboardController.getNewPhotos(req, res);
+})
+
 module.exports = router;
