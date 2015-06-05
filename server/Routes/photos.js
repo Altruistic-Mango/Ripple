@@ -17,4 +17,9 @@ router.get('/test', function(req, res) {
   photoController.testingFunc(req, res);
 });
 
+router.post('/delete', function(req, res) {
+	console.log('Deleting photo ' + req.body.photoId);
+	photoController.deletePhoto(req, res);
+});
+
 module.exports = router;

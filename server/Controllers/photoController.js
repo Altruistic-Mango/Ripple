@@ -2,7 +2,8 @@
 
 var Photo = require('../Models/Photo.js');
 var eventController = require('../Controllers/eventController.js');
-var Q = require('q');
+var userController = require('../Controllers/userController.js');
+
 
 var photoController = {
 
@@ -14,14 +15,14 @@ var photoController = {
 
     console.log(JSON.stringify(req.body));
     var TTL = +req.body.TTL * 60000;
-    
+
     var userId = req.body.userId;
     var photoId = req.body.photoId;
     //TODO: Change TTL, will be received as milliseconds
     var data = {
       photoId: photoId,
       radius: +req.body.radius,
-      TTL: +req.body.TTL,
+      TTL: TTL,
       timestamp: +req.body.timestamp,
       userId: userId,
       recipientList: [userId]
@@ -63,6 +64,13 @@ var photoController = {
 
   testingFunc: function(req, res) {
     res.status(200);
+    res.end();
+  },
+
+  deletePhoto: function(req, res) {
+    var userId = req.body.userId;
+    var photoId = req.body.photoId;
+    userController.cullInbox(userId, photoId);
     res.end();
   }
 };

@@ -1,7 +1,6 @@
 var User = require('../Models/User.js');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
-var Q = require('q');
 
 var userController = {
 
@@ -142,7 +141,7 @@ var userController = {
 
           var diff = eventObj.timestamp - inboxItem.timestamp;
           console.log(diff < inboxItem.TTL);
-          if (diff < inboxItem.TTL) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+          if (diff < inboxItem.TTL) {
             console.log('inboxItem ' + inboxItem + ' passed the test')
             acc.push(inboxItem);
           }
@@ -179,23 +178,28 @@ var userController = {
     })
   },
 
-  cullInbox: function(req, res) {
-    var query = req.body.username ? {
-      username: req.body.username
-    } : {};
-    User.find(query, function(err, users) {
+  cullInbox: function(userId, photoId) {
+    var query = {
+      userId: userId
+    }
+
+    User.findOne(query, function(err, user) {
       if (err) console.log(err);
 
       else {
-        users.forEach(function(user) {
-          var newInbox = [];
-
-          user.inbox = newInbox;
+        if (user) {
+          var inbox = user.inbox;
+          for (var i = 0; i < inbox.length; i++) {
+            if (user.inbox[i].photoId === photoId) {
+              user.inbox.splice(i, 1);
+              break;
+            }  
+          }
+          user.inbox = inbox;
           user.save();
-        });
+        };
       }
     });
-    res.end();
   },
 
   addToAlbum: function(req, res) {
