@@ -76,7 +76,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
   }
 
   function triggerPingInterval() {
-    intervalId = setInterval(sendPosition, 60000);
+    intervalId =  intervalId || setInterval(sendPosition, 60000);
   }
 
   function clearPingInterval() {
