@@ -7,24 +7,22 @@ LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localsto
 function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API_HOST) {
   console.log('LocationFactory');
   var currentPosition, watchId, intervalId, userId;
-  var services = {
-    setPosition: setPosition,
-    setWatch: setWatch,
-    getCurrentPosition: getCurrentPosition,
-    getSuccessCallback: getSuccessCallback,
-    watchSuccessCallback: watchSuccessCallback,
-    errorCallback: errorCallback,
-    currentPosition: currentPosition,
-    clearWatch: clearWatch,
-    triggerPingInterval: triggerPingInterval,
-    clearPingInterval: clearPingInterval,
-    intervalId: intervalId,
-    getUsersPosition: getUsersPosition
-  };
+  var services = {};
+
+  services.setPosition = setPosition;
+  services.setWatch = setWatch;
+  services.getCurrentPosition = getCurrentPosition;
+  services.getSuccessCallback = getSuccessCallback;
+  services.watchSuccessCallback = watchSuccessCallback;
+  services.errorCallback = errorCallback;
+  services.currentPosition = currentPosition;
+  services.clearWatch = clearWatch;
+  services.triggerPingInterval = triggerPingInterval;
+  services.clearPingInterval = clearPingInterval;
+  services.intervalId = intervalId;
+  services.getUsersPosition = getUsersPosition;
 
   userId = $localstorage.get('userId');
-
-  triggerPingInterval();
 
   return services;
 
