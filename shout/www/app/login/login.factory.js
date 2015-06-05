@@ -24,7 +24,14 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   //TODO: make user object in localstorage.
   // isSignedIn
   function successfulLogin(data) {
-    $localstorage.set('userId', data.userId);
+    var user = {
+      username : data.username,
+      userId : data.userId,
+      isSignedIn : true, 
+      settings : {}
+    };
+
+    $localstorage.setObject('user', user);
     InboxFactory.updateInbox(data.inbox);
     LocationFactory.triggerPingInterval();
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);

@@ -50,11 +50,12 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   //TODO: sent message to server, update the inbox
   //TODO: redraw after picture deleted from inbox
   function deleteFromInbox(index) {
-    console.log('deleting photo:', index);
-    var photo = vm.photos.splice(index, 1)[0];
+    var user = $localstorage.getObject('user');
+    console.log('deleting photo:',index);
+    var photo = vm.photos.splice(index,1)[0];
     console.log(photo);
     var data = {};
-    data.userId = $localstorage.get('userId');
+    data.userId = user.userId;
     data.photoId = photo.photoId;
     console.log(data);
     $http.post(API_HOST + '/photos/delete/', data)

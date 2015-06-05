@@ -31,11 +31,12 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, SettingsF
 
   function sharePhoto() {
     console.log('BroadCastCtrl.sharePhoto');
+    var user = $localstorage.getObject('user');
     CameraFactory.getFile(function(file) {
 
       var photo = {};
       photo.timestamp = Date.now();
-      photo.userId = $localstorage.get('userId');
+      photo.userId = user.userId;
       photo.photoId = photo.userId + photo.timestamp; 
       photo.TTL = vm.TTL;
       photo.radius = vm.radius;

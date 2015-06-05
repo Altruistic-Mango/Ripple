@@ -22,8 +22,6 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
   services.intervalId           = intervalId;
   services.getUsersPosition     = getUsersPosition;
 
-  userId = $localstorage.get('userId');
-
   return services;
 
   function getCurrentPosition(successCallback, errorCallback) {
@@ -37,8 +35,9 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
   }
 
   function setPosition(position) {
+    var user = $localstorage.getObject('user');
     services.currentPosition = {
-      userId: $localstorage.get('userId'),
+      userId: user.userId,
       y: position.coords.latitude,
       x: position.coords.longitude,
       timestamp: new Date().getTime()
