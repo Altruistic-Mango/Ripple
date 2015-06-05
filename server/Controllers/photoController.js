@@ -15,10 +15,11 @@ var photoController = {
     console.log(JSON.stringify(req.body));
     var userId = req.body.userId;
     var photoId = req.body.photoId;
+    //TODO: Change TTL, will be received as milliseconds
     var data = {
       photoId: photoId,
       radius: +req.body.radius,
-      TTL: +req.body.TTL * 60,
+      TTL: +req.body.TTL,
       timestamp: +req.body.timestamp,
       userId: userId,
       recipientList: [userId]
