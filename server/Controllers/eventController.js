@@ -83,7 +83,6 @@ var eventController = {
           res.send('photo not found');
       })
     .then(function(data) {
-      console.log('data is \n' + JSON.stringify(data))
       data.event.recipientList.forEach(function(recipient) {
         userController.updateInbox(recipient.userId, data.event);
       });
