@@ -5,6 +5,7 @@ angular
 LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST'];
 
 function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST) {
+  console.log('LoginFactory');
 
   var services = {};
   services.successfulLogin = successfulLogin;
@@ -20,12 +21,14 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
     });
   }
 
+  //TODO: make user object in localstorage.
+  // isSignedIn
   function successfulLogin(data) {
-    console.log('successfulLogin');
     $localstorage.set('userId', data.userId);
     InboxFactory.updateInbox(data.inbox);
+    LocationFactory.triggerPingInterval();
     LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
-    LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
+    //LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
   }
 
 }
