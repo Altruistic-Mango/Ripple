@@ -13,23 +13,23 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   //TODO: fix pull to refresh bug
   //  - when pulled, images disappear
   //TODO:kill images when TTL expires
-  
-  vm.photos = [];
-  vm.newPhotos = [];
-  vm.data = CameraFactory.data;
-  vm.obj = CameraFactory.obj;
-  vm.takePicture = CameraFactory.takePicture;
-  vm.query = CameraFactory.query;
-  vm.addPhotos = addPhotos;
-  vm.doRefresh = doRefresh;
-  //vm.loadMore = loadMore;
-  vm.reBroadCast = reBroadCast;
-  vm.saveToAlbum = saveToAlbum;
+
+  vm.photos          = [];
+  vm.newPhotos       = [];
+  vm.data            = CameraFactory.data;
+  vm.obj             = CameraFactory.obj;
+  vm.takePicture     = CameraFactory.takePicture;
+  vm.query           = CameraFactory.query;
+  vm.addPhotos       = addPhotos;
+  vm.doRefresh       = doRefresh;
+  //vm.loadMore      = loadMore;
+  vm.reBroadCast     = reBroadCast;
+  vm.saveToAlbum     = saveToAlbum;
   vm.deleteFromInbox = deleteFromInbox;
-  vm.clearInbox = clearInbox;
-  vm.getSrc = getSrc;
-  vm.morePhotosVar = false;
-  vm.canScroll = false;
+  vm.clearInbox      = clearInbox;
+  vm.getSrc          = getSrc;
+  vm.morePhotosVar   = false;
+  vm.canScroll       = false;
 
   /*
   vm.photo = {timestamp : Date.now() - 0.7*60*1000,
@@ -54,18 +54,20 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   //TODO: sent message to server, update the inbox
   //TODO: redraw after picture deleted from inbox
   function deleteFromInbox(index) {
-    console.log('deleting photo:',index);
-    var photo = vm.photos.splice(index,1)[0];
+    console.log('deleting photo:', index);
+    var photo = vm.photos.splice(index, 1)[0];
     console.log(photo);
     var data = {};
     data.userId = $localstorage.get('userId');
     data.photoId = photo.photoId;
     console.log(data);
     $http.post(API_HOST + '/photos/delete/', data)
-         .success(function(data) {
-            console.log('success deleteing photo from inbox');
-         })
-         .error(function(){console.log('error deleting photo from inbox');});
+      .success(function(data) {
+        console.log('success deleteing photo from inbox');
+      })
+      .error(function() {
+        console.log('error deleting photo from inbox');
+      });
   }
 
   //TODO fix this for real photos
@@ -78,8 +80,8 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
       if (photo.timeRemaining <= 0)
         photosToRemove.push(index);
     });
-    while(photosToRemove.length) {
-      vm.photos.splice(photosToRemove.pop(),1);
+    while (photosToRemove.length) {
+      vm.photos.splice(photosToRemove.pop(), 1);
     }
   }
 
@@ -134,7 +136,7 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
     AlbumFactory.savePhoto(vm.photos[index]);
   }
 
-  function getSrc(photoId){
+  function getSrc(photoId) {
     return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
   }
 

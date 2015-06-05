@@ -6,11 +6,11 @@ AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory'];
 
 function AlbumCtrl($scope, $state, AlbumFactory) {
   console.log('AlbumCtrl');
-  var vm = this;
-  vm.photos = [];
-  vm.addPhotos = addPhotos;
+  var vm         = this;
+  vm.photos      = [];
+  vm.addPhotos   = addPhotos;
   vm.deletePhoto = deletePhoto;
-  vm.getSrc = getSrc; 
+  vm.getSrc      = getSrc;
 
   AlbumFactory.getAlbum();
 
@@ -29,9 +29,8 @@ function AlbumCtrl($scope, $state, AlbumFactory) {
 
   }
 
-  function getSrc(photoId){
+  function getSrc(photoId) {
     return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
   }
 
 }
-
