@@ -134,42 +134,22 @@ var userController = {
       }
 
       else if (user) {
-        console.log('user inbox is ' + JSON.stringify(user.inbox))
-        console.log('user is \n' + user)
-        console.log('Event object is \n' + JSON.stringify(eventObj))
 
+        var newInbox = user.inbox.reduce(function(acc, inboxItem) {
+          console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
+            '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
+            '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
 
-        if (user.inbox.length) {
-          userInbox = user.inbox;
-          console.log('user.inbox = ' + user.inbox);
-          } else {
-              userInbox = [{TTL: -1}];
+          var diff = (eventObj.timestamp - inboxItem.timestamp) / 1000;
+          if (diff * 60 < inboxItem.TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+            console.log('inboxItem ' + inboxItem + ' passed the test')
+            acc.push(inboxItem);
           }
 
-        // var newInbox = userInbox.reduce(function(acc, inboxItem) {
-        //   console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
-        //     '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
-        //     '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
-
-        //   var diff = (eventObj.timestamp - inboxItem.timestamp) / 1000;
-        //   if (diff * 60 < inboxItem.TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
-        //     console.log('inboxItem ' + inboxItem + ' passed the test')
-        //     acc.push(inboxItem);
-        //   }
-        //   return acc;
-        // }, []);
-
-var newInbox = [];
-for ( var i = 0; i < userInbox.length; i++) {
-    var diff = (eventObj.timestamp - userInbox[i].timestamp) / 1000;
-          if (diff * 60 < userInbox[i].TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
-            console.log('inboxItem ' +  userInbox[i] + ' passed the test')
-            newInbox.push(userInbox[i]);
-}
-}
+          return acc;
+        }, []);
 
         if (broadcastEvent) {
-
           var bool = true;
 
           newInbox.reduce(function(bool, eventItem) {
@@ -184,15 +164,17 @@ for ( var i = 0; i < userInbox.length; i++) {
             user.inbox = newInbox;
             user.save();
           }
-
         }
 
         user.update({
           inbox: newInbox
         }, function(err, data) {
+          console.log('sending user the inbox');
           cb(user.inbox);
         });
+
       }
+      else return null;
     })
   },
 
