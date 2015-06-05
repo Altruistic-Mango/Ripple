@@ -14,7 +14,7 @@ var eventController = {
     var photoId = req.body.photoId;
     var timestamp = req.body.timestamp;
     var userId = req.body.userId;
-    var TTL = +req.body.TTL;
+    var TTL = +req.body.TTL * 60000;
     var radius = +req.body.radius;
 
     var searchParams = {
@@ -65,21 +65,23 @@ var eventController = {
         var recipientList = [];
 
         data.event.recipientList.forEach(function(user) {
-          if (data.photo.recipientList.indexOf(user.userID) === -1) {
+          if (data.photo.recipientList.indexOf(user.userId) === -1) {
             recipientList.push(user.userId);
+            console.log('pushed ' + user.userId);
           }
         });
 
         data.photo.recipientList = data.photo.recipientList.concat(recipientList);
         data.photo.save();
         return data;
-      },function(err) {
+      }, function(err) {
           console.log(err);
           res.send('photo not found');
       })
     .then(function(data) {
+      console.log('data is \n' + JSON.stringify(data))
       data.event.recipientList.forEach(function(recipient) {
-        userController.updateInbox(recipient.userID, data.event);
+        userController.updateInbox(recipient.userId, data.event);
       });
     res.end();
     });

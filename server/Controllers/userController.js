@@ -138,10 +138,11 @@ var userController = {
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
           console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
             '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
-            '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
+            '\n this is the difference: ' + (eventObj.timestamp - inboxItem.timestamp));
 
-          var diff = (eventObj.timestamp - inboxItem.timestamp) / 1000;
-          if (diff * 60 < inboxItem.TTL * 60) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+          var diff = eventObj.timestamp - inboxItem.timestamp;
+          console.log(diff < inboxItem.TTL);
+          if (diff < inboxItem.TTL) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
             console.log('inboxItem ' + inboxItem + ' passed the test')
             acc.push(inboxItem);
           }

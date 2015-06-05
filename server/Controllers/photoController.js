@@ -13,6 +13,8 @@ var photoController = {
 // {userId: "9651598", y: 37.783795, x: -122.4093594, timestamp: 1432937843430}
 
     console.log(JSON.stringify(req.body));
+    var TTL = +req.body.TTL * 60000;
+    
     var userId = req.body.userId;
     var photoId = req.body.photoId;
     //TODO: Change TTL, will be received as milliseconds
