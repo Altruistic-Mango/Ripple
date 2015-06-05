@@ -260,6 +260,19 @@ var userController = {
         res.status(200).send(user.inbox);
       }
     });
+  },
+
+  deleteInbox: function(req, res) {
+    var userId = req.params.userId; 
+    var inbox = []; 
+    User.findOneAndUpdate({userId: userId}, {inbox : inbox}, function(error, user){
+      if (error) {
+        res.status(500).send();
+      } else {
+        console.log('just cleared the users inbox: ', user.inbox);
+        res.status(200).send(user.inbox);
+      }
+    });
   }
 
 };
