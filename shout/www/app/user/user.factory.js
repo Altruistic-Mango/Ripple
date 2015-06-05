@@ -2,7 +2,7 @@ angular
   .module('shout.user')
   .factory('User', User);
 
-user.$inject = ['$localstorage'];
+User.$inject = ['$localstorage'];
 
 function User($localstorage) {
   var user = {};
