@@ -24,7 +24,10 @@ function SignupCtrl($state, SignupFactory) {
     SignupFactory.signupUser(vm.data)
       .success(function(res) {
         console.log('response from server on singup: ', res);
-        $state.go('login');
+
+        user.initialize(res);
+
+        $state.go('tab.inbox');
       })
       .error(function(res) {
         console.log('error on signup');

@@ -4,6 +4,7 @@ angular.module('shout', [
   'ionMdInput',
   'shout.constants',
   'shout.localstorage',
+  'shout.user',
   'shout.tabs',
   'shout.login',
   'shout.signup',
