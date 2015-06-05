@@ -7,6 +7,7 @@ BroadCastFactory.$inject = ['$localstorage', 'LocationFactory', '$http', 'API_HO
 function BroadCastFactory($localstorage, LocationFactory, $http, API_HOST) {
 
   var services = {};
+
   services.newPhoto = newPhoto;
   services.reBroadCast = reBroadCast;
   services.sendBroadCastEvent = sendBroadCastEvent;

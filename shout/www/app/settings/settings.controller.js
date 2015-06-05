@@ -20,6 +20,7 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   vm.saveSettings = saveSettings;
   vm.userSetWatch = userSetWatch;
   vm.sharePhoto = sharePhoto;
+  vm.setTrickle = setTrickle;
 
   //TODO: isSignedIn = false
   //TODO: remove localstorage of userId etc if need be
@@ -54,6 +55,11 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
         $state.go('tab.inbox');
       });
     });
+  }
+
+  //TODO: make this someday
+  function setTrickle() {
+    console.log('setTrickle');
   }
 
   function userSetWatch() {
