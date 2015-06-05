@@ -56,11 +56,15 @@ var gpsController = {
     var self = this;
     setTimeout(function() {
       self.pruneTree();
-    }, 60000);
+    }, 120000);
   },
 
   // This will get the distance between two coordinates
   calculateDist: function(item1, nodes) {
+
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].userId === item1.userId) nodes.splice(i, 1);
+    }
 
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
@@ -82,10 +86,9 @@ var gpsController = {
       d = d * 0.621371;
 
       if (d < item1.radius) {
-        result.push(item2.userId);
+        result.push({userId: item2.userId, y: item2.y, x: item2.x});
       }
     });
-
     return result;
   },
 

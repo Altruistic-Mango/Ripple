@@ -5,7 +5,7 @@ function Quadtree(boundaries, maxChildren, root, depth) {
   //   y: 37.613500,
   //   width: 0.2,
   //   height: 0.2
-  // };
+  // }
 
   this.boundaries = boundaries || {
     x: -125.3,

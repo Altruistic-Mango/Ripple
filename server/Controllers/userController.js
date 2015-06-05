@@ -1,7 +1,6 @@
 var User = require('../Models/User.js');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
-var Q = require('q');
 
 var userController = {
 
@@ -9,6 +8,7 @@ var userController = {
 
     var username = req.body.username;
     var password = bcrypt.hashSync(req.body.password);
+    var email = req.body.email;
     var randInt = function() {
       var id = "";
       while (id.length < 7) {
@@ -25,7 +25,9 @@ var userController = {
         username: username,
         password: password,
         userId: randInt(),
+        email: email
       });
+
       newUser.save(function(err, newUser) {
         if (err) {
           console.log(err);
@@ -106,11 +108,21 @@ var userController = {
 
   updateInbox: function(userId, eventObj) {
     this.retrieveInbox(userId, eventObj, function(inbox) {
-      console.log('inbox ==== ' + inbox);
+      console.log('inbox = ' + inbox);
     });
   },
 
   retrieveInbox: function(userId, eventObj, cb) {
+
+    if (eventObj && eventObj.photoId) {
+          var broadcastEvent = {
+            photoId: eventObj.photoId,
+            TTL: eventObj.TTL,
+            radius: eventObj.radius,
+            timestamp: eventObj.timestamp
+          };
+        }
+
     User.findOne({
       userId: userId
     }, function(err, user) {
@@ -121,27 +133,23 @@ var userController = {
       }
 
       else if (user) {
+
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
           console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
             '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
-            '\n this is the difference: ' + ((eventObj.timestamp - inboxItem.timestamp) / 1000));
+            '\n this is the difference: ' + (eventObj.timestamp - inboxItem.timestamp));
 
-
-          if (eventObj.timestamp - inboxItem.timestamp < inboxItem.TTL) { // check whether eventObj.timestamp - inboxItem.timestamp < TTL
+          var diff = eventObj.timestamp - inboxItem.timestamp;
+          console.log(diff < inboxItem.TTL);
+          if (diff < inboxItem.TTL) {
             console.log('inboxItem ' + inboxItem + ' passed the test')
             acc.push(inboxItem);
           }
+
           return acc;
         }, []);
 
-        if (eventObj && eventObj.photoId) {
-          var broadcastEvent = {
-            photoId: eventObj.photoId,
-            TTL: eventObj.TTL,
-            radius: eventObj.radius,
-            timestamp: eventObj.timestamp
-          };
-
+        if (broadcastEvent) {
           var bool = true;
 
           newInbox.reduce(function(bool, eventItem) {
@@ -156,35 +164,42 @@ var userController = {
             user.inbox = newInbox;
             user.save();
           }
+
         }
 
         user.update({
           inbox: newInbox
         }, function(err, data) {
+          console.log('sending user the inbox');
           cb(user.inbox);
         });
-
-      } else return null;
-    });
+      }
+      else return null;
+    })
   },
 
-  cullInbox: function(req, res) {
-    var query = req.body.username ? {
-      username: req.body.username
-    } : {};
-    User.find(query, function(err, users) {
+  cullInbox: function(userId, photoId) {
+    var query = {
+      userId: userId
+    }
+
+    User.findOne(query, function(err, user) {
       if (err) console.log(err);
 
       else {
-        users.forEach(function(user) {
-          var newInbox = [];
-
-          user.inbox = newInbox;
+        if (user) {
+          var inbox = user.inbox;
+          for (var i = 0; i < inbox.length; i++) {
+            if (user.inbox[i].photoId === photoId) {
+              user.inbox.splice(i, 1);
+              break;
+            }  
+          }
+          user.inbox = inbox;
           user.save();
-        });
+        };
       }
     });
-    res.end();
   },
 
   addToAlbum: function(req, res) {

@@ -14,7 +14,7 @@ var eventController = {
     var photoId = req.body.photoId;
     var timestamp = req.body.timestamp;
     var userId = req.body.userId;
-    var TTL = +req.body.TTL;
+    var TTL = +req.body.TTL * 60000;
     var radius = +req.body.radius;
 
     var searchParams = {
@@ -23,6 +23,7 @@ var eventController = {
       userId: userId,
       radius: +radius
     };
+    console.log('calling gps controller and getting nodes')
     var tree = gpsController.getNodes(searchParams);
     var nodes = tree.traverse();
     var recipients = gpsController.calculateDist(searchParams, nodes);
@@ -61,24 +62,29 @@ var eventController = {
     .then(function(data) {
       console.log('Event created, calling events callback with photo' + data.photo +
         '\nevent ' + data.event);
-        var recipientList = [];
+        var photoRecipientList = [];
+        var eventRecipientList = [];
 
-        data.event.recipientList.forEach(function(userId) {
-          if (data.photo.recipientList.indexOf(userId) === -1) {
-            recipientList.push(userId);
+        data.event.recipientList.forEach(function(user) {
+          if (data.photo.recipientList.indexOf(user.userId) === -1) {
+            photoRecipientList.push(user.userId);
+            eventRecipientList.push(user);
+            console.log('pushed ' + user.userId);
           }
         });
 
-        data.photo.recipientList = data.photo.recipientList.concat(recipientList);
+        data.photo.recipientList = data.photo.recipientList.concat(photoRecipientList);
+        data.event.recipientList = eventRecipientList;
         data.photo.save();
-        return data.event;
-      },function(err) {
+        data.event.save();
+        return data;
+      }, function(err) {
           console.log(err);
           res.send('photo not found');
       })
     .then(function(data) {
-      data.recipientList.forEach(function(recipient) {
-        userController.updateInbox(recipient, data.event);
+      data.event.recipientList.forEach(function(recipient) {
+        userController.updateInbox(recipient.userId, data.event);
       });
     res.end();
     });
