@@ -23,6 +23,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
   //TODO: facebook auth
   function login() {
     ionicMaterialInk.displayEffect();
+    vm.data.username = vm.data.username.toLowerCase();
     LoginFactory.loginUser(vm.data)
       .success(function(res) {
         LoginFactory.successfulLogin(res);

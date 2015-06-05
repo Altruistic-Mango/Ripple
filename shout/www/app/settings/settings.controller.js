@@ -25,6 +25,7 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   //TODO: isSignedIn = false
   //TODO: remove localstorage of userId etc if need be
   function logOut() {
+    $localstorage.set('userId', null);
     $state.go('login');
   }
 

@@ -2,9 +2,9 @@ angular
   .module('shout.signup')
   .controller('SignupCtrl', SignupCtrl);
 
-SignupCtrl.$inject = ['$state', 'SignupFactory'];
+SignupCtrl.$inject = ['$state', 'SignupFactory', '$ionicPopup'];
 
-function SignupCtrl($state, SignupFactory) {
+function SignupCtrl($state, SignupFactory, $ionicPopup) {
   console.log('SignupCtrl');
   var vm = this;
   vm.data = {};
@@ -21,18 +21,30 @@ function SignupCtrl($state, SignupFactory) {
   //TODO: store data in localstorage user object
   function signup() {
     console.log('vm.data: ', vm.data);
-    SignupFactory.signupUser(vm.data)
-      .success(function(res) {
-        console.log('response from server on singup: ', res);
-
-        user.initialize(res);
-
-        $state.go('tab.inbox');
+    var usernameValidated = SignupFactory.validateUser(vm.data.username);
+    if (usernameValidated) {
+      vm.data.username = vm.data.username.toLowerCase();
+      SignupFactory.signupUser(vm.data)
+        .success(function(res) {
+          console.log('response from server on singup: ', res);
+          user.initialize(res);
+          $state.go('tab.inbox');
+        })
+        .error(function(res) {
+          console.log('error on signup ' + res.errorCode);
+          var errorCode = res.errorCode;
+          $ionicPopup.alert({
+          title: 'Username already exists',
+          template: errorCode
+        })
       })
-      .error(function(res) {
-        console.log('error on signup');
-        vm.badUsername = true;
-      });
+    }
+    else {
+      $ionicPopup.alert({
+        title: 'Invalid Username',
+        template: 'Username must contain at least five alphanumeric characters.'
+      })
+    }
   }
 
 }
