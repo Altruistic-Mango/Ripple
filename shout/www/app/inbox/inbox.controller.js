@@ -72,9 +72,15 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   //  TTL will be in milliseconds
   //TODO remove photos if TTL expired
   function updateTime() {
-    vm.photos.forEach(function(photo) {
-      photo['timeRemaining'] = (photo.TTL - (Date.now() - photo.timestamp));
+    var photosToRemove = [];
+    vm.photos.forEach(function(photo, index) {
+      photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp));
+      if (photo.timeRemaining <= 0)
+        photosToRemove.push(index);
     });
+    while(photosToRemove.length) {
+      vm.photos.splice(photosToRemove.pop(),1);
+    }
   }
 
   vm.addPhotos(InboxFactory.photos);

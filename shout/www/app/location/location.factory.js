@@ -9,18 +9,18 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
   var currentPosition, watchId, intervalId, userId;
   var services = {};
 
-  services.setPosition = setPosition;
-  services.setWatch = setWatch;
-  services.getCurrentPosition = getCurrentPosition;
-  services.getSuccessCallback = getSuccessCallback;
+  services.setPosition          = setPosition;
+  services.setWatch             = setWatch;
+  services.getCurrentPosition   = getCurrentPosition;
+  services.getSuccessCallback   = getSuccessCallback;
   services.watchSuccessCallback = watchSuccessCallback;
-  services.errorCallback = errorCallback;
-  services.currentPosition = currentPosition;
-  services.clearWatch = clearWatch;
-  services.triggerPingInterval = triggerPingInterval;
-  services.clearPingInterval = clearPingInterval;
-  services.intervalId = intervalId;
-  services.getUsersPosition = getUsersPosition;
+  services.errorCallback        = errorCallback;
+  services.currentPosition      = currentPosition;
+  services.clearWatch           = clearWatch;
+  services.triggerPingInterval  = triggerPingInterval;
+  services.clearPingInterval    = clearPingInterval;
+  services.intervalId           = intervalId;
+  services.getUsersPosition     = getUsersPosition;
 
   userId = $localstorage.get('userId');
 
