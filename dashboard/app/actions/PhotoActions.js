@@ -16,6 +16,13 @@ var PhotoActions = {
       actionType: PhotoConstants.FETCH_PHOTOS,
       data: data
     });
+  },
+
+  newPhotos: function (timestamp) {
+    AppDispatcher.handleAction({
+      actionType: PhotoConstants.GET_NEW,
+      data: timestamp
+    })
   }
 
 }

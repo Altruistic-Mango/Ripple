@@ -37,6 +37,16 @@ AppDispatcher.register(function (payload) {
         console.log('events: ', data);
         MapActions.getData(data);
       });
+  };
+
+  actions[PhotoConstants.GET_NEW] = function () {
+    var timestamp = action.data;
+    console.log('get new action heard in store: ', timestamp);
+    _getNewPhotos(timestamp)
+      .then(function(data) {
+        PhotoStore.emit(PhotoConstants.GET_NEW, data);
+      });
+
   }
   
   if (actions[action.actionType]){
@@ -60,6 +70,14 @@ function _fetchEvents (photoId) {
       resolve(data);
     })
   })
+}
+
+function _getNewPhotos (timestamp) {
+  return new Promise(function(resolve, reject) {
+    $.get('/dashboard/photos/' + timestamp, function(data) {
+      resolve(data);
+    });
+  });
 }
 
 module.exports = PhotoStore; 

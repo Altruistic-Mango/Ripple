@@ -8,38 +8,87 @@ html{
   font-size: 20px;
   color: #B0DCE8;
   line-height: 53px;
-  background: #D4D4D4;
+  background-image: url('../assets/ripples1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  letter-spacing: 2px;
 }
 
 .viewPort {
     overflow: hidden;
+    width: 100%;
+    height: 1000px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+
+#dashboard {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  width: 1300px;
+  height: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.side-content {
+  width: 310px;
+  float: left;
+  position: relative;
+  left: 5px;
 }
 
 .home {
-  position: absolute;
-  top: 52px;
-  height: 100%;
+  float: left;
+  position: relative;
+  width: 310px;
+  top: 70px;
+  left: 0px;
+  height: 850px;
   overflow: auto; 
   background: rgba(0,0,0,0.6);
-  border: 1px solid #979797;
+  /*border: 1px solid #41637E;*/
+  margin: 0 auto;
+}
+
+.photos {
+  overflow: auto; 
+  margin: 0 auto;
+  width: 300px;
+  z-index: 1;
 }
 
 
 .Map {
   float: left;
-  margin: 5px;
-}
-
-.photo {
-  width: 300px;
-}
-
-.Chart {
   height: 650px;
-  width: 800px;
-  position: absolute;
-  top: 52px;
-  left: 310px;
+  width: 650px;
+  position: relative;
+  top: 70px;
+  left: 20px;
+}
+
+img.photo {
+  display: block;
+  position: relative;
+  width: 300px;
+  margin: 5px auto;
+  border-radius: 10px;
+}
+
+.Chart{
+  float: left;
+  height: 650px;
+  width: 650px;
+  position: relative;
+  top: 0px;
+  left: 0px;
 }
 
 .nav-menu {
@@ -47,38 +96,50 @@ html{
   top: 0;
   width: 100%;
   height: 50px;
-  background: #1E1F1F;
-  border: 1px solid #979797;
+  background: rgba(66,103,127,0.30);
+  /*background: rgba(0,36,57,0.70);*/
+  border: 2px solid #002539;
 }
+
 
 .nav-bar{
   width: 100%;
 }
 
-//////////////////
-
-.nav-link{
-  display: inline-block;
-  padding: 13px 20px;
-  margin: 0 10px;
-  cursor:pointer;
-  text-decoration: none;
-  background-color:#eee;
-  color: #B0DCE8;
-  transition:0.3s;
-}
-
-.nav-link:hover{
-  background: rgba(72,164,190,0.2);
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   height: 50px;
+  background: rgba(0,0,0,0.6);
+  /*border: 1px solid #41637E;*/
 }
 
 .nav-link-focused{
   display: inline-block;
-  padding: 13px 20px;
   cursor:pointer;
   color: #B0DCE8;
   background: rgba(72,164,190,0.2);
+  padding: 0 10px;
+
+}
+.nav-link:hover{
+  display: inline-block;
+  cursor:pointer;
+  color: #B0DCE8;
+  background: rgba(72,164,190,0.2);
+  padding: 0 10px;
+}
+a.nav-link{
+  display: inline-block;
+  height: 100%;
+  margin: 0 10px;
+  cursor:pointer;
+  text-decoration: none;
+  color: #B0DCE8;
+  transition:0.3s;
+  padding: 0 10px;
+
 }
 
 a {
@@ -88,5 +149,20 @@ a {
 
 .title {
   float: right;
+  margin-right: 20px;
+  letter-spacing: 4px
 }
 
+.recent-ripples {
+  text-align: center;
+}
+
+.photo-holder {
+  float: left;
+  width: 310px;
+  position: relative;
+  top: 70px;
+  left: 35px;
+  background: rgba(0,0,0,0.6);
+  /*border: 1px solid #41637E;*/
+}
