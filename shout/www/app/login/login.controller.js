@@ -2,9 +2,9 @@ angular
   .module('shout.login')
   .controller('LoginCtrl', LoginCtrl);
 
-LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk'];
+LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk', '$ionicPopup'];
 
-function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
+function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
   console.log('LoginCtrl');
   var vm = this;
   vm.data = {};
@@ -13,7 +13,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
   vm.data.password = '';
   vm.login = login;
   vm.splash = splash;
-  vm.badCombo = false;
+  vm.fbLogin = fbLogin;
 
   ionicMaterialInk.displayEffect();
 
@@ -31,11 +31,19 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
       })
       .error(function(res) {
         console.log('error on login');
-        vm.badCombo = true;
+        var errorCode = res.errorCode;
+        $ionicPopup.alert({
+          title: 'Login Error - ' + errorCode + ' incorrect',
+          template: 'Please re-enter ' + errorCode
+        });
       });
   }
 
   function splash() {
     ionicMaterialInk.displayEffect();
+  }
+
+  function fbLogin() {
+    LoginFactory.fbLogin();
   }
 }

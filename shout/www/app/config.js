@@ -1,5 +1,5 @@
 angular.module("shout.constants", [])
 
-.constant("API_HOST", "http://66c0f5aa.ngrok.com")
+.constant("API_HOST", "http://15016e13.ngrok.com")
 
 ;
