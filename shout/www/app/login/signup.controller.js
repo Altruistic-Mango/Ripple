@@ -2,9 +2,9 @@ angular
   .module('shout.signup')
   .controller('SignupCtrl', SignupCtrl);
 
-SignupCtrl.$inject = ['$state', 'SignupFactory', '$ionicPopup'];
+SignupCtrl.$inject = ['$state', 'SignupFactory', '$ionicPopup', 'User'];
 
-function SignupCtrl($state, SignupFactory, $ionicPopup) {
+function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
   console.log('SignupCtrl');
   var vm = this;
   vm.data = {};
@@ -27,7 +27,7 @@ function SignupCtrl($state, SignupFactory, $ionicPopup) {
       SignupFactory.signupUser(vm.data)
         .success(function(res) {
           console.log('response from server on singup: ', res);
-          user.initialize(res);
+          User.newUser(res);
           $state.go('tab.inbox');
         })
         .error(function(res) {
@@ -36,14 +36,14 @@ function SignupCtrl($state, SignupFactory, $ionicPopup) {
           $ionicPopup.alert({
           title: 'Username already exists',
           template: errorCode
-        })
-      })
+        }); 
+      });
     }
     else {
       $ionicPopup.alert({
         title: 'Invalid Username',
         template: 'Username must contain at least five alphanumeric characters.'
-      })
+      });
     }
   }
 

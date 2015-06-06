@@ -8,7 +8,6 @@ function SignupFactory($http, $localstorage, API_HOST) {
   var services = {};
   services.signupUser = signupUser;
   services.validateUser = validateUser;
-  services.storeCredentials = storeCredentials;
 
   return services;
 
@@ -29,10 +28,6 @@ function SignupFactory($http, $localstorage, API_HOST) {
     else {
         return false;
     }
-  }
-
-  function storeCredentials(data) {
-    $localstorage.set('userId', data.userId);
   }
   
 }
