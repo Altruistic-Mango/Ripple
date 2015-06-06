@@ -2,9 +2,9 @@ angular
   .module('shout.broadcast')
   .controller('BroadCastCtrl', BroadCastCtrl);
 
-BroadCastCtrl.$inject = ['$http', '$state', '$ionicHistory', 'BroadCastFactory', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST'];
+BroadCastCtrl.$inject = ['$http', '$state', '$ionicHistory', 'BroadCastFactory', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST', 'User'];
 
-function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST) {
+function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST, User) {
   console.log('BroadCastCtrl');
 
   var vm = this;
@@ -36,7 +36,7 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, SettingsF
 
       var photo = {};
       photo.timestamp = Date.now();
-      photo.userId = user.userId;
+      photo.userId = User.userId();
       photo.photoId = photo.userId + photo.timestamp; 
       photo.TTL = vm.TTL;
       photo.radius = vm.radius;

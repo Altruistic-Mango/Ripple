@@ -19,26 +19,29 @@ var userController = {
 
     var user = this.getUserFromDB({
       username: req.body.username
-    });
-    if (!user) {
-      var newUser = new User({
-        username: username,
-        password: password,
-        userId: randInt(),
-        email: email
-      });
+    }, function(user) {
+      if (!user) {
+        var newUser = new User({
+          username: username,
+          password: password,
+          userId: randInt(),
+          email: email
+        });
 
-      newUser.save(function(err, newUser) {
-        if (err) {
-          console.log(err);
-          res.status(500).send(err);
+        newUser.save(function(err, newUser) {
+          if (err) {
+            console.log(err);
+            res.status(500).send(err);
+          }
+          res.status(200).send(newUser);
+        });
+      } 
+      else {
+        console.log('Account already exists');
+        var errorCode = {errorCode: "Account already exists."}
+        res.status(500).send(errorCode);
         }
-        res.status(200).end();
-      });
-    } else {
-      console.log('Account already exists');
-      res.status(500).end();
-    }
+      })
   },
 
   retrieveUsers: function(req, res, cb) {
