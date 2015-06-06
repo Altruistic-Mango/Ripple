@@ -5,6 +5,8 @@ angular
 User.$inject = ['$localstorage'];
 
 function User($localstorage) {
+  console.log('User');
+
   var user = {};
 
   //volatile
@@ -66,6 +68,7 @@ function User($localstorage) {
       save(user);
     }
   }
+
 
   //gets/sets facebookId
   function fbId(token) {
