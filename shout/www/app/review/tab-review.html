@@ -1,23 +1,20 @@
 <ion-view view-title="Review">
   <ion-content class="padding">
+      <h2>{{vm.title}}</h2>
     <div class="list card">
-
-      <div class="item item-avatar">
-        <img src={{vm.photo}}>
-        <h2>Preview</h2>
-        <p>Description goes here</p>
-      </div>
-
       <div class="item item-image">
-        <img src={{vm.photo}}>
+        <!-- <img src={{vm.photo}}> -->
+        <!-- <img src="img/berkeley.jpg"> -->
+        <img src="https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/11768851433485645053.jpeg">
       </div>
-
-      <a class="item item-icon-left assertive" ng-click="vm.sharePhoto()">
-        <i class="icon ion-share"></i>
-        Enter up 10 140 characters here. 
-      </a>
-
+      <label class="item item-input">
+        <input type="text" placeholder="Title" ng-model="vm.title">
+      </label>
+      <label class="item item-input">
+        <textarea placeholder="Description" ng-mdoel="vm.desctiption"></textarea>
+      </label>
     </div>
-    <button class="button button-block" ng-click="vm.sharePhoto()">Share</button>
+
+    <button class="button button-block button-positive" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>
 </ion-view>
