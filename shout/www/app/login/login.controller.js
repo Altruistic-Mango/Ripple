@@ -6,11 +6,15 @@ LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk', '$ionicPopup'
 
 function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
   console.log('LoginCtrl');
+
   var vm = this;
-  vm.data = {};
-  vm.data.username = '';
-  vm.data.email = '';
-  vm.data.password = '';
+
+  vm.data = {
+    username: '',
+    email: '',
+    password: ''
+  };
+
   vm.login = login;
   vm.fbLogin = fbLogin;
   vm.splash = splash;
@@ -18,7 +22,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
   ionicMaterialInk.displayEffect();
 
   //TODO:Form validation for all required fields
-  //TODO: username exists, password incorrect 
+  //TODO: username exists, password incorrect
   //TODO: no username error
   //TODO: facebook auth
   function login() {
