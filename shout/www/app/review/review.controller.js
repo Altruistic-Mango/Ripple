@@ -14,7 +14,9 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   vm.photo = CameraFactory.filePath;
   vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
-
+  vm.description = "Enter up 10 140 characters here";
+  vm.title = "";
+        
   function displayPhoto() {
     vm.photo = CameraFactory.filePath;
   }
