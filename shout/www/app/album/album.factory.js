@@ -25,9 +25,11 @@ function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
   }
 
   function savePhoto(photo) {
+    var user = $localstorage.getObject('user');
+
     if (!checkCollision(photo)) {
       var photoIdObj = {
-        userId: $localstorage.get('userId'),
+        userId: user.userId,
         photoId: photo.photoId
       };
       console.log('asking server to add photo to album: ', photoIdObj);
@@ -41,7 +43,8 @@ function AlbumFactory($rootScope, $http, $localstorage, API_HOST) {
   }
 
   function getAlbum() {
-    var userId = $localstorage.get('userId');
+    var user = $localstorage.getObject('user');
+    var userId = user.userId; 
     $http.get(API_HOST + '/users/album/' + userId)
       .success(function(data) {
         console.log('success getting album!!');

@@ -9,28 +9,36 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   var vm = this;
   var currentStart = 0;
 
-  //TODO: get rid of infinite scroll on view
-  //TODO: fix pull to refresh bug
-  //  - when pulled, images disappear
-  //TODO:kill images when TTL expires
 
-  vm.photos          = [];
-  vm.newPhotos       = [];
-  vm.data            = CameraFactory.data;
-  vm.obj             = CameraFactory.obj;
-  vm.takePicture     = CameraFactory.takePicture;
-  vm.query           = CameraFactory.query;
-  vm.addPhotos       = addPhotos;
-  vm.doRefresh       = doRefresh;
-  //vm.loadMore      = loadMore;
-  vm.reBroadCast     = reBroadCast;
-  vm.saveToAlbum     = saveToAlbum;
+  //TODO:kill images when TTL expires
+  
+  vm.photos = [];
+  vm.data = CameraFactory.data;
+  vm.obj = CameraFactory.obj;
+  vm.takePicture = CameraFactory.takePicture;
+  vm.query = CameraFactory.query;
+  vm.addPhotos = addPhotos;
+  vm.doRefresh = doRefresh;
+  vm.reBroadCast = reBroadCast;
+  vm.saveToAlbum = saveToAlbum;
   vm.deleteFromInbox = deleteFromInbox;
   vm.clearInbox      = clearInbox;
   vm.getSrc          = getSrc;
-  vm.morePhotosVar   = false;
-  vm.canScroll       = false;
 
+
+  //when the controller is instantiated the first thing it does is call doRefresh 
+  //which calls a function that requests the inbox from factory
+  vm.doRefresh();
+
+  //this adds a listener for the updateInbox triggered in the inbox factory whenever the server responds with an inbox
+  $scope.$on('updateInbox', function(event, data) {
+    console.log('update inbox event heard!!!');
+    vm.clearInbox();
+    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
+    if(newPhotos.length) {
+      vm.addPhotos(newPhotos);
+    }
+  });
   /*
   vm.photo = {timestamp : Date.now() - 0.7*60*1000,
               title: 'Berkeley',
@@ -54,11 +62,12 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
   //TODO: sent message to server, update the inbox
   //TODO: redraw after picture deleted from inbox
   function deleteFromInbox(index) {
-    console.log('deleting photo:', index);
-    var photo = vm.photos.splice(index, 1)[0];
+    var user = $localstorage.getObject('user');
+    console.log('deleting photo:',index);
+    var photo = vm.photos.splice(index,1)[0];
     console.log(photo);
     var data = {};
-    data.userId = $localstorage.get('userId');
+    data.userId = user.userId;
     data.photoId = photo.photoId;
     console.log(data);
     $http.post(API_HOST + '/photos/delete/', data)
@@ -85,14 +94,7 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
     }
   }
 
-  vm.addPhotos(InboxFactory.photos);
 
-  $scope.$on('updateInbox', function(event, data) {
-    console.log('update inbox event heard!!!');
-    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    vm.clearInbox();
-    vm.addPhotos(newPhotos);
-  });
 
   function doRefresh() {
     console.log('doRefresh called');
@@ -100,27 +102,14 @@ function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory
     $scope.$broadcast('scroll.refreshComplete');
   }
 
-  //TODO: Deprecate this, no longer using infinite scroll
-  /*
-  function loadMore() {
-    console.log('loadMore called');
-    if (vm.morePhotosVar) {
-      vm.canScroll = true;
-    } else {
-      vm.canScroll = false;
-    }
-    $scope.$broadcast('scroll.infiniteScrollComplete');
-  }
-  */
-
   function addPhotos(photos) {
     vm.photos = vm.photos.concat(photos);
-    vm.morePhotosVar = true;
   }
 
   //TODO: deprecate this, expired photos controlled by timer
   function clearInbox() {
     vm.photos = InboxFactory.removeExpired(vm.photos, InboxFactory.photos);
+    console.log('clearInbox vm.photos: ', vm.photos);
   }
 
   function reBroadCast(index) {

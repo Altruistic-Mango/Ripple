@@ -54,4 +54,10 @@ router.post('/album', function(req, res) {
   userController.addToAlbum(req, res);
 });
 
+//this route is used when a user logs out or stops location polling so everything in the inbox gets deleted
+router.get('/deleteInbox/:userId', function(req, res) {
+  console.log('deleteInbox route called')
+  userController.deleteInbox(req, res);
+});
+
 module.exports = router;

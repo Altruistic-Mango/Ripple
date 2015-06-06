@@ -49,8 +49,10 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
 
   function sharePhoto() {
     console.log('SettingsCtrl.sharePhoto');
+    var user = $localstorage.getObject('user');
+    var userId = user.userId; 
     CameraFactory.getFile(function(file) {
-      file.name = $localstorage.get('userId') + Date.now();
+      file.name = userId + Date.now();
       s3.upload(file, function() {
         $state.go('tab.inbox');
       });
