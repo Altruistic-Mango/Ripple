@@ -3,5 +3,6 @@ angular.module('shout.login', [
   'shout.location',
   'shout.inbox',
   'shout.localstorage',
-  'shout.constants'
+  'shout.constants',
+  'ngCordova'
 ]);

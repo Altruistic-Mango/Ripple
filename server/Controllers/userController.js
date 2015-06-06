@@ -17,7 +17,7 @@ var userController = {
       return id;
     };
 
-    var user = this.getUserFromDB({
+    this.getUserFromDB({
       username: req.body.username
     }, function(user) {
       if (!user) {
@@ -59,15 +59,11 @@ var userController = {
     var username = req.body.username;
     var password = req.body.password;
 
-    var user = this.getUserFromDB({
+    this.getUserFromDB({
       username: req.body.username
     }, function(user) {
 
-      if (!user) {
-        console.log('user not found');
-        var resError = {errorCode: 'user'}
-        res.status(500).send(resError);
-      } else {
+      if (user) {
         var hashedPassword = user.password;
         bcrypt.compare(password, hashedPassword, function(err, match) {
           if (err) return (err);
@@ -79,6 +75,10 @@ var userController = {
             res.status(500).send(resError);
           }
         });
+      } else {
+        console.log('user not found');
+        var resError = {errorCode: 'username'}
+        res.status(500).send(resError);  
       }
     });
   },
@@ -105,7 +105,7 @@ var userController = {
             console.log('User already exists');
             return 'User already exists';
           }
-        } else return null;
+        } else cb(null);
       });
     }
   },

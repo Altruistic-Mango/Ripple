@@ -64,11 +64,11 @@ function User($localstorage) {
   }
 
   //gets/sets facebookId
-  function fbId(fbId) {
+  function fbId(token) {
     if (arguments.length === 0)
       return user.fbId;
     else {
-      user.fbId = fbId;
+      user.fbId = token;
       save(user);
     }
   }

@@ -2,9 +2,9 @@ angular
   .module('shout.login')
   .controller('LoginCtrl', LoginCtrl);
 
-LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk'];
+LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk', '$ionicPopup'];
 
-function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
+function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
   console.log('LoginCtrl');
   var vm = this;
   vm.data = {};

@@ -71,6 +71,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
       console.log(error);
       });
     });
+    }
   }
 
   function getUserInfo(accessToken) {
@@ -79,8 +80,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
     $http.get(url)
       .success(function(response, status, headers, config) {
         var user = {username: response.first_name, password: response.id};
-      }
-    });
+      });
   }
 
 }
