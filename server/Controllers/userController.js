@@ -65,17 +65,18 @@ var userController = {
 
       if (!user) {
         console.log('user not found');
-        res.status(500).end();
+        var resError = {errorCode: 'user'}
+        res.status(500).send(resError);
       } else {
         var hashedPassword = user.password;
         bcrypt.compare(password, hashedPassword, function(err, match) {
           if (err) return (err);
-          console.log(match);
           if (match) {
             res.status(200).send(user);
           } else {
             console.log('not a match');
-            res.status(500).end();
+            var resError = {errorCode: "password"}
+            res.status(500).send(resError);
           }
         });
       }
