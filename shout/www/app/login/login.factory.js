@@ -49,7 +49,6 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
       LocationFactory.triggerPingInterval();
       LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
     }
-    //LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
   }
 
   function getFBToken(callback) {
@@ -60,13 +59,27 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   }
 
   function fbLogin() {
+    if (!user.fbId) {
     getFBToken(function(accessID) {
       console.log(accessID + (typeof accessID));
     $cordovaOauth.facebook(accessID, ["email"]).then(function(result) {
       console.log(result);
+      var user = getUserInfo(result);
+
+
     }, function(error) {
       console.log(error);
       });
+    });
+  }
+
+  function getUserInfo(accessToken) {
+    console.log(accessToken);
+    var url = 'https://graph.facebook.com/me?access_token=' + accessToken;
+    $http.get(url)
+      .success(function(response, status, headers, config) {
+        var user = {username: response.first_name, password: response.id};
+      }
     });
   }
 

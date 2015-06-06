@@ -13,7 +13,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
   vm.data.password = '';
   vm.login = login;
   vm.splash = splash;
-  vm.badCombo = false;
+  vm.fbLogin = fbLogin;
 
   ionicMaterialInk.displayEffect();
 
@@ -31,11 +31,19 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk) {
       })
       .error(function(res) {
         console.log('error on login');
-        vm.badCombo = true;
+        var errorCode = res.errorCode;
+        $ionicPopup.alert({
+          title: 'Login Error - ' + errorCode + ' incorrect',
+          template: 'Please re-enter ' + errorCode
+        });
       });
   }
 
   function splash() {
     ionicMaterialInk.displayEffect();
+  }
+
+  function fbLogin() {
+    LoginFactory.fbLogin();
   }
 }
