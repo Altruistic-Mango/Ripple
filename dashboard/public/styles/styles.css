@@ -11,12 +11,13 @@ html{
   background-image: url('../assets/ripples1.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  letter-spacing: 2px;
 }
 
 .viewPort {
     overflow: hidden;
     width: 100%;
-    height: 100%;
+    height: 1000px;
     position: absolute;
     margin-left: auto;
     margin-right: auto;
@@ -29,32 +30,65 @@ html{
   height: 100%;
 }
 
-.home {
-  position: absolute;
-  top: 70px;
-  left: 10px;
+.content {
+  width: 1300px;
   height: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.side-content {
+  width: 310px;
+  float: left;
+  position: relative;
+  left: 5px;
+}
+
+.home {
+  float: left;
+  position: relative;
+  width: 310px;
+  top: 70px;
+  left: 0px;
+  height: 850px;
   overflow: auto; 
   background: rgba(0,0,0,0.6);
-  border: 1px solid #979797;
+  /*border: 1px solid #41637E;*/
+  margin: 0 auto;
+}
+
+.photos {
+  overflow: auto; 
+  margin: 0 auto;
+  width: 300px;
+  z-index: 1;
 }
 
 
 .Map {
   float: left;
-  margin: 5px;
-}
-
-.photo {
-  width: 300px;
-}
-
-.Chart {
   height: 650px;
-  width: 800px;
-  position: absolute;
+  width: 650px;
+  position: relative;
   top: 70px;
-  left: 340px;
+  left: 20px;
+}
+
+img.photo {
+  display: block;
+  position: relative;
+  width: 300px;
+  margin: 5px auto;
+  border-radius: 10px;
+}
+
+.Chart{
+  float: left;
+  height: 650px;
+  width: 650px;
+  position: relative;
+  top: 0px;
+  left: 0px;
 }
 
 .nav-menu {
@@ -62,12 +96,23 @@ html{
   top: 0;
   width: 100%;
   height: 50px;
-  background: rgba(0,0,0,0.6);
-  border: 1px solid #979797;
+  background: rgba(66,103,127,0.30);
+  /*background: rgba(0,36,57,0.70);*/
+  border: 2px solid #002539;
 }
+
 
 .nav-bar{
   width: 100%;
+}
+
+.bottom-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background: rgba(0,0,0,0.6);
+  /*border: 1px solid #41637E;*/
 }
 
 .nav-link-focused{
@@ -104,5 +149,20 @@ a {
 
 .title {
   float: right;
+  margin-right: 20px;
+  letter-spacing: 4px
 }
 
+.recent-ripples {
+  text-align: center;
+}
+
+.photo-holder {
+  float: left;
+  width: 310px;
+  position: relative;
+  top: 70px;
+  left: 35px;
+  background: rgba(0,0,0,0.6);
+  /*border: 1px solid #41637E;*/
+}

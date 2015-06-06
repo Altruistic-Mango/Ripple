@@ -6,6 +6,7 @@ var LoginContent = require('./components/LoginContent');
 var MapComponent = require('./components/MapComponent');
 var MapStore = require('./stores/MapStore');
 var MapConstants = require('./constants/MapConstants');
+var PhotoEntry = require('./components/PhotoEntry');
 
 
 var Router = require('react-router');
@@ -18,7 +19,7 @@ var RouteHandler = Router.RouteHandler;
 var Dashboard = React.createClass({
   getInitialState: function() {
     return {
-      data: null
+      data: {}
     };
   },
 
@@ -41,14 +42,21 @@ var Dashboard = React.createClass({
 
         <Navigation className="nav-bar"items={ [
           {name:'Explore'},
-          {name:'Album'},
-          {name: 'Login'}
+          {name:'Search'},
         ] } />
-        <div className="side-content">
-          <RouteHandler />
+
+        <div className="content">
+          <div className="side-content">
+            <RouteHandler />
+          </div>
+          <div className="Map">
+            <MapComponent data={this.state.data} />
+          </div>
+          <div className="photo-holder">
+            <PhotoEntry photoId={this.state.data.photoId}/>
+          </div>
         </div>
-        <div className="Map">
-        <MapComponent data={this.state.data} />
+        <div className="bottom-bar">
         </div>
       </div>
     );
@@ -58,8 +66,7 @@ var Dashboard = React.createClass({
 var routes = (
       <Route path="/" handler={Dashboard}>
         <Route name="Explore" handler={ExploreContent} />
-        <Route name="Album" handler={AlbumContent} />
-        <Route name="Login" handler={LoginContent} />
+        <Route name="Search" handler={AlbumContent} />
         <DefaultRoute handler={ExploreContent} />
       </Route>
     );

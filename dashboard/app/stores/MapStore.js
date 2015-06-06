@@ -63,6 +63,7 @@ function _geoJSON (data) {
 
     feature.geometry.coordinates.push([event.x, event.y]);
     radius = event.radius; 
+    photoId = event.photoId;
 
     event.recipientList.forEach(function(recipient) {
       geoJSON.features.push({
@@ -83,6 +84,7 @@ function _geoJSON (data) {
   return {
           events: geoJSON,
           feature: feature, 
-          radius: radius
+          radius: radius,
+          photoId: photoId
          }
 }
