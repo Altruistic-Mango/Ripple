@@ -28,6 +28,7 @@ function User($localstorage) {
   //creates a new user, used during signup
   function newUser(data) {
     //persistent data
+    console.log(JSON.stringify(data))
     user.userId = data.userId;
     user.username = data.username;
     user.isSignedIn = true;

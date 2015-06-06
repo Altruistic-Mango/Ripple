@@ -4,18 +4,20 @@ var bcrypt = require('bcrypt-nodejs');
 
 var userController = {
 
+  generateUserId: function() {
+    var id = "";
+    while (id.length < 7) {
+      id += Math.floor(Math.random() * (10 - 1) + 1);
+    }
+    return id;
+  },
+
   signupUser: function(req, res) {
 
     var username = req.body.username;
     var password = bcrypt.hashSync(req.body.password);
     var email = req.body.email;
-    var randInt = function() {
-      var id = "";
-      while (id.length < 7) {
-        id += Math.floor(Math.random() * (10 - 1) + 1);
-      }
-      return id;
-    };
+    var userId = this.generateUserId();
 
     this.getUserFromDB({
       username: req.body.username
@@ -24,7 +26,7 @@ var userController = {
         var newUser = new User({
           username: username,
           password: password,
-          userId: randInt(),
+          userId: userId,
           email: email
         });
 
@@ -81,6 +83,37 @@ var userController = {
         res.status(500).send(resError);  
       }
     });
+  },
+
+  fbSignin: function(req, res) {
+    var email = req.body.email || "";
+    var userId = this.generateUserId();
+    this.getUserFromDB({
+    username: req.body.username
+    }, function(user) {
+      if (user && user.password === req.body.password) {
+        res.status(200).send(user);
+        }
+      else if (user && password !== req.body.password) {
+        res.status(500).end()
+      }
+      else {
+        newUser = new User({
+          username: req.body.username,
+          password: req.body.password,
+          userId: userId,
+          email: email
+        });
+        
+        newUser.save(function(err, newUser) {
+          if (err) {
+            console.log(err);
+            res.status(500).send(err);
+          }
+          res.status(200).send(newUser);
+        });
+      }
+    })
   },
 
   getUserFromDB: function(person, cb) {

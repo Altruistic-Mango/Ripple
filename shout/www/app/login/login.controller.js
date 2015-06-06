@@ -23,6 +23,12 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
   //TODO: facebook auth
   function login() {
     ionicMaterialInk.displayEffect();
+    if (!vm.data.username) {
+      $ionicPopup.alert({
+        title: 'Login Error - no username entered',
+        template: 'Please re-enter username'
+      });
+    }
     vm.data.username = vm.data.username.toLowerCase();
     LoginFactory.loginUser(vm.data)
       .success(function(res) {

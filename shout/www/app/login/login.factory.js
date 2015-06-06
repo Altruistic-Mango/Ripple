@@ -12,6 +12,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   services.loginUser = loginUser;
   services.checkLogin = checkLogin;
   services.successfulLogin = successfulLogin;
+  services.fbLogin = fbLogin;
 
   return services;
 
@@ -59,27 +60,35 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   }
 
   function fbLogin() {
-    if (!user.fbId) {
+    if (!User.fbId) {
     getFBToken(function(accessID) {
-      console.log(accessID + (typeof accessID));
     $cordovaOauth.facebook(accessID, ["email"]).then(function(result) {
-      console.log(result);
-      var user = getUserInfo(result);
-
-
-    }, function(error) {
-      console.log(error);
+        console.log(result);
+        getUserInfo(result)  
       });
-    });
+    }, function(error) {
+        console.log(error);
+        });
+    } else {
+
     }
   }
 
   function getUserInfo(accessToken) {
     console.log(accessToken);
-    var url = 'https://graph.facebook.com/me?access_token=' + accessToken;
+    var url = 'https://graph.facebook.com/me?access_token=' + accessToken.access_token;
     $http.get(url)
       .success(function(response, status, headers, config) {
-        var user = {username: response.first_name, password: response.id};
+        console.log(JSON.stringify(response));
+        user = {username: response.first_name, password: response.id, email: response.email};
+        $http({
+          method: 'POST',
+          url: API_HOST + '/users/fbSignin',
+          data: user
+        })
+        .success(function(data) {
+          console.log(JSON.stringify(data))
+        })
       });
   }
 
