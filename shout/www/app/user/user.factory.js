@@ -32,6 +32,7 @@ function User($localstorage) {
     user.username = data.username;
     user.isSignedIn = true;
     user.album = [];
+    user.fbId = data.fbId;
 
     user.settings = {
       enabled: true,
@@ -58,6 +59,16 @@ function User($localstorage) {
       return user.userId;
     else {
       user.userId = Id;
+      save(user);
+    }
+  }
+
+  //gets/sets facebookId
+  function fbId(token) {
+    if (arguments.length === 0)
+      return user.fbId;
+    else {
+      user.fbId = token;
       save(user);
     }
   }
