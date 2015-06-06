@@ -2,9 +2,9 @@ angular
   .module('shout.location')
   .factory('LocationFactory', LocationFactory);
 
-LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage', 'API_HOST'];
+LocationFactory.$inject = ['$ionicPlatform', '$http', 'InboxFactory', '$localstorage', 'API_HOST', 'User'];
 
-function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API_HOST) {
+function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API_HOST, User) {
   console.log('LocationFactory');
   var currentPosition, watchId, intervalId, userId;
   var services = {};
@@ -37,7 +37,7 @@ function LocationFactory($ionicPlatform, $http, InboxFactory, $localstorage, API
   function setPosition(position) {
     var user = $localstorage.getObject('user');
     services.currentPosition = {
-      userId: user.userId,
+      userId: User.userId(),
       y: position.coords.latitude,
       x: position.coords.longitude,
       timestamp: new Date().getTime()

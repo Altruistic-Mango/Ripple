@@ -2,9 +2,9 @@ angular
   .module('shout.settings')
   .controller('SettingsCtrl', SettingsCtrl);
 
-SettingsCtrl.$inject = ['$http', '$state', '$ionicHistory', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST'];
+SettingsCtrl.$inject = ['$http', '$state', '$ionicHistory', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST', 'User'];
 
-function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST) {
+function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST, User) {
   console.log('SettingsCtrl');
 
   //TODO: explanations of Enable, Trickle.
@@ -25,6 +25,7 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   //TODO: isSignedIn = false
   //TODO: remove localstorage of userId etc if need be
   function logOut() {
+    User.isSignedIn(false);
     $state.go('login');
   }
 
