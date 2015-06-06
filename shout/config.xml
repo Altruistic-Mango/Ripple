@@ -13,7 +13,7 @@
 
   <!-- <allow-navigation href="52.8.123.119/*" /> -->
 
-  <allow-navigation href="http://5224d2c1.ngrok.com/*" />
+  <allow-navigation href="http://6c41ac64.ngrok.com/*" />
 
   <allow-navigation href="https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/*"/>
   <preference name="webviewbounce" value="false"/>
