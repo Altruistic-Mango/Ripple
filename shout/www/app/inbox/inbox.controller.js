@@ -65,6 +65,7 @@ function InboxCtrl($scope, $interval, InboxFactory, User, LoginFactory, BroadCas
 
 
   function refresh() {
+    console.log('Inbox.refresh');
     console.log('refresh');
     InboxFactory.requestInbox();
     $scope.$broadcast('scroll.refreshComplete');
