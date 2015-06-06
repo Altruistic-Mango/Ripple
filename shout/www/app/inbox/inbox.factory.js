@@ -66,7 +66,8 @@ function InboxFactory($rootScope, $http, $localstorage, API_HOST) {
   }
 
   function requestInbox() {
-    var userId = $localstorage.get('userId');
+    var user = $localstorage.getObject('user');
+    var userId = user.userId; 
     $http.get(API_HOST + '/users/inbox/' + userId)
          .success(function(data) {
           console.log('success getting inbox');

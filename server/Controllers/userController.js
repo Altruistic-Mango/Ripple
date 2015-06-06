@@ -213,6 +213,30 @@ var userController = {
     });
   },
 
+  cullAlbum: function(userId, photoId) {
+    var query = {
+      userId: userId
+    }
+
+    User.findOne(query, function(err, user) {
+      if (err) console.log(err);
+
+      else {
+        if (user) {
+          var album = user.album;
+          for (var i = 0; i < album.length; i++) {
+            if (user.album[i].photoId === photoId) {
+              user.album.splice(i, 1);
+              break;
+            }  
+          }
+          user.album = album;
+          user.save();
+        };
+      }
+    });
+  },
+
   getAlbum: function(req, res) {
     console.log('USERID: ', req.params.userId);
     var userId = req.params.userId;
@@ -233,6 +257,18 @@ var userController = {
         res.status(500).send();
       } else {
         console.log('USER.INBOX: ', user.inbox);
+        res.status(200).send(user.inbox);
+      }
+    });
+  },
+
+  deleteInbox: function(req, res) {
+    var userId = req.params.userId; 
+    User.findOneAndUpdate({userId: userId}, {$set: {inbox : [] }}, { 'new' : true }, function(error, user){
+      if (error) {
+        res.status(500).send();
+      } else {
+        console.log('just cleared the users inbox: ', user.inbox);
         res.status(200).send(user.inbox);
       }
     });

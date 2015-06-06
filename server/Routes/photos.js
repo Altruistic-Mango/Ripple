@@ -22,4 +22,9 @@ router.post('/delete', function(req, res) {
 	photoController.deletePhoto(req, res);
 });
 
+router.post('/deleteFromAlbum', function(req, res) {
+  console.log('req to delete photo from album ' + req.body.photoId);
+  photoController.deleteAlbumPhoto(req, res);
+})
+
 module.exports = router;
