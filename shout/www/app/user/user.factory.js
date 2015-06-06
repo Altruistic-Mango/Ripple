@@ -18,6 +18,7 @@ function User($localstorage) {
   var services = {};
   services.newUser = newUser;
   services.userId = userId;
+  services.url = url;
   services.isSignedIn = isSignedIn;
   services.position = position;
   services.settings = settings;
@@ -32,6 +33,7 @@ function User($localstorage) {
     console.log(JSON.stringify(data));
     user.userId = data.userId;
     user.username = data.username;
+    user.url = data.url || 'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/';
     user.isSignedIn = true;
     user.album = [];
     user.fbId = data.fbId || null;
@@ -76,7 +78,12 @@ function User($localstorage) {
   }
 
 
-  //gets/sets isSignedIn 
+  function url(photoId) {
+    return user.url + photoId + '.jpeg';
+  }
+
+
+  //gets/sets isSignedIn
   function isSignedIn(value) {
     if (arguments.length === 0)
       return user.isSignedIn;
@@ -134,7 +141,6 @@ function User($localstorage) {
     function add(photo) {
       if (!_contains(_inbox, photo.photoId)) {
         _inbox.push(photo.photoId);
-        save(user);
       }
     }
 
@@ -143,11 +149,12 @@ function User($localstorage) {
       if (index !== -1)
         _inbox.splice(index, 1);
     }
+    return _inbox;
   }
 
 
-  //gets/sets album 
-  //album() returns album 
+  //gets/sets album
+  //album() returns album
   //album('add', photo) adds a photo
   //album('remove', photo) removes a photo
   function album(addRemove, photo) {
@@ -162,7 +169,9 @@ function User($localstorage) {
       if (!_contains(user.album, photo.photoId)) {
         user.album.push(photo.photoId);
         save(user);
+        return true;
       }
+      return false;
     }
 
     function remove(photo) {
@@ -171,6 +180,7 @@ function User($localstorage) {
         user.album.splice(index, 1);
       save(user);
     }
+
   }
 
   //Internal Functions
