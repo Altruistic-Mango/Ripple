@@ -4,7 +4,7 @@
     <ion-list class="condensed-space no-padding" can-swipe="true">
       <ion-item collection-repeat="photo in vm.album track by $index" item-height="20%" item-width="80%">
         <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromAlbum($index)"></ion-option-button>
-        <img ng-src="{{vm.getSrc(photo.photoId)}}">
+        <img ng-src="{{vm.url(photo.photoId)}}">
       </ion-item>
     </ion-list>
   </ion-content>

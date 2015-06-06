@@ -2,131 +2,72 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$state', '$http', '$interval', '$localstorage', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'BroadCastFactory', 'API_HOST'];
+InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'API_HOST'];
 
-function InboxCtrl($scope, $state, $http, $interval, $localstorage, InboxFactory, AlbumFactory, CameraFactory, BroadCastFactory, API_HOST) {
+function InboxCtrl($scope, $interval, InboxFactory, User, LoginFactory, BroadCastFactory, API_HOST) {
   console.log('InboxCtrl');
+
   var vm = this;
-  var currentStart = 0;
 
-
-  //TODO:kill images when TTL expires
-  
-  vm.photos = [];
-  vm.data = CameraFactory.data;
-  vm.obj = CameraFactory.obj;
-  vm.takePicture = CameraFactory.takePicture;
-  vm.query = CameraFactory.query;
-  vm.addPhotos = addPhotos;
-  vm.doRefresh = doRefresh;
-  vm.reBroadCast = reBroadCast;
-  vm.saveToAlbum = saveToAlbum;
+  vm.inbox = User.inbox;
+  vm.url = User.url;
   vm.deleteFromInbox = deleteFromInbox;
-  vm.clearInbox      = clearInbox;
-  vm.getSrc          = getSrc;
+  vm.saveToAlbum = saveToAlbum;
+  vm.reBroadCast = reBroadCast;
+  vm.refresh = refresh;
 
+  //TODO: make this work
+  //When the controller is loaded, see if the user is logged in, start sending GPS
+  LoginFactory.checkLogin();
 
-  //when the controller is instantiated the first thing it does is call doRefresh 
+  //when the controller is instantiated the first thing it does is call refresh
   //which calls a function that requests the inbox from factory
-  vm.doRefresh();
+  vm.refresh();
 
-  //this adds a listener for the updateInbox triggered in the inbox factory whenever the server responds with an inbox
+  //update inbox when changed by factory
   $scope.$on('updateInbox', function(event, data) {
-    console.log('update inbox event heard!!!');
-    vm.clearInbox();
-    newPhotos = InboxFactory.filterForNew(vm.photos, InboxFactory.photos);
-    if(newPhotos.length) {
-      vm.addPhotos(newPhotos);
-    }
+    console.log('onUpdateInbox');
+    vm.inbox = User.inbox();
   });
-  /*
-  vm.photo = {timestamp : Date.now() - 0.7*60*1000,
-              title: 'Berkeley',
-              broadcasts: 11,
-              photoId: 'berkeley',
-              TTL: 5*60};
-  vm.photo2 = {timestamp : Date.now() - 2.3*60*1000,
-              title: 'San Francisco',
-              broadcasts: 3,
-              photoId: 'goldengate',
-              TTL: 5*60};
-              */
-
-  //vm.dummyphotos = [];
-  //vm.dummyphotos.push(vm.photo, vm.photo2);
-  //vm.photos.push(vm.photo, vm.photo2);
 
   //timer to update TTLs on images
-  timer = $interval(updateTime, 1000);
+  timer = $interval(updateTimers, 1000);
 
-  //TODO: sent message to server, update the inbox
-  //TODO: redraw after picture deleted from inbox
-  function deleteFromInbox(index) {
-    var user = $localstorage.getObject('user');
-    console.log('deleting photo:',index);
-    var photo = vm.photos.splice(index,1)[0];
-    console.log(photo);
-    var data = {};
-    data.userId = user.userId;
-    data.photoId = photo.photoId;
-    console.log(data);
-    $http.post(API_HOST + '/photos/delete/', data)
-      .success(function(data) {
-        console.log('success deleteing photo from inbox');
-      })
-      .error(function() {
-        console.log('error deleting photo from inbox');
-      });
-  }
-
-  //TODO fix this for real photos
-  //  TTL will be in milliseconds
-  //TODO remove photos if TTL expired
-  function updateTime() {
-    var photosToRemove = [];
-    vm.photos.forEach(function(photo, index) {
-      photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp));
+  function updateTimers() {
+    vm.inbox.forEach(function(photo) {
+      photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp) );
       if (photo.timeRemaining <= 0)
-        photosToRemove.push(index);
+        User.inbox('remove', photo);
     });
-    while (photosToRemove.length) {
-      vm.photos.splice(photosToRemove.pop(), 1);
-    }
+
+    vm.inbox = User.inbox();
   }
 
 
+  //TODO: redraw after picture deleted from inbox
+  function deleteFromInbox(photo) {
+    vm.inbox = User.inbox('remove', photo);
+    InboxFactory.deleteFromInbox(photo);
+  }
 
-  function doRefresh() {
-    console.log('doRefresh called');
+
+  function saveToAlbum(photo) {
+    AlbumFactory.saveToAlbum(photo);
+    User.album('add',photo);
+  }
+
+
+  //TODO: TEST
+  //TODO: check if photo has been broadcast already?
+  function reBroadCast(photo) {
+    BroadCastFactory.reBroadCast(photo);
+  }
+
+
+  function refresh() {
+    console.log('refresh');
     InboxFactory.requestInbox();
     $scope.$broadcast('scroll.refreshComplete');
-  }
-
-  function addPhotos(photos) {
-    vm.photos = vm.photos.concat(photos);
-  }
-
-  //TODO: deprecate this, expired photos controlled by timer
-  function clearInbox() {
-    vm.photos = InboxFactory.removeExpired(vm.photos, InboxFactory.photos);
-    console.log('clearInbox vm.photos: ', vm.photos);
-  }
-
-  function reBroadCast(index) {
-    console.log('reBroadCast');
-    if (InboxFactory.checkValidPhoto(vm.photos[index])) {
-      BroadCastFactory.reBroadCast(vm.photos[index]);
-    } else {
-      console.log('that photo is expired, refresh your inbox!');
-    }
-  }
-
-  function saveToAlbum(index) {
-    AlbumFactory.savePhoto(vm.photos[index]);
-  }
-
-  function getSrc(photoId) {
-    return "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/" + photoId + ".jpeg";
   }
 
 }

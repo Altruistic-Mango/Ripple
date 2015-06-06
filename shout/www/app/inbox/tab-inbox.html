@@ -1,18 +1,16 @@
 <ion-view view-title="Inbox">
   <ion-content class="padding">
     <ion-list class="condensed-space no-padding" can-swipe="true">
-    <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher>
+    <ion-refresher on-refresh="vm.refresh()"></ion-refresher>
 
-      <ion-item collection-repeat="photo in vm.photos track by $index">
-        <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromInbox($index)"></ion-option-button>
-        <ion-option-button class="button-light icon ion-ios-book" ng-click="vm.saveToAlbum($index)"></ion-option-button>
-        <ion-option-button class="button-light icon ion-ios-world" ng-click="vm.reBroadCast($index)"></ion-option-button>
+      <ion-item collection-repeat="photo in vm.inbox">
+        <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromInbox(photo)"></ion-option-button>
+        <ion-option-button class="button-light icon ion-ios-book" ng-click="vm.saveToAlbum(photo)"></ion-option-button>
+        <ion-option-button class="button-light icon ion-ios-world" ng-click="vm.reBroadCast(photo)"></ion-option-button>
         <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
-          <!--
-          <h2>{{vm.getSrc(photo.Title)}}</h2>
-          <p>Broadcasts: {{vm.getSrc(photo.Broadcasts)}}</p>
-          -->
-          <img class="inboxPhoto" ng-src="{{vm.getSrc(photo.photoId)}}">
+          <!-- <h2>{{vm.getSrc(photo.Title)}}</h2> -->
+          <!-- <p>Broadcasts: {{vm.getSrc(photo.Broadcasts)}}</p> -->
+          <img class="inboxPhoto" ng-src="{{vm.url(photo.photoId)}}">
           <p>{{photo.timeRemaining | date : "m:ss"}}</p>
         </a>
       </ion-item>
