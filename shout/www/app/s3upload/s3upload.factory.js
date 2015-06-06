@@ -16,6 +16,8 @@ function s3($http, API_HOST) {
 
   function upload(newfile, callback) {
     file = newfile;
+    file.type = file.type || 'image/jpeg';
+    console.log(file);
     console.log('uploadToS3');
 
     getSignedPolicy(function(response) {
@@ -36,6 +38,7 @@ function s3($http, API_HOST) {
   function sendFile(s3Params, callback) {
     console.log('sendFile');
     var extension = file.type.match(/\w+$/)[0];
+    // console.log('extension: ', extension);
     var params = {
       'key': 's3Upload/' + file.name + '.' + extension,
       'acl': 'public-read',
