@@ -2,15 +2,10 @@ angular
   .module('shout.login')
   .factory('LoginFactory', LoginFactory);
 
-<<<<<<< HEAD
-LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST'];
 
-function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST) {
-=======
 LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST', '$cordovaOauth', 'User'];
 
 function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST, $cordovaOauth, User) {
->>>>>>> Refactoring client controllers
   console.log('LoginFactory');
 
   var services = {};
