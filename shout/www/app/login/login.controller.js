@@ -2,9 +2,9 @@ angular
   .module('shout.login')
   .controller('LoginCtrl', LoginCtrl);
 
-LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk', '$ionicPopup'];
+LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk', '$ionicPopup', 'User'];
 
-function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
+function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
   console.log('LoginCtrl');
   var vm = this;
   vm.data = {};
@@ -12,8 +12,8 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
   vm.data.email = '';
   vm.data.password = '';
   vm.login = login;
-  vm.splash = splash;
   vm.fbLogin = fbLogin;
+  vm.splash = splash;
 
   ionicMaterialInk.displayEffect();
 
@@ -23,6 +23,12 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
   //TODO: facebook auth
   function login() {
     ionicMaterialInk.displayEffect();
+    if (!vm.data.username) {
+      $ionicPopup.alert({
+        title: 'Login Error - no username entered',
+        template: 'Please re-enter username'
+      });
+    }
     vm.data.username = vm.data.username.toLowerCase();
     LoginFactory.loginUser(vm.data)
       .success(function(res) {
@@ -44,6 +50,39 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup) {
   }
 
   function fbLogin() {
-    LoginFactory.fbLogin();
+    if (User.fbId()) {
+      var fbId = User.fbId();
+      console.log('user is signed in')
+      LoginFactory.loginFbUser({password: fbId})
+        .success(function(res) {
+          LoginFactory.successfulLogin(res);
+          $state.go('tab.inbox');
+        })
+        .error(function(err) {
+          User.isSignedIn(false);
+          User.fbId(null);
+          fbLogin();
+        })
+    } 
+
+    else if (!User.isSignedIn()) {
+      console.log('user is not signed in');
+      LoginFactory.fbLogin()
+        .then(function(data) {
+          LoginFactory.getUserInfo(data)
+            .success(function(response, status, headers, config) {
+              var username = response.first_name.toLowerCase();
+              user = {username: username, password: response.id, email: response.email};
+              LoginFactory.loginFbUser(user)
+                .success(function(res) {
+                  User.newUser(res);
+                  User.fbId(res.password);
+                  LoginFactory.successfulLogin(res);
+                  $state.go('tab.inbox');
+              });
+            });
+      });
+    }
   }
+
 }

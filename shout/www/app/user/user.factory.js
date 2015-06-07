@@ -22,17 +22,19 @@ function User($localstorage) {
   services.position = position;
   services.settings = settings;
   services.album = album;
+  services.fbId = fbId;
 
   return services;
 
   //creates a new user, used during signup
   function newUser(data) {
     //persistent data
+    console.log(JSON.stringify(data));
     user.userId = data.userId;
     user.username = data.username;
     user.isSignedIn = true;
     user.album = [];
-    user.fbId = data.fbId;
+    user.fbId = data.fbId || null;
 
     user.settings = {
       enabled: true,

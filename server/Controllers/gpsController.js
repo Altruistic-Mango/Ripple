@@ -9,10 +9,11 @@ var userController = require('../Controllers/userController.js');
 
 var gpsController = {
 
-  // this will insert a coordinate to the quadtree for insertion
+  // insert Coords will receive the user's coordinates to insert into the quadtree and return the contents of the user's inbox.
   insertCoords: function(req, res) {
 
-
+    if (quadtree.inBounds(req.body)) {
+    console.log('in bounds yes!');
     var userId = req.body.userId;
 
 
@@ -25,17 +26,23 @@ var gpsController = {
       userId: userId
 
     };
-    quadtree.update(node);
 
-    node.timestamp = timestamp;
+      quadtree.update(node);
+
+      node.timestamp = timestamp;
 
 
-    var inbox = userController.retrieveInbox(userId, node, function(inbox) {
-      res.send(inbox);
+      userController.retrieveInbox(userId, node, function(inbox) {
+        res.send(inbox);
       });
+    }
+    else {
+      console.log('out of bounds')
+      res.send('Out of bounds');
+    }
   },
 
-  // this function takes a request from the user and returns an array of nodes that are within the quadrant
+  // this function takes a request from the user and returns the quadrant that contains the nodes. 
   findNearbyNodes: function(req, res) {
 
     var searchParams = {
@@ -45,14 +52,18 @@ var gpsController = {
       radius: +req.body.radius
     };
 
+
     var tree = this.getNodes(searchParams);
-    // console.log(tree.depth);
+
+    // because no callback is passed into this function, the nodes are collected and returned
     var nodes = tree.traverse();
-    // console.log(nodes.length);
+    
+    // to be sent to the user
     res.send(nodes);
 
   },
 
+  // this function will traverse through the entire quadtree and delete any nodes that are past their expiration, and is executed every two minutes
   pruneTree: function() {
     var timestamp = new Date().getTime();
     quadtree.clearOut(timestamp);
@@ -66,8 +77,13 @@ var gpsController = {
 
   calculateDist: function(item1, nodes) {
 
-    // console.log('Parameters passed into dist');
+    // let's remove the node that initiated the broadcast before checking for nearby coordinates
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].userId === item1.userId) nodes.splice(i, 1);
+    }
 
+
+    // The haversine formula is used to calculate the distance between two points, factoring in the spherical shape of the Earth
     var R = 6371;
     nodes = nodes || this.getNodes(item1);
     var lat1 = +item1.x;
@@ -119,7 +135,7 @@ var gpsController = {
     res.send(item);
   },
 
-  // load dummy data for testing
+  // load dummy data for testing, in this case one million coordinate points
   loadData: function(req, res) {
     var date = new Date();
 
@@ -133,7 +149,7 @@ var gpsController = {
     
     var count = 0;
     
-    while (count < 100000) {
+    while (count < 1000000) {
       var item = {};
       item.x = randIntx();
       item.y = randInty();

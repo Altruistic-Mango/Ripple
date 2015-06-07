@@ -4,18 +4,20 @@ var bcrypt = require('bcrypt-nodejs');
 
 var userController = {
 
+  generateUserId: function() {
+    var id = "";
+    while (id.length < 7) {
+      id += Math.floor(Math.random() * (10 - 1) + 1);
+    }
+    return id;
+  },
+
   signupUser: function(req, res) {
 
     var username = req.body.username;
     var password = bcrypt.hashSync(req.body.password);
     var email = req.body.email;
-    var randInt = function() {
-      var id = "";
-      while (id.length < 7) {
-        id += Math.floor(Math.random() * (10 - 1) + 1);
-      }
-      return id;
-    };
+    var userId = this.generateUserId();
 
     this.getUserFromDB({
       username: req.body.username
@@ -24,7 +26,7 @@ var userController = {
         var newUser = new User({
           username: username,
           password: password,
-          userId: randInt(),
+          userId: userId,
           email: email
         });
 
@@ -83,6 +85,42 @@ var userController = {
     });
   },
 
+  fbSignin: function(req, res) {
+    var self = this;
+    var fbId = +req.body.password;
+    console.log(JSON.stringify(req.body));
+    this.getUserFromDB({
+    password: fbId
+    }, function(user) {
+      if (user) {
+        res.status(200).send(user);
+        }
+      else if (!user && req.body.username) {
+        console.log('no user found');
+        var userId = self.generateUserId();
+        var email = req.body.email || "";
+        newUser = new User({
+          username: req.body.username,
+          password: fbId,
+          userId: userId,
+          email: email
+        });
+        
+        newUser.save(function(err, newUser) {
+          if (err) {
+            console.log(err);
+            res.status(500).send(err);
+          }
+          res.status(200).send(newUser);
+        });
+      }
+      else {
+        var errorCode = {errorCode: 'user'};
+        res.status(500).send(errorCode);
+      }
+    })
+  },
+
   getUserFromDB: function(person, cb) {
     if (person.uuId) {
       User.findOne({
@@ -104,6 +142,20 @@ var userController = {
           } else {
             console.log('User already exists');
             return 'User already exists';
+          }
+        } else cb(null);
+      });
+    }
+    else if (person.password) {
+      User.findOne({
+        password: person.password
+      }, function(err, person) {
+        if (err) console.log(err);
+        else if (person) {
+          if (cb) {
+            cb(person);
+          } else {
+            return user;
           }
         } else cb(null);
       });
@@ -179,7 +231,7 @@ var userController = {
           cb(user.inbox);
         });
       }
-      else return null;
+      else cb(null);
     })
   },
 

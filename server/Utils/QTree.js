@@ -42,8 +42,6 @@ function Quadtree(boundaries, maxChildren, root, depth) {
 
 
 
-
-
 // san francisco
   // northwest point
   // 37.809455, -122.525293
@@ -56,6 +54,20 @@ function Quadtree(boundaries, maxChildren, root, depth) {
 
   // southeast point
   // 37.615192, -122.351613
+
+
+
+// if we do not check if the coordinate is in bounds the tree will sudivide forever once it reaches max children...
+Quadtree.prototype.inBounds = function(item) {
+  if (item.x > this.boundaries.x && item.x < this.boundaries.x + this.boundaries.width &&
+      item.y > this.boundaries.y && item.y < this.boundaries.y + this.boundaries.height) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 
 // insert function
 Quadtree.prototype.put = function(item) {
@@ -75,7 +87,7 @@ Quadtree.prototype.put = function(item) {
 
   // check length against the max number of coordinates per quadrant
   var length = this.children.length;
-  if (length > this.maxChildren) { // (this.depth < this.maxChildren + 1) && 
+  if (length > this.maxChildren && !(this.depth > 100)) { // (this.depth < this.maxChildren + 1) && 
 
     // create new quadrants
     this.subDivide();
@@ -127,7 +139,7 @@ Quadtree.prototype.get = function(item, callback) {
       return this;
     }
   }
-
+  // just return the root of the quadtree
   else {
     console.log('returning root');
     return this.root || this;
@@ -163,6 +175,7 @@ Quadtree.prototype.findIndex = function(item) {
   return index;
 };
 
+// this check will either update a coordinate based on proximity and a matching user ID. If none is found, it will simply insert the coordinate into the quadtree
 Quadtree.prototype.update = function(item) {
   var quadrant = this.get(item);
   var results = quadrant.children;
@@ -183,8 +196,8 @@ Quadtree.prototype.update = function(item) {
 };
 
 
-// remove gps data function
-// find last position then delete according to id
+
+// find last position then delete according to user id
 Quadtree.prototype.remove = function(item) {
   var quadrant = this.get(item);
   var results = quadrant.children;
@@ -197,6 +210,7 @@ Quadtree.prototype.remove = function(item) {
     }
   }
   // first perform check on child elements for threshold
+  // if the quadrants have less than half of their root node's maximum children, fold the quadrants and re insert the nodes into the single quadrant
   if (this.quadrants.length && results.length < this.maxChildren / 2) {
     this.unfold(quadrant);
   }
@@ -206,7 +220,7 @@ Quadtree.prototype.remove = function(item) {
 
 
 // tree traversal
-
+  // this function will clear out any coordinates that are past their expiration date of five minutes
 Quadtree.prototype.clearOut = function(timestamp) {
 
   if (this.children.length) {
@@ -228,6 +242,7 @@ Quadtree.prototype.clearOut = function(timestamp) {
   }
 }; 
 
+// this function will traverse through the quadtree, either executing a callback on every child or returning all of the children in a single array
 Quadtree.prototype.traverse = function(callback, nodes) {
 
     if (this.children.length && callback) {
@@ -311,6 +326,10 @@ Quadtree.prototype.subDivide = function() {
   }, this.maxChildren, root, depth);
 };
 
+
+// this function will 
+
+// todo - verify that this works
 Quadtree.prototype.unfold = function(quad) {
 
   // check if root 
@@ -324,7 +343,7 @@ Quadtree.prototype.unfold = function(quad) {
     count += quadrant.children.length;
   });
 
-  if (count < quad.maxChildren) {
+  if (count < quad.maxChildren / 2) {
     var nodes = quad.quadrants.reduce(function(acc, quadrant) {
       if (quadrant.children.length) {
         acc = acc.concat(quadrant.children);
@@ -456,6 +475,12 @@ module.exports = new Quadtree();
 
 work in progress
 
+ var node = {
+      x: +req.body.x,
+      y: +req.body.y,
+      userId: userId
+    };
+curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "122.515", "y" : "37.615"}' http://localhost:3000/gps/position
 curl -i http://localhost:3000/gps/postdata
 curl -i http://localhost:3000/users/list
 

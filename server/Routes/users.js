@@ -24,6 +24,11 @@ router.post('/signin', function(req, res) {
   userController.signinUser(req, res);
 });
 
+router.post('/fbSignin', function(req, res) {
+  console.log('got facebook signin request');
+  userController.fbSignin(req, res);
+});
+
 router.post('/deleteUser', function(username) {
   console.log('deleting user');
   userController.deleteUser(username);
