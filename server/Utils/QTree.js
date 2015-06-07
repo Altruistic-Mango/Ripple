@@ -139,7 +139,7 @@ Quadtree.prototype.get = function(item, callback) {
       return this;
     }
   }
-
+  // just return the root of the quadtree
   else {
     console.log('returning root');
     return this.root || this;
@@ -175,6 +175,7 @@ Quadtree.prototype.findIndex = function(item) {
   return index;
 };
 
+// this check will either update a coordinate based on proximity and a matching user ID. If none is found, it will simply insert the coordinate into the quadtree
 Quadtree.prototype.update = function(item) {
   var quadrant = this.get(item);
   var results = quadrant.children;
@@ -195,8 +196,8 @@ Quadtree.prototype.update = function(item) {
 };
 
 
-// remove gps data function
-// find last position then delete according to id
+
+// find last position then delete according to user id
 Quadtree.prototype.remove = function(item) {
   var quadrant = this.get(item);
   var results = quadrant.children;
@@ -209,6 +210,7 @@ Quadtree.prototype.remove = function(item) {
     }
   }
   // first perform check on child elements for threshold
+  // if the quadrants have less than half of their root node's maximum children, fold the quadrants and re insert the nodes into the single quadrant
   if (this.quadrants.length && results.length < this.maxChildren / 2) {
     this.unfold(quadrant);
   }
@@ -218,7 +220,7 @@ Quadtree.prototype.remove = function(item) {
 
 
 // tree traversal
-
+  // this function will clear out any coordinates that are past their expiration date of five minutes
 Quadtree.prototype.clearOut = function(timestamp) {
 
   if (this.children.length) {
@@ -240,6 +242,7 @@ Quadtree.prototype.clearOut = function(timestamp) {
   }
 }; 
 
+// this function will traverse through the quadtree, either executing a callback on every child or returning all of the children in a single array
 Quadtree.prototype.traverse = function(callback, nodes) {
 
     if (this.children.length && callback) {
@@ -323,6 +326,10 @@ Quadtree.prototype.subDivide = function() {
   }, this.maxChildren, root, depth);
 };
 
+
+// this function will 
+
+// todo - verify that this works
 Quadtree.prototype.unfold = function(quad) {
 
   // check if root 
@@ -336,7 +343,7 @@ Quadtree.prototype.unfold = function(quad) {
     count += quadrant.children.length;
   });
 
-  if (count < quad.maxChildren) {
+  if (count < quad.maxChildren / 2) {
     var nodes = quad.quadrants.reduce(function(acc, quadrant) {
       if (quadrant.children.length) {
         acc = acc.concat(quadrant.children);
