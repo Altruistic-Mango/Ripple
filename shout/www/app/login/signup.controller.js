@@ -51,7 +51,7 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
   function fbLogin() {
     if (User.fbId()) {
       var fbId = User.fbId();
-      console.log('user is signed in')
+      console.log('user is signed in');
       SignupFactory.loginFbUser({password: fbId})
         .success(function(res) {
           SignupFactory.successfulLogin(res);
@@ -61,7 +61,7 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
           User.isSignedIn(false);
           User.fbId(null);
           fbLogin();
-        })
+        });
     }
 
     else if (!User.isSignedIn()) {
