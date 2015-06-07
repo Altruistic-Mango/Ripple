@@ -14,6 +14,7 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
   vm.badUsername = false;
 
   vm.signup = signup;
+  vm.fbLogin = fbLogin;
 
   //TODO: response message if username exists
   //TODO: form validation, no weird characters in username A-z0-9 only
@@ -47,4 +48,39 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
     }
   }
 
+  function fbLogin() {
+    if (User.fbId()) {
+      var fbId = User.fbId();
+      console.log('user is signed in')
+      SignupFactory.loginFbUser({password: fbId})
+        .success(function(res) {
+          SignupFactory.successfulLogin(res);
+          $state.go('tab.inbox');
+        })
+        .error(function(err) {
+          User.isSignedIn(false);
+          User.fbId(null);
+          fbLogin();
+        })
+    }
+
+    else if (!User.isSignedIn()) {
+    console.log('user is not signed in');
+    SignupFactory.fbLogin()
+      .then(function(data) {
+        SignupFactory.getUserInfo(data)
+          .success(function(response, status, headers, config) {
+            var username = response.first_name.toLowerCase();
+            user = {username: username, password: response.id, email: response.email};
+            SignupFactory.loginFbUser(user)
+              .success(function(res) {
+                User.newUser(res);
+                User.fbId(res.password);
+                SignupFactory.successfulLogin(res);
+                $state.go('tab.inbox');
+            });
+          });
+      });
+    } 
+  }
 }

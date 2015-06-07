@@ -86,21 +86,22 @@ var userController = {
   },
 
   fbSignin: function(req, res) {
-    var email = req.body.email || "";
-    var userId = this.generateUserId();
+    var self = this;
+    var fbId = +req.body.password;
+    console.log(JSON.stringify(req.body));
     this.getUserFromDB({
-    username: req.body.username
+    password: fbId
     }, function(user) {
-      if (user && user.password === req.body.password) {
+      if (user) {
         res.status(200).send(user);
         }
-      else if (user && password !== req.body.password) {
-        res.status(500).end()
-      }
-      else {
+      else if (!user && req.body.username) {
+        console.log('no user found');
+        var userId = self.generateUserId();
+        var email = req.body.email || "";
         newUser = new User({
           username: req.body.username,
-          password: req.body.password,
+          password: fbId,
           userId: userId,
           email: email
         });
@@ -112,6 +113,10 @@ var userController = {
           }
           res.status(200).send(newUser);
         });
+      }
+      else {
+        var errorCode = {errorCode: 'user'};
+        res.status(500).send(errorCode);
       }
     })
   },
@@ -137,6 +142,20 @@ var userController = {
           } else {
             console.log('User already exists');
             return 'User already exists';
+          }
+        } else cb(null);
+      });
+    }
+    else if (person.password) {
+      User.findOne({
+        password: person.password
+      }, function(err, person) {
+        if (err) console.log(err);
+        else if (person) {
+          if (cb) {
+            cb(person);
+          } else {
+            return user;
           }
         } else cb(null);
       });

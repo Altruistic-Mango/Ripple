@@ -2,13 +2,17 @@ angular
   .module('shout.signup')
   .factory('SignupFactory', SignupFactory);
 
-SignupFactory.$inject = ['$http', '$localstorage', 'API_HOST'];
+SignupFactory.$inject = ['LoginFactory', '$http', '$localstorage', 'API_HOST'];
 
-function SignupFactory($http, $localstorage, API_HOST) {
+function SignupFactory(LoginFactory, $http, $localstorage, API_HOST) {
   var services = {};
   services.signupUser = signupUser;
   services.validateUser = validateUser;
-
+  services.fbLogin = LoginFactory.fbLogin;
+  services.loginFbUser = LoginFactory.loginFbUser;
+  services.successfulLogin = LoginFactory.successfulLogin;
+  services.fbLogin = LoginFactory.fbLogin;
+  services.getUserInfo = LoginFactory.getUserInfo;
   return services;
 
   function signupUser(data) {

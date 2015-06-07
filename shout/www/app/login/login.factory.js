@@ -3,9 +3,9 @@ angular
   .factory('LoginFactory', LoginFactory);
 
 
-LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST', '$cordovaOauth', 'User'];
+LoginFactory.$inject = ['LocationFactory', 'InboxFactory', '$localstorage', '$http', 'API_HOST', '$cordovaOauth', 'User', '$q'];
 
-function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST, $cordovaOauth, User) {
+function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_HOST, $cordovaOauth, User, $q) {
   console.log('LoginFactory');
 
   var services = {};
@@ -13,6 +13,8 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   services.checkLogin = checkLogin;
   services.successfulLogin = successfulLogin;
   services.fbLogin = fbLogin;
+  services.getUserInfo = getUserInfo;
+  services.loginFbUser = loginFbUser;
 
   return services;
 
@@ -26,7 +28,7 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
 
   function checkLogin() {
     if (!User.isSignedIn()) {
-      $state.go('login');
+      // $state.go('login');
     } else {
       var settings = User.settings()
       console.log(settings);
@@ -60,36 +62,31 @@ function LoginFactory(LocationFactory, InboxFactory, $localstorage, $http, API_H
   }
 
   function fbLogin() {
-    if (!User.fbId) {
-    getFBToken(function(accessID) {
-    $cordovaOauth.facebook(accessID, ["email"]).then(function(result) {
-        console.log(result);
-        getUserInfo(result)  
-      });
-    }, function(error) {
+    return $q(function(resolve, reject) {
+        getFBToken(function(accessID) {
+        $cordovaOauth.facebook(accessID, ["email"])
+          .then(function(result) {
+            if (result) resolve(result)
+            else reject({});
+          });
+      }, function(error) {
         console.log(error);
         });
-    } else {
+    });
+  }
 
-    }
+  function loginFbUser(data) {
+    return $http({
+      method: 'POST',
+      url: API_HOST + '/users/fbSignin',
+      data: data
+    });
   }
 
   function getUserInfo(accessToken) {
     console.log(accessToken);
     var url = 'https://graph.facebook.com/me?access_token=' + accessToken.access_token;
-    $http.get(url)
-      .success(function(response, status, headers, config) {
-        console.log(JSON.stringify(response));
-        user = {username: response.first_name, password: response.id, email: response.email};
-        $http({
-          method: 'POST',
-          url: API_HOST + '/users/fbSignin',
-          data: user
-        })
-        .success(function(data) {
-          console.log(JSON.stringify(data))
-        })
-      });
+    return $http.get(url)
   }
 
 }
