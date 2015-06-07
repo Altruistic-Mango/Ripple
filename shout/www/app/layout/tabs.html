@@ -4,26 +4,48 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 
-<ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+
+<!-- <ion-nav-bar class="bar-striped bar-top bar-background-positive tabs-color-light"> -->
+
+  <!-- <ion-nav title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
+    <ion-nav-view name="tab-settings"></ion-nav-view>
+  </ion-nav> -->
+  <!-- Nothing Tab -->
+  <!-- <ion-nav title="Ripple">
+    <ion-nav-view name="tab-ripple"></ion-nav-view>
+  </ion-nav> -->
+  <!-- Logout Tab -->
+ <!--  <ion-nav title="Logout" icon-off="ion-ios-close-outline" icon-on="ion-ios-close" href="#/tab/settings">
+    <ion-nav-view name="tab-logout"></ion-nav-view>
+  </ion-nav> -->
+
+<!-- </ion-nav-bar> -->
+
+
+
+
+
+<ion-tabs class="tabs-striped tabs-bottom tabs-background-positive tabs-color-light">
 
   <!-- Album Tab -->
   <ion-tab title="Album" icon-off="ion-ios-book-outline" icon-on="ion-ios-book" href="#/tab/album">
     <ion-nav-view name="tab-album"></ion-nav-view>
   </ion-tab>
 
+  <!-- Camera Tab -->
+  <ion-tab title="Camera" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" ng-click="vm.takePhoto()">
+    <ion-nav-view name="tab-camera"></ion-nav-view>
+  </ion-tab>
+
+
   <!-- Inbox Tab -->
   <ion-tab title="Inbox" icon-off="ion-ios-email-outline" icon-on="ion-ios-email" href="#/tab/inbox">
     <ion-nav-view name="tab-inbox"></ion-nav-view>
   </ion-tab>
   
-  <!-- Settings Tab -->
-  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings">
-    <ion-nav-view name="tab-settings"></ion-nav-view>
-  </ion-tab>
-
 </ion-tabs>
 
-<button ng-click="vm.takePhoto()" class="button button-positive button-fab button-fab-bottom-right ink">
+<!-- <button ng-click="vm.takePhoto()" class="button button-positive button-fab button-fab-bottom-right ink">
   <i class="icon ion-camera"></i>
-</button>
+</button> -->
 
