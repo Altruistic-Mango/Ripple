@@ -2,18 +2,19 @@ angular
   .module('shout')
   .run(run);
 
-run.$inject = ['$http', '$localstorage', '$rootScope', 'API_HOST'];
+run.$inject = ['$http', '$state', 'User', 'API_HOST'];
 
-function run($http, $localstorage, $rootScope, API_HOST) {
+function run($http, $state, User, API_HOST) {
+  console.log('shout run');
+
   ionic.Platform.ready(function() {
-    var user = $localstorage.get('user');
 
-    //TODO: in login section, create this variable
-    //if (user.isSignedIn) {
-    //  $state.go('tab.inbox');
-    //} else {
-    //  $state.go('login');
-   // }
+    console.log('signed in?:',User.isSignedIn());
+    if (User.isSignedIn()) {
+      $state.go('tab.inbox');
+    } else {
+      $state.go('login');
+    }
 
     //hide keyboard accessory
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {

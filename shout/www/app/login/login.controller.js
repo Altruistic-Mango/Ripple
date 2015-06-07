@@ -6,11 +6,15 @@ LoginCtrl.$inject = ['$state', 'LoginFactory', 'ionicMaterialInk', '$ionicPopup'
 
 function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
   console.log('LoginCtrl');
+
   var vm = this;
-  vm.data = {};
-  vm.data.username = '';
-  vm.data.email = '';
-  vm.data.password = '';
+
+  vm.data = {
+    username: '',
+    email: '',
+    password: ''
+  };
+
   vm.login = login;
   vm.fbLogin = fbLogin;
   vm.splash = splash;
@@ -18,7 +22,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
   ionicMaterialInk.displayEffect();
 
   //TODO:Form validation for all required fields
-  //TODO: username exists, password incorrect 
+  //TODO: username exists, password incorrect
   //TODO: no username error
   //TODO: facebook auth
   function login() {
@@ -30,19 +34,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
       });
     }
     vm.data.username = vm.data.username.toLowerCase();
-    LoginFactory.loginUser(vm.data)
-      .success(function(res) {
-        LoginFactory.successfulLogin(res);
-        $state.go('tab.inbox');
-      })
-      .error(function(res) {
-        console.log('error on login');
-        var errorCode = res.errorCode;
-        $ionicPopup.alert({
-          title: 'Login Error - ' + errorCode + ' incorrect',
-          template: 'Please re-enter ' + errorCode
-        });
-      });
+    LoginFactory.loginUser(vm.data);
   }
 
   function splash() {
@@ -52,7 +44,7 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
   function fbLogin() {
     if (User.fbId()) {
       var fbId = User.fbId();
-      console.log('user is signed in')
+      console.log('user is signed in');
       LoginFactory.loginFbUser({password: fbId})
         .success(function(res) {
           LoginFactory.successfulLogin(res);
@@ -62,8 +54,8 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
           User.isSignedIn(false);
           User.fbId(null);
           fbLogin();
-        })
-    } 
+        });
+    }
 
     else if (!User.isSignedIn()) {
       console.log('user is not signed in');
@@ -84,5 +76,4 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
       });
     }
   }
-
 }

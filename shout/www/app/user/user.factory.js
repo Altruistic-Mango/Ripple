@@ -5,11 +5,12 @@ angular
 User.$inject = ['$localstorage'];
 
 function User($localstorage) {
+  console.log('User');
+
   var user = {};
 
   //volatile
   var _position = {};
-  var _inbox = [];
 
   //grab user data if present
   loadUser();
@@ -17,7 +18,9 @@ function User($localstorage) {
   //services
   var services = {};
   services.newUser = newUser;
+  services.saveUser = saveUser;
   services.userId = userId;
+  services.url = url;
   services.isSignedIn = isSignedIn;
   services.position = position;
   services.settings = settings;
@@ -32,12 +35,14 @@ function User($localstorage) {
     console.log(JSON.stringify(data));
     user.userId = data.userId;
     user.username = data.username;
+    user.url = data.url || 'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/';
     user.isSignedIn = true;
     user.album = [];
     user.fbId = data.fbId || null;
 
     user.settings = {
       enabled: true,
+      trickle: true,
       radius: 5,
       TTL: 5,
     };
@@ -45,15 +50,25 @@ function User($localstorage) {
     save(user);
 
     //volatile data
-    //  inbox must be grabbed from server
     //  position grabbed from hardware
-    _inbox = [];
     _position = {
       x: 0,
       y: 0
     };
   }
 
+  function saveUser(data) {
+    user = $localstorage.getObject('user');
+
+    if (user.userId) {
+      user.userId = data.userId;
+      user.username = data.username;
+      user.url = data.url || 'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/';
+      save(user);
+    } else {
+      newUser(data);
+    }
+  }
 
   //gets/sets userId
   function userId(Id) {
@@ -64,6 +79,7 @@ function User($localstorage) {
       save(user);
     }
   }
+
 
   //gets/sets facebookId
   function fbId(token) {
@@ -76,7 +92,12 @@ function User($localstorage) {
   }
 
 
-  //gets/sets isSignedIn 
+  function url(photoId) {
+    return user.url + photoId + '.jpeg';
+  }
+
+
+  //gets/sets isSignedIn
   function isSignedIn(value) {
     if (arguments.length === 0)
       return user.isSignedIn;
@@ -106,7 +127,7 @@ function User($localstorage) {
     var args = Array.prototype.slice.call(arguments);
     if (arguments.length === 0)
       return user.settings;
-    else if (args.length === 1) {
+    else if (args.length === 1 && arguments[0] instanceof Object) {
       user.settings = args[0];
     } else {
       while (args.length >= 2) {
@@ -119,35 +140,8 @@ function User($localstorage) {
   }
 
 
-  //gets/sets inbox
-  //inbox() returns inbox
-  //inbox('add', photo) adds a photo
-  //inbox('remove', photo) removes a photo
-  function inbox(addRemove, photo) {
-    if (arguments.length === 0)
-      return _inbox;
-    else if (addRemove === 'add')
-      add(photo);
-    else if (addRemove === 'remove')
-      remove(photo);
-
-    function add(photo) {
-      if (!_contains(_inbox, photo.photoId)) {
-        _inbox.push(photo.photoId);
-        save(user);
-      }
-    }
-
-    function remove(photo) {
-      var index = _inbox.indexOf(photo.photoId);
-      if (index !== -1)
-        _inbox.splice(index, 1);
-    }
-  }
-
-
-  //gets/sets album 
-  //album() returns album 
+  //gets/sets album
+  //album() returns album
   //album('add', photo) adds a photo
   //album('remove', photo) removes a photo
   function album(addRemove, photo) {
@@ -159,23 +153,32 @@ function User($localstorage) {
       remove(photo);
 
     function add(photo) {
-      if (!_contains(user.album, photo.photoId)) {
-        user.album.push(photo.photoId);
-        save(user);
+      var photoIds = {};
+
+      user.album.forEach(function(photo) {
+        photoIds[photo.photoId] = true;
+      });
+
+      if (!photoIds.hasOwnProperty(photo.photoId)) {
+        user.album.push(photo);
+        return true;
       }
+
+      return false;
     }
 
     function remove(photo) {
-      var index = user.album.indexOf(photo.photoId);
+      var index = user.album.indexOf(photo);
       if (index !== -1)
         user.album.splice(index, 1);
       save(user);
     }
+
   }
 
   //Internal Functions
   function loadUser() {
-    user = $localstorage.getObject('user') || {};
+    user = $localstorage.getObject('user') || services.newUser(); 
   }
 
   function save(user) {

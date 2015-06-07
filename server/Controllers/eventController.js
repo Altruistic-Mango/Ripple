@@ -73,7 +73,6 @@ var eventController = {
             console.log('pushed ' + user.userId);
           }
         });
-        console.log(recipientList);
 
         data.photo.recipientList = data.photo.recipientList.concat(photoRecipientList);
         data.event.recipientList = eventRecipientList;
