@@ -30,17 +30,12 @@ html{
   height: 100%;
 }
 
-.content {
-  width: 1300px;
-  height: 100%;
-  position: relative;
-  margin: 0 auto;
-}
 
 .side-content {
   width: 310px;
   float: left;
   position: relative;
+  top: 70px;
   left: 5px;
 }
 
@@ -48,7 +43,7 @@ html{
   float: left;
   position: relative;
   width: 310px;
-  top: 70px;
+  top: 0;
   left: 0px;
   height: 850px;
   overflow: auto; 
@@ -165,4 +160,10 @@ a {
   left: 35px;
   background: rgba(0,0,0,0.6);
   /*border: 1px solid #41637E;*/
+}
+.content {
+  width: 1300px;
+  position: relative;
+  top: 10px;
+  margin: 0 auto;
 }
