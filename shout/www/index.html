@@ -6,12 +6,10 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
   <meta http-equiv="Content-Security-Policy" content="default-src *; style-src &apos;self&apos; &apos;unsafe-inline&apos;; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos;">
 
-  <link href="lib/ionic/css/ionic.css" rel="stylesheet">
   <link href="lib/ionic-material/dist/ionic.material.min.css" rel="stylesheet">
 
-  <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
-  -->
   <script src="lib/underscore/underscore-min.js"></script>
 
 
@@ -20,30 +18,30 @@
   <script src="lib/ionic-material/dist/ionic.material.min.js"></script>
   <script src="lib/ion-md-input/js/ion-md-input.min.js"></script>
 
-  <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
   <!-- cordova script (this will be a 404 during development) -->
   <script src="cordova.js"></script>
+  <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
 
   <!-- source js -->
   <script src="dist/shout.js"></script>
 
-  <link href="css/ion-md-input.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
+  <link href="css/ion-md-input.css" rel="stylesheet">
 
 </head>
 
 <body ng-app="shout">
 
   <!-- The nav bar that will be updated as we navigate between views. -->
-  
+
     <ion-nav-bar class="bar-positive">
     </ion-nav-bar>
       <ion-nav-view>
         <ion-nav-back-button>
         </ion-nav-back-button>
       </ion-nav-view>
-     
-  
+
+
   <!--
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also
