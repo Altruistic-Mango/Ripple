@@ -42,8 +42,6 @@ function Quadtree(boundaries, maxChildren, root, depth) {
 
 
 
-
-
 // san francisco
   // northwest point
   // 37.809455, -122.525293
@@ -56,6 +54,20 @@ function Quadtree(boundaries, maxChildren, root, depth) {
 
   // southeast point
   // 37.615192, -122.351613
+
+
+
+// if we do not check if the coordinate is in bounds the tree will sudivide forever once it reaches max children...
+Quadtree.prototype.inBounds = function(item) {
+  if (item.x > this.boundaries.x && item.x < this.boundaries.x + this.boundaries.width &&
+      item.y > this.boundaries.y && item.y < this.boundaries.y + this.boundaries.height) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 
 // insert function
 Quadtree.prototype.put = function(item) {
@@ -75,7 +87,7 @@ Quadtree.prototype.put = function(item) {
 
   // check length against the max number of coordinates per quadrant
   var length = this.children.length;
-  if (length > this.maxChildren) { // (this.depth < this.maxChildren + 1) && 
+  if (length > this.maxChildren && !(this.depth > 100)) { // (this.depth < this.maxChildren + 1) && 
 
     // create new quadrants
     this.subDivide();
@@ -456,6 +468,12 @@ module.exports = new Quadtree();
 
 work in progress
 
+ var node = {
+      x: +req.body.x,
+      y: +req.body.y,
+      userId: userId
+    };
+curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "122.515", "y" : "37.615"}' http://localhost:3000/gps/position
 curl -i http://localhost:3000/gps/postdata
 curl -i http://localhost:3000/users/list
 

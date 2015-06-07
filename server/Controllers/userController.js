@@ -231,7 +231,7 @@ var userController = {
           cb(user.inbox);
         });
       }
-      else return null;
+      else cb(null);
     })
   },
 
