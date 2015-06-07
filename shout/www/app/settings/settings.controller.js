@@ -11,62 +11,28 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   //  Possibly with pop ups.
   var vm = this;
 
-  //TODO: load settings form localstorage initialize
-  vm.radius = 5.0; //initial value 5 miles
-  vm.TTL = 5.0; //initial value 5 minutes
-  vm.watch = true;
-  vm.trickle = true;
-  vm.logOut = logOut;
-  vm.saveSettings = saveSettings;
-  vm.userSetWatch = userSetWatch;
-  vm.sharePhoto = sharePhoto;
+  vm.settings = User.settings();
+  vm.toggleEnable = toggleEnable;
   vm.setTrickle = setTrickle;
+  vm.saveSettings = saveSettings;
+  vm.logOut = logOut;
 
-  //TODO: isSignedIn = false
-  //TODO: remove localstorage of userId etc if need be
+  function saveSettings() {
+    console.log(vm.settings);
+    User.settings(vm.settings);
+  }
+
+  function toggleEnable() {
+    User.settings(vm.settings.enabled);
+  }
+  
+  function setTrickle() {
+    User.settings(vm.settings.trickle);
+  }
+
   function logOut() {
     User.isSignedIn(false);
     $state.go('login');
-  }
-
-  //TODO: make settings object on user object in local storage
-  //  user = {username: 'adsf',
-  //          userId: 'asdf',
-  //          isSignedIn: 'true',
-  //          settings: {TTL, Radius, Enabled, Trickle}
-  //          }
-  //TODO: make sure TTL is in milliseconds
-  function saveSettings() {
-    SettingsFactory.setSettings(parseInt(vm.radius), parseInt(vm.TTL) );
-    if ($ionicHistory.backView()) {
-      $ionicHistory.goBack();
-    } else {
-      $state.go('tab.inbox');
-    }
-    console.log('radius set to: ', parseInt(vm.radius) );
-    console.log('TTL set to: ', parseInt(vm.TTL ) );
-  }
-
-
-  function sharePhoto() {
-    console.log('SettingsCtrl.sharePhoto');
-    var user = $localstorage.getObject('user');
-    var userId = user.userId; 
-    CameraFactory.getFile(function(file) {
-      file.name = userId + Date.now();
-      s3.upload(file, function() {
-        $state.go('tab.inbox');
-      });
-    });
-  }
-
-  //TODO: make this someday
-  function setTrickle() {
-    console.log('setTrickle');
-  }
-
-  function userSetWatch() {
-    SettingsFactory.setWatch(vm.watch);
   }
 
 }

@@ -2,9 +2,9 @@ angular
   .module('shout.broadcast')
   .factory('BroadCastFactory', BroadCastFactory);
 
-BroadCastFactory.$inject = ['$localstorage', 'LocationFactory', '$http', 'API_HOST'];
+BroadCastFactory.$inject = ['$state', '$http', 'LocationFactory', 'CameraFactory', 's3', 'User', 'API_HOST'];
 
-function BroadCastFactory($localstorage, LocationFactory, $http, API_HOST) {
+function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, User, API_HOST) {
 
   var services = {};
 
@@ -14,24 +14,45 @@ function BroadCastFactory($localstorage, LocationFactory, $http, API_HOST) {
 
   return services;
 
-  function newPhoto(TTL, radius) {
+  function newPhoto(settings) {
     console.log('newPhoto');
+
     var pos = LocationFactory.getUsersPosition();
-    var data = $localstorage.getObject('photo');
-    data.x = pos.x;
-    data.y = pos.y;
-    console.log('data',data);
-    $http.post(API_HOST + '/photos/newPhoto', data)
-      .success(function() {
-        console.log('photo data sent to server');
+    var timestamp = Date.now();
+
+    var photo = {
+      timestamp: timestamp,
+      userId: User.userId(),
+      photoId: User.userId() + timestamp, 
+      TTL: settings.TTL,
+      radius: settings.radius,
+      trickle: settings.trickle,
+      x: pos.x,
+      y: pos.y
+    };
+
+    CameraFactory.getFile(function(file) {
+      file.name = photo.photoId;
+      console.log(file);
+      s3.upload(file, function() {
+        console.log('s3 upload success');
+        console.log('photo',photo);
+
+        $http.post(API_HOST + '/photos/newPhoto', photo)
+          .success(function() {
+            console.log('photo data sent to server');
+            $state.go('tab.inbox');
+          });
       });
+    });
+
   }
 
   function reBroadCast(photo) {
-    var LF = LocationFactory;
-    console.log('currentPosition: ', LF.currentPosition);
-    if (LF.currentPosition && LF.currentPosition.userId && LF.currentPosition.x && LF.currentPosition.y) {
-      photo = _.extend(photo, LF.currentPosition);
+    var pos = LocationFactory.getUsersPosition();
+    console.log('currentPosition: ', pos);
+    if (pos.userId && pos.x && pos.y) {
+      photo = _.extend(photo, pos);
       photo.timestamp = new Date().getTime();
       console.log('reBroadCast this photo: ', photo);
       services.sendBroadCastEvent(photo);

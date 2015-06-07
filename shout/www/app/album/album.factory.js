@@ -17,11 +17,8 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
 
   function saveToAlbum(photo) {
     console.log('saveToAlbum');
-
     var saved = User.album('add', photo);
-
     $rootScope.$broadcast('updateAlbum');
-
     if (saved) {
       uploadToAlbum(photo);
     }

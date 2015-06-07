@@ -2,9 +2,11 @@
   <ion-content class="padding">
     <!-- <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher> -->
     <ion-list class="condensed-space no-padding" can-swipe="true">
-      <ion-item collection-repeat="photo in vm.album track by $index" item-height="20%" item-width="80%">
-        <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromAlbum($index)"></ion-option-button>
-        <img ng-src="{{vm.url(photo.photoId)}}">
+      <ion-item ng-repeat="photo in vm.album" item-height="20vh" item-width="80%">
+        <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromAlbum(photo)"></ion-option-button>
+        <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
+          <img ng-src="{{vm.url(photo.photoId)}}">
+        </a>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -16,13 +16,13 @@ describe('Login Controller', function(){
 
         createController = function() {
             return $controller('LoginCtrl', {
-                $scope: scope, 
+                $scope: scope,
                 $state: state,
                 LoginFactory: LoginFactoryMock
             });
         }
 
-        createController(); 
+        createController();
     }))
 
     // tests start here
@@ -31,10 +31,10 @@ describe('Login Controller', function(){
     });
 
     // it('$scope.login should trigger a state change', function(){
-    //     scope.vm.login(); 
+    //     scope.vm.login();
     //     expect(state.go).toHaveBeenCalled();
     // });
 
-    
+
 });
 

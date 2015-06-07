@@ -2,9 +2,9 @@ angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
-AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'User', '$http', 'API_HOST'];
+AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'InboxFactory', 'User', '$http', 'API_HOST'];
 
-function AlbumCtrl($scope, $state, AlbumFactory, User, $http, API_HOST) {
+function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_HOST) {
   console.log('AlbumCtrl');
 
   var vm = this;
@@ -12,17 +12,20 @@ function AlbumCtrl($scope, $state, AlbumFactory, User, $http, API_HOST) {
   vm.album = User.album();
   vm.url = User.url;
   vm.deleteFromAlbum = deleteFromAlbum;
+  vm.add = InboxFactory.add;
+  vm.remove = InboxFactory.remove;
+
+  console.log(vm.album);
 
   $scope.$on('updateAlbum', function(event) {
     console.log('onUpdateAlbum');
-    vm.album = User.album();
+    vm.add(User.album(), vm.album);
   });
 
   function deleteFromAlbum(photo) {
     console.log('deleteFromAlbum');
+    vm.remove(photo, vm.album);
     User.album('remove', photo);
-    vm.album = User.album();
     AlbumFactory.deleteFromAlbum(photo);
   }
-
 }

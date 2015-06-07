@@ -2,19 +2,21 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'API_HOST'];
+InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'API_HOST'];
 
-function InboxCtrl($scope, $interval, InboxFactory, User, LoginFactory, BroadCastFactory, API_HOST) {
+function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, API_HOST) {
   console.log('InboxCtrl');
 
   var vm = this;
 
-  vm.inbox = User.inbox;
+  vm.inbox = [];
   vm.url = User.url;
   vm.deleteFromInbox = deleteFromInbox;
   vm.saveToAlbum = saveToAlbum;
   vm.reBroadCast = reBroadCast;
   vm.refresh = refresh;
+  vm.add = InboxFactory.add;
+  vm.remove = InboxFactory.remove;
 
   //TODO: make this work
   //When the controller is loaded, see if the user is logged in, start sending GPS
@@ -25,35 +27,35 @@ function InboxCtrl($scope, $interval, InboxFactory, User, LoginFactory, BroadCas
   vm.refresh();
 
   //update inbox when changed by factory
-  $scope.$on('updateInbox', function(event, data) {
+  $scope.$on('updateInbox', function(event, photos) {
     console.log('onUpdateInbox');
-    vm.inbox = User.inbox();
+    vm.add(photos, vm.inbox);
+    $scope.$broadcast('scroll.refreshComplete');
   });
 
   //timer to update TTLs on images
   timer = $interval(updateTimers, 1000);
 
   function updateTimers() {
+    var photosToRemove = [];
     vm.inbox.forEach(function(photo) {
       photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp) );
       if (photo.timeRemaining <= 0)
-        User.inbox('remove', photo);
+        photosToRemove.push(photo);
     });
-
-    vm.inbox = User.inbox();
+    while(photosToRemove.length)
+      vm.remove(photosToRemove.pop(), vm.inbox);
   }
 
 
-  //TODO: redraw after picture deleted from inbox
   function deleteFromInbox(photo) {
-    vm.inbox = User.inbox('remove', photo);
+    vm.remove(photo, vm.inbox);
     InboxFactory.deleteFromInbox(photo);
   }
 
 
   function saveToAlbum(photo) {
     AlbumFactory.saveToAlbum(photo);
-    User.album('add',photo);
   }
 
 
@@ -63,12 +65,9 @@ function InboxCtrl($scope, $interval, InboxFactory, User, LoginFactory, BroadCas
     BroadCastFactory.reBroadCast(photo);
   }
 
-
   function refresh() {
-    console.log('Inbox.refresh');
     console.log('refresh');
     InboxFactory.requestInbox();
-    $scope.$broadcast('scroll.refreshComplete');
   }
 
 }
