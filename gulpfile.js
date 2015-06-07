@@ -46,6 +46,11 @@ gulp.task('dummy', function () {
     .pipe(mocha({reporter: 'nyan'}));
 });
 
+gulp.task('broadcast', function () {
+  return gulp.src('./server/tests/dummyTests/dummyBroadcast.js', {read: false})
+    .pipe(mocha({reporter: 'nyan'}));
+});
+
 
 // Compile Our Sass
 //gulp.task('sass', function() {

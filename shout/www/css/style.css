@@ -33,14 +33,14 @@
   justify-content: center;
 }
 
-.tabs-nav {
+/*.tabs-nav {
   display:none;
-}
+}*/
 
-.tabs-top > .tabs, .tabs.tabs-top {
+/*.tabs-top > .tabs, .tabs.tabs-top {
   top: 0px;
 }
-
+*/
 /*
 .loginInputContainer {
   display: flex;

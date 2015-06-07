@@ -36,6 +36,7 @@ function CameraFactory($state) {
         console.log('no camera found');
         $state.go('review');
       } else {
+        console.log('inside the itinitialize camera funciton');
         //pictureSource=navigator.camera.PictureSourceType.PHOTOLIBRARY;
         pictureSource = navigator.camera.PictureSourceType.CAMERA;
         destinationType = navigator.camera.DestinationType.FILE_URI;

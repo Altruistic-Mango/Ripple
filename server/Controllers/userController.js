@@ -147,6 +147,7 @@ var userController = {
           console.log(diff < inboxItem.TTL);
           if (diff < inboxItem.TTL) {
             console.log('inboxItem ' + inboxItem + ' passed the test')
+
             acc.push(inboxItem);
           }
 
