@@ -14,12 +14,14 @@ var Navigation = React.createClass({
   render: function () {
     return (
       <div className="nav-menu">
-        { this.props.items.map(function(m, index){
-            return <Link key={index} activeClassName="nav-link-focused" className="nav-link" to={m.name}>{m.name}</Link>;
-          }) }
         <div className="title">
-          <h1> Ripple </h1>
-        </div>  
+           Ripple 
+        </div> 
+        <div className="nav-links"> 
+          { this.props.items.map(function(m, index){
+              return <Link key={index} activeClassName="nav-link-focused" className="nav-link" to={m.name}>{m.name}</Link>;
+            }) }
+        </div>
       </div>
     );
   }

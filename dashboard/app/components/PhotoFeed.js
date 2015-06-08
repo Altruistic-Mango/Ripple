@@ -62,10 +62,7 @@ var PhotoFeed = React.createClass({
       });
 
       return (
-        <div className="photos">
-          <div className="recent-ripples">
-            Recent Ripples
-          </div>  
+        <div className="scroll">
           <div className="photos">
             {photoItems}
           </div>  

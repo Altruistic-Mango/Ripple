@@ -49,12 +49,17 @@ var Dashboard = React.createClass({
           <div className="side-content">
             <RouteHandler />
           </div>
-          <div className="Map">
-            <MapComponent data={this.state.data} />
-          </div>
-          <div className="photo-holder">
-            <PhotoEntry photoId={this.state.data.photoId}/>
-          </div>
+          <div className="middle">
+            <div className="title-bar">
+            Welcome to the Ripple Dashboard
+            </div>
+            <div className="Map">
+              <MapComponent data={this.state.data} />
+            </div>
+            <div className="photo-holder">
+              <PhotoEntry photoId={this.state.data.photoId}/>
+            </div>
+          </div>  
         </div>
         <div className="bottom-bar">
         </div>

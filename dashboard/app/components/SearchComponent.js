@@ -14,7 +14,7 @@ var SearchComponent = React.createClass({
 
     render: function () {
       return (
-        <div className="recent-ripples">
+        <div className="text">
           <h3>Enter the ID of a Ripple</h3>
           <input type="text" id="ripple-search"></input>
           <div className="search-btn" onClick={this.handleClick}> Search </div>
