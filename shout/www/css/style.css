@@ -20,6 +20,19 @@ h6,
   font-family: Avenir-Book, "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
   line-height: 1.2;
 }
+
+/*.login {
+    background: url('../img/berkeley.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    z-index: 2;
+    position: relative;
+}*/
+
 .item p {
   color: #FFF;
   font-size: 14px;
@@ -324,6 +337,8 @@ input[type="color"] {
   height: 100%;
   background-color: #fff;
   background-image: url('../img/bg.png');
+  background-repeat: no-repeat;
+  background-size: contain;
   overflow: hidden;
 }
 .list .item {
