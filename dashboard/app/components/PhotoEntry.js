@@ -7,12 +7,19 @@ var PhotoEntry = React.createClass({
     },  
 
     render: function () {
-
-      return (
-        <div onClick={this.handleClick}>
-          <img className="photo" src={"https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/"+ this.props.photoId + ".jpeg"}/>
-        </div>
-      );
+      if (this.props.photoId){
+        return (
+          <div onClick={this.handleClick}>
+            <img className="photo" src={"https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/"+ this.props.photoId + ".jpeg"}/>
+          </div>
+        );
+      } else {
+        return (
+          <div className="recent-ripples">
+            <p> Select a photo to see its broadcast history </p>
+          </div>
+        );
+      }
     }
   });
 

@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var ExploreContent = require('./ExploreContent');
-var AlbumContent = require('./AlbumContent');
+var SearchContent = require('./SearchContent');
 var LoginContent = require('./LoginContent');
 
 var DefaultRoute = Router.DefaultRoute;
