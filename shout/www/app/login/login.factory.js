@@ -25,7 +25,7 @@ function LoginFactory($state, LocationFactory, InboxFactory, $localstorage, $htt
         method: 'POST',
         url: API_HOST + '/users/signin',
         data: data
-      })
+      });
   }
 
 

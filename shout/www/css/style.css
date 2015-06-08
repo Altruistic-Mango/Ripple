@@ -122,6 +122,11 @@ input[type="color"] {
   text-align: center;
   text-transform: capitalize;
 }
+.padding > .button.button-block.facebook {
+  border: 0px;
+  opacity: .8;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+}
 .bar.bar-clear .title {
   color: #fff;
   text-decoration: none;
