@@ -63,7 +63,6 @@ var userController = {
     this.getUserFromDB({
       username: req.body.username
     }, function(user) {
-
       if (user && user.password.length > 20) {
         var hashedPassword = user.password;
         bcrypt.compare(password, hashedPassword, function(err, match) {
