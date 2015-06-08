@@ -32,7 +32,16 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
       });
     }
     vm.data.username = vm.data.username.toLowerCase();
-    LoginFactory.loginUser(vm.data);
+    LoginFactory.loginUser(vm.data)
+    .success(LoginFactory.successfulLogin)
+      .error(function(res) {
+        console.log('loginUser error');
+        var errorCode = res.errorCode;
+        $ionicPopup.alert({
+          title: 'Login Error - ' + errorCode + ' incorrect',
+          template: 'Please re-enter ' + errorCode
+        });
+      });
   }
 
   function fbLogin() {
