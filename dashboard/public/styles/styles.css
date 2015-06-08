@@ -4,7 +4,7 @@
 }
 
 html{
-  font-family: DINCondensed-Bold;
+  font-family: Avenir-Book;
   font-size: 20px;
   color: #B0DCE8;
   line-height: 53px;
@@ -15,14 +15,16 @@ html{
 }
 
 .viewPort {
-    overflow: hidden;
-    width: 100%;
-    height: 1000px;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
+  overflow-y: hidden;
+  overflow-x: hidden; 
+  background: rgba(66,103,127,0.70);
+  width: 100%;
+  height: 1000px;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
 }
 
 #dashboard {
@@ -32,35 +34,37 @@ html{
 
 
 .side-content {
-  width: 310px;
+  width: 300px;
   float: left;
-  position: relative;
-  top: 70px;
-  left: 5px;
+  position: absolute;
+  top: 0;
+  left: 2px;
+  border-radius: 3px;
 }
 
 .home {
   float: left;
   position: relative;
-  width: 310px;
+  width: 100%;
   top: 0;
   left: 0px;
   height: 850px;
-  overflow: auto; 
-  background: rgba(0,0,0,0.6);
   margin: 0 auto;
 }
 
+
 .search {
+  padding: 60px 0;
   float: left;
-  position: relative;
-  width: 310px;
+  position: absolute;
+  width: 300px;
   top: 0;
-  left: 0px;
-  height: 300px;
+  left: 0;
+  height: 150px;
   overflow: auto; 
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.1);
   margin: 0 auto;
+  border-radius: 3px;
 }
 
 .search-btn {
@@ -68,8 +72,8 @@ html{
   height: 40px;
   margin: 0 auto;
   text-align: center;
-  border-radius: 10px;
-  border: 1px solid #fff;
+  background: rgba(0,0,0,0.2);
+  border-radius: 22px;
 }
 
 .search-btn:hover{
@@ -79,14 +83,14 @@ html{
 }
 
 input[type=text] {
+  padding: 0 5px;
   display: block;
   width: 200px;
   height: 40px;
-  margin: 5px auto;
+  margin: 10px auto;
   font-size: 20px;
   background: rgba(0,0,0,0.6);
-  border-radius: 10px;
-  border: 1px solid #fff;
+  border-radius: 20px;
   color: #fff;
 }
 
@@ -95,28 +99,45 @@ input:focus, textarea:focus {
 }
 
 .photos {
+  display: block;
   overflow: auto; 
   margin: 0 auto;
-  width: 300px;
-  z-index: 1;
+  width: 100%;
+  height: 850px;
 }
 
+.scroll {
+  float: left;
+  position: relative;
+  width: 100%;
+  top: 0;
+  left: 0px;
+  height: 850px;
+  overflow: auto;
+  margin: 0 auto;
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px;
+
+}
+
+.title-bar {
+  height: 50px;
+  background-color: #F5F5F5;
+  border: 1px solid #DDDDDD;
+  padding-left: 15px;
+  color: #A5ADB8;
+}
 
 .Map {
   float: left;
   height: 650px;
   width: 650px;
   position: relative;
-  top: 70px;
-  left: 20px;
-}
+  top: 7px;
+  left: 10px;
+  border: 1px solid #DDDDDD;
+  border-radius: 3px;
 
-img.photo {
-  display: block;
-  position: relative;
-  width: 300px;
-  margin: 5px auto;
-  border-radius: 10px;
 }
 
 .Chart{
@@ -126,15 +147,25 @@ img.photo {
   position: relative;
   top: 0px;
   left: 0px;
+  border-radius: 3px;
 }
+
+img.photo {
+  display: block;
+  position: relative;
+  width: 200px;
+  margin: 30px auto;
+  border-radius: 3px;
+  border: 3px solid rgba(0,0,0,0.1);
+}
+
 
 .nav-menu {
   position: absolute;
   top: 0;
   width: 100%;
-  height: 50px;
-  background: rgba(66,103,127,0.30);
-  border: 2px solid #002539;
+  height: 60px;
+  padding-top: 5px;
 }
 
 
@@ -147,7 +178,29 @@ img.photo {
   bottom: 0;
   width: 100%;
   height: 50px;
-  background: rgba(0,0,0,0.6);
+}
+
+.nav-links {
+  display: inline-block;
+  float: left;
+  width: 500px;
+  margin: 10px;
+}
+
+a.nav-link{
+  display: inline-block;
+  text-align: center;
+  height: 40px;
+  width: 80px;
+  line-height: 40px;
+  margin: 5px 10px;
+  cursor:pointer;
+  text-decoration: none;
+  color: #B0DCE8;
+  transition:0.3s;
+  padding: 0 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 20px;
 }
 
 .nav-link-focused{
@@ -165,17 +218,6 @@ img.photo {
   background: rgba(72,164,190,0.2);
   padding: 0 10px;
 }
-a.nav-link{
-  display: inline-block;
-  height: 100%;
-  margin: 0 10px;
-  cursor:pointer;
-  text-decoration: none;
-  color: #B0DCE8;
-  transition:0.3s;
-  padding: 0 10px;
-
-}
 
 a {
   text-decoration: none; 
@@ -183,28 +225,81 @@ a {
 }
 
 .title {
-  float: right;
-  margin-right: 20px;
-  letter-spacing: 4px
+  float: left;
+  margin: 10px 65px;
+  font-size: 60px;
+  font-weight: 100;
+  letter-spacing: 4px;
 }
 
 .recent-ripples {
   text-align: center;
   line-height: 40px;
+  height: 40px;
+  width: 100%;
+  color: #B0DCE8;
+  margin: 0 auto 20px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px;
+}
+
+.text {
+  text-align: center;
+  line-height: 40px;
+  height: 80px;
+  color: #B0DCE8;
+  margin: 0 auto;
+  color: #A5ADB8;
+}
+
+.search-text {
+  text-align: center;
+  line-height: 40px;
+  height: 80px;
+  color: #B0DCE8;
+  margin: 0 auto;
+  color: #B0DCE8;
 }
 
 .photo-holder {
   float: left;
   width: 310px;
-  position: relative;
-  top: 70px;
-  left: 35px;
-  background: rgba(0,0,0,0.6);
-  /*border: 1px solid #41637E;*/
+  position: absolute;
+  top: 59px;
+  left: 675px;
+  background: #FFFFFF;
+  border-radius: 3px;
+  color: #A5ADB8;
 }
+
+.stats {
+  float: left;
+  width: 290px;
+  position: absolute;
+  top: 250px;
+  left: 675px;
+  background: #FFFFFF;
+  border-radius: 3px;
+  color: #A5ADB8;
+  padding: 10px;
+}
+
 .content {
-  width: 1300px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 85px;
+  left: 15px;
+}
+
+.middle {
+  width: 2000px;
+  overflow: hidden;
+  height: 100%;
   position: relative;
-  top: 10px;
-  margin: 0 auto;
+  top: 0;
+  left: 315px;
+  background-color: #EFEFF0;
+  border: 1px solid #DDDDDD;
+  border-radius: 3px;
 }

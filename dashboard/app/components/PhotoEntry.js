@@ -15,7 +15,7 @@ var PhotoEntry = React.createClass({
         );
       } else {
         return (
-          <div className="recent-ripples">
+          <div className="text">
             <p> Select a photo to see its broadcast history </p>
           </div>
         );
