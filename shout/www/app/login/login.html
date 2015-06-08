@@ -1,50 +1,66 @@
-<ion-view class="loginScreen" hide-nav-bar="true" view-title="Login" align-title="left">
+<ion-view class="loginScreen" hide-nav-bar="true" style="background-image: url('img/bg.png');"
+view-title="Login" align-title="left">
   <!--<ion-content style="background: url(img/ripple.jpeg) center; background-size: cover;">-->
   <ion-content>
-    <div class="row">
-      <div class="col">
-        <div class="loginTitle">RIPPLE</div>
-      </div>
-    </div>
-    <div class="padding">
 
-      <ion-md-input class="loginItem" placeholder="Name" hightlight-color="positive"
-      type="text" type="text" ng-model="vm.data.username" value="{{vm.username}}"></ion-md-input>
-      <ion-md-input class="loginItem" placeholder="Password" hightlight-color="positive"
-      type="password" ng-model="vm.data.password" value="{{vm.password}}"></ion-md-input>
-    </div>
-    <div class="padding">
-      <button ng-click="vm.login()" class="button button-block button-positive flat ink ">Login</button>
-      <div class="flex">
-        <div>
-          <a class="signuplink" href="#/signup">Not a user? Sign up</a>
+      <div class="loginTitle">Ripple</div>
+    <div class="ionic login">
+      <div class="hero no-header flat">
+        <div class="content">
+          <i class="ion-ios-color-filter-outline icon hero-icon clear-bg"></i>
+        </div>
+      </div>
+      <div class="list padding">
+        <label class="item item-input item-stacked-label">
+          <i class="icon ion-ios-person-outline placeholder-icon"></i>
+          <span class="input-label">NAME</span>
+          <input class="login-input" style="background-color:transparent" type="text" placeholder="Enter Name" ng-model="vm.data.username">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <i class="icon ion-ios-locked-outline placeholder-icon"></i>
+          <span class="input-label">PASSWORD</span>
+          <input style="background-color:transparent" type="password" ng-model="vm.data.password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+        </label>
+      <!-- <div class="button&#45;bar&#45;flat"> -->
+      <!--   <button style="width:50%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Google+</button> -->
+      <!--   <button style="width:45%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Facebook</button> -->
+      <!-- </div> -->
+      <label style="visibility:hidden" class="item item-input item-stacked-label">
+        <i class="icon ion-ios-locked-outline placeholder-icon"></i>
+        <span class="input-label">PASSWORD</span>
+        <input style="background-color:transparent" type="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+      </label>
+        <div class="padding">
+          <button class="button button-block button-positive" data-ink-color="#3AFEA4" data-ink-opacity=".8" ng-click="vm.login()">Sign In</button>
         </div>
       </div>
     </div>
-    <div class="padding row">
-      <div class="col">
-      </div>
-      <div class="col">
-        <div class="flex">
-          <button ng-click="vm.fbLogin()" class="button button-positive-900 button-fab ink">
-            <i class="icon ion-social-facebook"></i>
-          </button>
-        </div>
-      </div>
-      <div class="col">
-      </div>
-      <div class="col">
-        <div class="flex">
-          <button ng-click="vm.login()" class="button button-assertive button-fab ink">
-            <i class="icon ion-social-google"></i>
-          </button>
-        </div>
-      </div>
-      <div class="col">
-      </div>
+    <div>
+      <img type="image/svg+xml" data="img/line.svg" />
     </div>
+    <div>
+      <img type="image/svg+xml" data="img/line.svg" />
+    </div>
+
+    <!-- <div class="list"> -->
+    <!--   <label class="item item&#45;input item&#45;stacked&#45;label"> -->
+    <!--     <span class="input&#45;label">NAME</span> -->
+    <!--     <input type="text" placeholder="Enter Name"> -->
+    <!--   </label> -->
+    <!--   </label> -->
+    <!--   <label class="item item&#45;input item&#45;stacked&#45;label"> -->
+    <!--     <span class="input&#45;label">PASSWORD</span> -->
+    <!--     <input type="password" placeholder="********"> -->
+    <!--   </label> -->
+    <!--   <button class="item button loginButton" ng&#45;click="vm.login()">Sign In</button> -->
+    <!-- </div> -->
+
   </ion-content>
+  <div style="background-color:transparent" class="bar bar-footer bar-clear">
+    <a style="background-color:transparent" class="title" href="#/signup"><span class="account">DON'T HAVE AN ACCOUNT?</span> <span class="signup">SIGN UP</span></a>
+  </div>
 </ion-view>
+
 
 <!--
 <ion-view class="loginView">

@@ -2,9 +2,9 @@ angular
   .module('shout.settings')
   .controller('SettingsCtrl', SettingsCtrl);
 
-SettingsCtrl.$inject = ['$http', '$state', '$ionicHistory', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST', 'User'];
+SettingsCtrl.$inject = ['$http', '$state', '$timeout', '$ionicHistory', 'ionicMaterialInk', 'SettingsFactory', '$localstorage', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST', 'User'];
 
-function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST, User) {
+function SettingsCtrl($http, $state, $timeout, $ionicHistory, ionicMaterialInk, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST, User) {
   console.log('SettingsCtrl');
 
   //TODO: explanations of Enable, Trickle.
@@ -25,14 +25,16 @@ function SettingsCtrl($http, $state, $ionicHistory, SettingsFactory, $localstora
   function toggleEnable() {
     User.settings(vm.settings.enabled);
   }
-  
+
   function setTrickle() {
     User.settings(vm.settings.trickle);
   }
 
   function logOut() {
     User.isSignedIn(false);
-    $state.go('login');
+    $timeout(function() {
+      $state.go('login');
+    },500);
   }
 
 }

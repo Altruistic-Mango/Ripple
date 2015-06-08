@@ -1,17 +1,24 @@
 <ion-view view-title="Inbox">
-  <ion-content class="padding">
+  <ion-content class="no-padding">
     <ion-list class="condensed-space no-padding" can-swipe="true">
+      <ion-item class="row photo" ng-repeat="photo in vm.inbox">
+        <a class="col item clear-bg item-thumbnail-left photo" href="#">
+          <img ng-src="{{vm.url(photo.photoId)}}">
+        </a>
+        <div class="col float-container">
+          <h2>Pretty Hate Machine</h2>
+          <p>Nine Inch Nails</p>
+          <p>{{photo.timeRemaining | date : "m:ss"}}</p>
+            <div class="inbox button-bar flat">
+              <button class="button button-clear flat icon ion-ios-trash-outline" ng-click="vm.deleteFromInbox(photo)"></button>
+              <button class="button button-clear flat icon ion-ios-book-outline" ng-click="vm.saveToAlbum(photo)"></button>
+              <button class="button button-clear flat icon ion-ios-world-outline" ng-click="vm.reBroadCast(photo)"></button>
+            </div>
+        </div>
+      </ion-item>
     <ion-refresher on-refresh="vm.refresh()"></ion-refresher>
-
-      <ion-item ng-repeat="photo in vm.inbox">
-        <ion-option-button class="button-light icon ion-ios-trash" ng-click="vm.deleteFromInbox(photo)"></ion-option-button>
-        <ion-option-button class="button-light icon ion-ios-book" ng-click="vm.saveToAlbum(photo)"></ion-option-button>
-        <ion-option-button class="button-light icon ion-ios-world" ng-click="vm.reBroadCast(photo)"></ion-option-button>
-        <a class="item clear-bg item-bg-image waves-effect waves-button waves-light has-mask-reverse">
-          <img class="inboxPhoto" ng-src="{{vm.url(photo.photoId)}}">
           <!-- <h2>{{vm.getSrc(photo.Title)}}</h2> -->
           <!-- <p>Broadcasts: {{vm.getSrc(photo.Broadcasts)}}</p> -->
-          <p>{{photo.timeRemaining | date : "m:ss"}}</p>
         </a>
       </ion-item>
     </ion-list>

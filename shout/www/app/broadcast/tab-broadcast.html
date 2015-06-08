@@ -1,48 +1,57 @@
 <ion-view view-title="BroadCast">
   <ion-content class="padding">
-    <ul class="list">
-
-      <div class="flex row">
-        <div class="col-10"></div>
-        <li class="col">
-          <div class="item item-checkbox-right checkbox-positive">
-            Enable</br> 
-            <label class="checkbox">
-              <input type="checkbox" ng-model="vm.settings.enabled" ng-change="vm.toggleEnable()">
-            </label>
+    <ion-list>
+      <ion-item class="item item-toggle item-divider">
+        Enable</br>
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-model="vm.settings.enabled" ng-change="vm.toggleEnable()">
+          <div class="track">
+            <div class="handle"></div>
           </div>
-        </li>
+        </label>
+      </ion-item>
 
-        <div class="col"></div>
-        <li class="col">
-          <div class="item item-checkbox-right checkbox-positive">
-            Trickle</br> 
-            <label class="checkbox">
-              <input type="checkbox" ng-model="vm.settings.trickle">
-            </label>
+      <ion-item class="item item-toggle item-divider">
+        Trickle</br>
+          <label class="toggle toggle-positive">
+            <input type="checkbox" ng-model="vm.settings.trickle" ng-change="vm.setTrickle()">
+          <div class="track">
+            <div class="handle"></div>
           </div>
-        </li>
-        <div class="col-10"></div>
-      </div>
+          </label>
+      </ion-item>
 
-      <li>
-        <div class="item range range-positive">
-          {{vm.settings.radius | number:1}} miles</br>
-          <input type="range" name="radius" ng-model="vm.settings.radius" min="0.1" step="0.1" max="5" value="{{vm.settings.radius}}">
+      <ion-item class="item item-range item-divider no-padding">
+        <label class="range range-positive">
+          {{vm.settings.radius | number:1}} mi&nbsp&nbsp</br>
+          <input type="range" name="radius" ng-model="vm.settings.radius" min="0.1" step="0.1" max="5"
+          value="{{vm.radius}}">
           <i class="icon ion-ios-world-outline"></i>
+        <div class="track">
+          <div class="handle"></div>
         </div>
-      </li>
+        </label>
+      </ion-item>
 
-      <li>
-        <div class="item range range-positive">
-          {{vm.settings.TTL | number:1}} min </br>
-          <input type="range" ng-model="vm.settings.TTL" min="0.5" step="0.5" max="5" ng-init="5" value="{{vm.settings.TTL}}">
+      <ion-item class="item item-range item-divider no-padding">
+        <label class="range range-positive">
+          {{vm.settings.TTL | number:1}} min</br>
+          <input type="range" ng-model="vm.settings.TTL" min="0.5" step="0.5" max="5" ng-init="5"
+          value="{{vm.TTL}}">
           <i class="icon ion-ios-stopwatch-outline"></i>
+        <div class="track">
+          <div class="handle"></div>
         </div>
-      </li>
+        </label>
+      </ion-item>
 
-    </ul>
-    <button class="button button-block button-positive" ng-click="vm.sharePhoto()">BroadCast</button>
-    <input  ng-hide="true" id="photos" type="file">
+      <ion-item class="item-divider">
+      </ion-item>
+      <ion-item>
+        <button class="button button-block button-positive" ng-click="vm.sharePhoto()">BroadCast</button>
+      </ion-item>
+
+    </ion-list>
+
   </ion-content>
 </ion-view>

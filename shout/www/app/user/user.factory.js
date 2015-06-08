@@ -161,6 +161,7 @@ function User($localstorage) {
 
       if (!photoIds.hasOwnProperty(photo.photoId)) {
         user.album.push(photo);
+        save(user);
         return true;
       }
 

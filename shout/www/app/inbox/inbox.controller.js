@@ -2,10 +2,11 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'API_HOST'];
+InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'ionicMaterialInk', 'API_HOST'];
 
-function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, API_HOST) {
+function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST) {
   console.log('InboxCtrl');
+  ionicMaterialInk.displayEffect({'duration':2000});
 
   var vm = this;
 
