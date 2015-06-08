@@ -59,6 +59,11 @@ var Dashboard = React.createClass({
             <div className="photo-holder">
               <PhotoEntry photoId={this.state.data.photoId}/>
             </div>
+            <div className="stats">
+              Ripple Id: 8784676523 <br/>
+              Broadcasts: 4 <br/>
+              Recipients: 16 <br/>
+            </div>
           </div>  
         </div>
         <div className="bottom-bar">
