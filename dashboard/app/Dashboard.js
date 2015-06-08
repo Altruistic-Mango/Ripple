@@ -1,7 +1,7 @@
 var React = require('react');
 var Navigation = require('./components/Navigation');
 var ExploreContent = require('./components/ExploreContent');
-var AlbumContent = require('./components/AlbumContent');
+var SearchContent = require('./components/SearchContent');
 var LoginContent = require('./components/LoginContent');
 var MapComponent = require('./components/MapComponent');
 var MapStore = require('./stores/MapStore');
@@ -66,7 +66,7 @@ var Dashboard = React.createClass({
 var routes = (
       <Route path="/" handler={Dashboard}>
         <Route name="Explore" handler={ExploreContent} />
-        <Route name="Search" handler={AlbumContent} />
+        <Route name="Search" handler={SearchContent} />
         <DefaultRoute handler={ExploreContent} />
       </Route>
     );
