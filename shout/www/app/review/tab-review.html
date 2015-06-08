@@ -1,19 +1,19 @@
 <ion-view view-title="Review">
   <ion-content class="padding">
-      <h2>{{vm.title}}</h2>
-    <div class="list card">
       <div class="item item-image">
-        <img src={{vm.photo}}>
+        <img src="{{vm.photo}}">
         <!-- <img src="img/berkeley.jpg"> -->
         <!-- <img src="https://s3&#45;us&#45;west&#45;1.amazonaws.com/ripple&#45;photos/s3Upload/11768851433485645053.jpeg"> -->
       </div>
-      <label class="item item-input">
-        <input type="text" placeholder="Title" ng-model="vm.title">
+      <label class="item item-input review">
+        <input type="text" maxlength="25" placeholder="Title" ng-model="vm.title">
       </label>
-      <label class="item item-input">
-        <textarea placeholder="Description" ng-mdoel="vm.desctiption"></textarea>
+      <label class="item item-input flat review">
+        <div style="position:relative, width:100%" class="counter-container">
+        <textarea class="photo-description" rows="3" cols="50" placeholder="Description" ng-model="vm.chars" ng-trim="false" maxlength="140"></textarea>
+        <span class="counter">{{140 - vm.chars.length}}</span>
+        </div>
       </label>
-    </div>
 
     <button class="button button-block button-positive" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>

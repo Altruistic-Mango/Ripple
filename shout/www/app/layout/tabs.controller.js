@@ -6,11 +6,12 @@ TabsCtrl.$inject = ['$state', '$localstorage', 'CameraFactory', 'ionicMaterialIn
 
 function TabsCtrl($state, $localstorage, CameraFactory, ionicMaterialInk){
   var vm = this;
+  ionicMaterialInk.displayEffect({'duration':2000});
 
   vm.takePhoto = takePhoto;
 
+
   function takePhoto() {
-    ionicMaterialInk.displayEffect();
     CameraFactory.takePicture(function(imageURI) {
       $localstorage.set('imagePath', imageURI);
       $state.go('review');

@@ -1,15 +1,16 @@
 angular
   .module('shout')
   .config(configure);
-configure.$inject = ['$stateProvider', '$urlRouterProvider', '$compileProvider', '$sceDelegateProvider'];
+configure.$inject = ['$stateProvider', '$urlRouterProvider', '$compileProvider', '$sceDelegateProvider', '$ionicConfigProvider'];
 
-function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDelegateProvider) {
+function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDelegateProvider, $ionicConfigProvider) {
   console.log('shout configure');
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
     'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/**'
   ]);
+  $ionicConfigProvider.tabs.position('bottom');
 
   // Ionic uses AngularUI Router which uses the concept of states
   $stateProvider

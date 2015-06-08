@@ -2,9 +2,9 @@ angular
   .module('shout.signup')
   .controller('SignupCtrl', SignupCtrl);
 
-SignupCtrl.$inject = ['$state', 'SignupFactory', '$ionicPopup', 'User'];
+SignupCtrl.$inject = ['$state', 'SignupFactory', '$ionicPopup', 'ionicMaterialInk', 'User'];
 
-function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
+function SignupCtrl($state, SignupFactory, $ionicPopup, ionicMaterialInk, User) {
   console.log('SignupCtrl');
   var vm = this;
   vm.data = {};
@@ -15,6 +15,8 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, User) {
 
   vm.signup = signup;
   vm.fbLogin = fbLogin;
+
+  ionicMaterialInk.displayEffect();
 
   //TODO: response message if username exists
   //TODO: form validation, no weird characters in username A-z0-9 only

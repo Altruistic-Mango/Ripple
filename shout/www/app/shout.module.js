@@ -1,7 +1,6 @@
 angular.module('shout', [
   'ionic',
   'ionic-material',
-  'ionMdInput',
   'shout.constants',
   'shout.localstorage',
   'shout.user',

@@ -10,6 +10,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   var vm = this;
 
   vm.album = User.album();
+  console.log(vm.album);
   vm.url = User.url;
   vm.deleteFromAlbum = deleteFromAlbum;
   vm.add = InboxFactory.add;
