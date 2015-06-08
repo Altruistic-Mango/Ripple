@@ -60,16 +60,24 @@ var userController = {
   signinUser: function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
-
+    if (password.length < 20) {
+      res.status(500).send({errorCode: "password"});
+    }
     this.getUserFromDB({
       username: req.body.username
     }, function(user) {
 
       if (user) {
+        console.log(user.password)
+        console.log(password);
         var hashedPassword = user.password;
         bcrypt.compare(password, hashedPassword, function(err, match) {
-          if (err) return (err);
-          if (match) {
+          if (err) {
+            return (err);
+            console.log('error');
+          }
+          else if (match) {
+            console.log('a match')
             res.status(200).send(user);
           } else {
             console.log('not a match');

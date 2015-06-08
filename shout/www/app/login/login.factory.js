@@ -26,15 +26,6 @@ function LoginFactory($state, LocationFactory, InboxFactory, $localstorage, $htt
         url: API_HOST + '/users/signin',
         data: data
       })
-      .success(successfulLogin)
-      .error(function(res) {
-        console.log('loginUser error');
-        var errorCode = res.errorCode;
-        $ionicPopup.alert({
-          title: 'Login Error - ' + errorCode + ' incorrect',
-          template: 'Please re-enter ' + errorCode
-        });
-      });
   }
 
 
