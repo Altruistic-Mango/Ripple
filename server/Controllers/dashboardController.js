@@ -19,7 +19,7 @@ var dashboardController = {
 
   fetchEvents: function(req, res) {
     var photoId = req.params.photoId;
-    Event.find({photoId: photoId}, function(error, photos) {
+    Event.find({photoId: photoId}).sort({timestamp : 1}).exec(function(error, photos) {
       if (error) res.status(500).send();
       res.status(200).json(photos);
     })
