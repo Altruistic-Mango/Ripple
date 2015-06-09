@@ -75,7 +75,7 @@ var photoController = {
   deleteAlbumPhoto: function(req, res) {
     var userId = req.body.userId;
     var photoId = req.body.photoId;
-    userController.cullAlbum(userId, photoId);
+    userController.cullAlbum(req, res, userId, photoId);
   }
 };
 
