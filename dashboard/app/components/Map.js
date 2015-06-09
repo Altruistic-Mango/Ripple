@@ -72,7 +72,6 @@ Map.update = function(el, state) {
 }
 
 Map.getBroadcastCircle = function(radius) {
-  
     return {
       path: google.maps.SymbolPath.CIRCLE,
       scale: radius * 4,
