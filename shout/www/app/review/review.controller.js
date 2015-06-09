@@ -11,16 +11,24 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
 
   var vm = this;
 
-  vm.photo = CameraFactory.filePath || "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/11768851433486204090.jpeg";
+  vm.photo = CameraFactory.filePath || "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/goldengate.jpeg";
   vm.title = "";
   vm.description = "";
   vm.charsLeft = 140;
+  vm.getRemaining = getRemaining;
+  vm.takePhoto = takePhoto;
+
   vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
-  vm.getRemaining = getRemaining;
         
   function getRemaining() {
     vm.charsLeft = 140-vm.description.length;
+  }
+
+  function takePhoto() {
+    CameraFactory.takePicture(function () {
+      console.log('tookPhoto');
+    });
   }
 
   function displayPhoto() {
