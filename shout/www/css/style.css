@@ -338,7 +338,7 @@ input[type="color"] {
   background-color: #fff;
   background-image: url('../img/bg.png');
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   overflow: hidden;
 }
 .list .item {
