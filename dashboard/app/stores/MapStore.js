@@ -36,6 +36,8 @@ module.exports = MapStore;
 function _geoJSON (data) {
   console.log('geo data: ', data);
   var radius = 1; 
+  var broadcasts = 0; 
+  var recipients = 0; 
   var geoJSON = {
     'type' : 'FeatureCollection',
     'features' : []
@@ -61,9 +63,12 @@ function _geoJSON (data) {
       }
     });
 
+
     feature.geometry.coordinates.push([event.x, event.y]);
+    broadcasts++; 
     radius = event.radius; 
     photoId = event.photoId;
+
 
     event.recipientList.forEach(function(recipient) {
       geoJSON.features.push({
@@ -72,19 +77,21 @@ function _geoJSON (data) {
           'type' : 'Point',
           'coordinates' : [recipient.x, recipient.y]
         },
-        'properties' :{
+        'properties' : {
           isRecipient: true
         }
       });
-    
+    recipients++;
     feature.geometry.coordinates.push([recipient.x, recipient.y]);
     });
   });
-
+  console.log('broadcasts: ', broadcasts, ' recipients: ', recipients);
   return {
           events: geoJSON,
           feature: feature, 
           radius: radius,
-          photoId: photoId
+          photoId: photoId,
+          broadcasts: broadcasts,
+          recipients: recipients
          }
 }
