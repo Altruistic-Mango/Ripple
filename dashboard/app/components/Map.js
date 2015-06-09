@@ -39,6 +39,17 @@ Map.update = function(el, state) {
     }
   });
 
+  var i = 1; 
+  map.data.forEach(function(feature) {
+    var time = i * 500; 
+    setTimeout(function(){
+      feature.setProperty('isBroadcast', true);
+      feature.setProperty('isRecipient', false);
+      console.log('timeout happening');
+    }, time);
+    i++; 
+  });
+
   state.data.feature.geometry.coordinates.forEach(function(coordinate) {
           a = coordinate[1];
           b = coordinate[0];

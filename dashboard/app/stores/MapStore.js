@@ -59,7 +59,8 @@ function _geoJSON (data) {
         'coordinates' : [event.x, event.y]
       }, 
       'properties' : {
-        isBroadcast: true
+        isBroadcast: true, 
+        isRecipient: false
       }
     });
 
