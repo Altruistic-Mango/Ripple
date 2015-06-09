@@ -278,13 +278,16 @@ var userController = {
     });
   },
 
-  cullAlbum: function(userId, photoId) {
+  cullAlbum: function(req, res, userId, photoId) {
     var query = {
       userId: userId
     }
 
     User.findOne(query, function(err, user) {
-      if (err) console.log(err);
+      if (err) {
+        console.log(err);
+        res.status(500).send();
+      } 
 
       else {
         if (user) {
@@ -298,6 +301,7 @@ var userController = {
           user.album = album;
           user.save();
         };
+        res.status(200).send();
       }
     });
   },
