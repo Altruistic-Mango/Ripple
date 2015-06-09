@@ -37,39 +37,70 @@ var Dashboard = React.createClass({
   },
   
   render: function () {
-    return (
-      <div className="viewPort">
+    if (this.state.data.photoId){
+      return (
+        <div className="viewPort">
 
-        <Navigation className="nav-bar"items={ [
-          {name:'Explore'},
-          {name:'Search'},
-        ] } />
+          <Navigation className="nav-bar"items={ [
+            {name:'Explore'},
+            {name:'Search'},
+          ] } />
 
-        <div className="content">
-          <div className="side-content">
-            <RouteHandler />
+          <div className="content">
+            <div className="side-content">
+              <RouteHandler />
+            </div>
+            <div className="middle">
+              <div className="title-bar">
+              Welcome to the Ripple Dashboard
+              </div>
+              <div className="Map">
+                <MapComponent data={this.state.data} />
+              </div>
+              <div className="photo-holder">
+                <PhotoEntry photoId={this.state.data.photoId}/>
+              </div>
+              <div className="stats">
+                Ripple Id: {this.state.data.photoId} <br/>
+                Broadcasts: {this.state.data.broadcasts} <br/>
+                Recipients: {this.state.data.recipients} <br/>
+              </div>
+            </div>  
           </div>
-          <div className="middle">
-            <div className="title-bar">
-            Welcome to the Ripple Dashboard
-            </div>
-            <div className="Map">
-              <MapComponent data={this.state.data} />
-            </div>
-            <div className="photo-holder">
-              <PhotoEntry photoId={this.state.data.photoId}/>
-            </div>
-            <div className="stats">
-              Ripple Id: 8784676523 <br/>
-              Broadcasts: 4 <br/>
-              Recipients: 16 <br/>
-            </div>
-          </div>  
+          <div className="bottom-bar">
+          </div>
         </div>
-        <div className="bottom-bar">
+      );
+    } else {
+      return (
+        <div className="viewPort">
+
+          <Navigation className="nav-bar"items={ [
+            {name:'Explore'},
+            {name:'Search'},
+          ] } />
+
+          <div className="content">
+            <div className="side-content">
+              <RouteHandler />
+            </div>
+            <div className="middle">
+              <div className="title-bar">
+              Welcome to the Ripple Dashboard
+              </div>
+              <div className="Map">
+                <MapComponent data={this.state.data} />
+              </div>
+              <div className="photo-holder">
+                <PhotoEntry photoId={this.state.data.photoId}/>
+              </div>
+            </div>  
+          </div>
+          <div className="bottom-bar">
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 });
 

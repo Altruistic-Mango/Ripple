@@ -9,7 +9,6 @@ var SearchComponent = React.createClass({
       $('#ripple-search').val('');
       console.log('rippleId');
       SearchActions.searchEntered(rippleId);
-
     },
 
     render: function () {
