@@ -28,24 +28,34 @@ Map.update = function(el, state) {
 
   map.data.setStyle(function(feature) {
     var radius = state.data.radius;
-    if (feature.getProperty('isBroadcast')){
-      return {
-        icon: Map.getBroadcastCircle(radius)
-      };
-    } else if (feature.getProperty('isRecipient')){
-      return {
-        icon: Map.getRecipientCircle()
+    if (feature.getProperty('isVisible')){
+      if (feature.getProperty('isBroadcast')){
+        return {
+          icon: Map.getBroadcastCircle(radius)
+        };
+      } else if (feature.getProperty('isRecipient')){
+        return {
+          icon: Map.getRecipientCircle()
+        }
+      }
+    } else {
+      if (feature.getProperty('isBroadcast')){
+        return {
+          icon: Map.getInvisibleBroadcastCircle(radius)
+        };
+      } else if (feature.getProperty('isRecipient')){
+        return {
+          icon: Map.getInvisibleRecipientCircle()
+        }
       }
     }
   });
 
   var i = 1; 
   map.data.forEach(function(feature) {
-    var time = i * 500; 
+    var time = i * 100; 
     setTimeout(function(){
-      feature.setProperty('isBroadcast', true);
-      feature.setProperty('isRecipient', false);
-      console.log('timeout happening');
+      feature.setProperty('isVisible', true);
     }, time);
     i++; 
   });
@@ -62,9 +72,10 @@ Map.update = function(el, state) {
 }
 
 Map.getBroadcastCircle = function(radius) {
+  
     return {
       path: google.maps.SymbolPath.CIRCLE,
-      scale: radius * 2,
+      scale: radius * 4,
       fillColor: 'red',
       fillOpacity: .5,
       strokeColor: 'white',
@@ -80,6 +91,28 @@ Map.getRecipientCircle = function() {
       fillOpacity: 1,
       strokeColor: 'white',
       strokeWeight: .5
+    };
+}
+
+Map.getInvisibleBroadcastCircle = function(radius) {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: radius * 2,
+      fillColor: 'red',
+      fillOpacity: 0,
+      strokeColor: 'white',
+      strokeWeight: 0
+    };
+}
+
+Map.getInvisibleRecipientCircle = function() {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 3,
+      fillColor: 'red',
+      fillOpacity: 0,
+      strokeColor: 'white',
+      strokeWeight: 0
     };
 }
 
