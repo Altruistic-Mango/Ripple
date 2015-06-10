@@ -73,7 +73,6 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   });
 
   function openModal(photo) {
-    console.log('called openModal');
     vm.bigPhoto = vm.url(photo.photoId);
     $scope.modal.show();
   };
