@@ -201,6 +201,17 @@ input[type="color"] {
   line-height: 10px;
   text-decoration: none;
 }
+
+.emptyInbox {
+  position: absolute;
+  height: 50px;
+  width: 300px;
+  top: 25%;
+  left: 50%;
+  margin-left: -150px;
+  text-align: center;
+  color: #FFFFFF;
+}
 /* Sketch doesnt export gradient borders at this point */
 
 /* oval: */
