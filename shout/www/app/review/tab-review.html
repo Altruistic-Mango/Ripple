@@ -1,20 +1,25 @@
 <ion-view view-title="Review">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" ng-click="vm.takePhoto()">
+      <i class="ion-ios-arrow-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="vm.goInbox()">
+      <i class="ion-ios-email-outline"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content class="padding">
-      <div class="item item-image">
-        <img src="{{vm.photo}}">
-        <!-- <img src="img/berkeley.jpg"> -->
-        <!-- <img src="https://s3&#45;us&#45;west&#45;1.amazonaws.com/ripple&#45;photos/s3Upload/11768851433485645053.jpeg"> -->
-      </div>
-      <label class="item item-input review">
-        <input type="text" maxlength="25" placeholder="Title" ng-model="vm.title">
-      </label>
-      <label class="item item-input flat review">
-        <div style="position:relative, width:100%" class="counter-container">
-        <textarea class="photo-description" rows="3" cols="50" placeholder="Description" ng-model="vm.chars" ng-trim="false" maxlength="140"></textarea>
+    <ion-item>
+    <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
+    <div class="item item-input flat review">
+      <div style="position:relative, width:100%" class="counter-container">
+        <textarea class="photo-description" rows="3" cols="50" placeholder="Caption"
+        ng-model="vm.chars" ng-trim="false" maxlength="140"></textarea>
         <span class="counter">{{140 - vm.chars.length}}</span>
-        </div>
-      </label>
-
+      </div>
+    </div>
+    <ion-item>
     <button class="button button-block button-positive" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>
 </ion-view>
