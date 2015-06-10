@@ -2,11 +2,10 @@ angular
   .module('shout.tabs')
   .controller('TabsCtrl', TabsCtrl);
 
-TabsCtrl.$inject = ['$state', '$localstorage', 'CameraFactory', 'ionicMaterialInk'];
+TabsCtrl.$inject = ['$state', '$localstorage', 'CameraFactory'];
 
-function TabsCtrl($state, $localstorage, CameraFactory, ionicMaterialInk){
+function TabsCtrl($state, $localstorage, CameraFactory){
   var vm = this;
-  ionicMaterialInk.displayEffect({'duration':2000});
 
   vm.takePhoto = takePhoto;
 

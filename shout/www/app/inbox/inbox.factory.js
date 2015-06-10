@@ -64,6 +64,7 @@ function InboxFactory($rootScope, $http, User, API_HOST) {
     photos.forEach(function(photo) {
       if (!photoIds.hasOwnProperty(photo.photoId)) {
         collection.push(photo);
+        photo.url = User.url(photo.photoId);
       }
     });
   }

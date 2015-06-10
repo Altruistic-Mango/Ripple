@@ -46,6 +46,26 @@ div.row.ripplecard {
   background-color: rgba(255,255,255,.1);
 }
 
+div.row.ripplecardinfo {
+  overflow:hidden;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  justify-content:space-between;
+  align-items:flex-end;
+  align-content: stretch;
+  height:100%;
+}
+
+div.ripplecardinfobuttons {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+
+button.button.button-clear {
+  color: white;
+}
+
 .item {
   border: none;
 }
