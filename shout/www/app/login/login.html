@@ -11,94 +11,33 @@
         </div>
       </div>
       <div class="list padding">
-        <label class="item item-input item-stacked-label">
+        <label class="item item-input item-stacked-label bottom-border">
           <i class="icon ion-ios-person-outline placeholder-icon"></i>
           <span class="input-label">NAME</span>
-          <input class="login-input" style="background-color:transparent" type="text" placeholder="Enter Name" ng-model="vm.data.username">
+          <input class="clear-bg" type="text" placeholder="Enter Name" ng-model="vm.data.username">
         </label>
-        <label class="item item-input item-stacked-label">
+        <label class="item item-input item-stacked-label bottom-border">
           <i class="icon ion-ios-locked-outline placeholder-icon"></i>
           <span class="input-label">PASSWORD</span>
-          <input style="background-color:transparent" type="password" ng-model="vm.data.password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+          <input class="clear-bg" type="password" ng-model="vm.data.password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
         </label>
-      <!-- <div class="button&#45;bar&#45;flat"> -->
-      <!--   <button style="width:50%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Google+</button> -->
-      <!--   <button style="width:45%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Facebook</button> -->
-      <!-- </div> -->
-      <label style="visibility:hidden" class="item item-input item-stacked-label">
-        <i class="icon ion-ios-locked-outline placeholder-icon"></i>
-        <span class="input-label">PASSWORD</span>
-        <input style="background-color:transparent" type="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
-      </label>
-      <div class="row">
-        <div class="col">
-        </div>
-        <div class="col">
-        </div>
-      </div>  
-        <div class="padding">
-          <button class="button button-block button-positive" data-ink-color="#3AFEA4" data-ink-opacity=".8" ng-click="vm.login()">Sign In</button>
+        <div class="">
+          <button class="button button-block button-positive" ng-click="vm.login()">Sign In</button>
             </div>
-        <div class="padding">
-          <button class="button button-block button-positive facebook" data-ink-color="#3AFEA4" data-ink-opacity=".8" ng-click="vm.fbLogin()">Or sign in with Facebook</button>
-        </div>
-        </div>
+        <div class="row">
+          <button class="button button-clear facebook" ng-click="vm.fbLogin()">Sign in with Facebook</button>
         </div>
       </div>
     </div>
 
-    <div class="col">
+  </ion-content>
+    <div class="row loginspinner">
       <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
     </div>
-<!--     <div><img type="image/svg+xml" data="img/line.svg"/></div>
- -->
-  </ion-content>
-
-
-    <div style="background-color:transparent" class="bar bar-footer bar-clear">
-      <a style="background-color:transparent" class="title" href="#/signup"><span class="account">DON'T HAVE AN ACCOUNT?</span> <span class="signup">SIGN UP</span></a>
+    <div class="row signup">
+      <a class="signup" href="#/signup"><span class="account">DON'T HAVE AN ACCOUNT?</span> <span class="signup">SIGN UP</span></a>
     </div>
-
-
-
-
 </ion-view>
 
-    <!-- <div class="list"> -->
-    <!--   <label class="item item&#45;input item&#45;stacked&#45;label"> -->
-    <!--     <span class="input&#45;label">NAME</span> -->
-    <!--     <input type="text" placeholder="Enter Name"> -->
-    <!--   </label> -->
-    <!--   </label> -->
-    <!--   <label class="item item&#45;input item&#45;stacked&#45;label"> -->
-    <!--     <span class="input&#45;label">PASSWORD</span> -->
-    <!--     <input type="password" placeholder="********"> -->
-    <!--   </label> -->
-    <!--   <button class="item button loginButton" ng&#45;click="vm.login()">Sign In</button> -->
-    <!-- </div> -->
-
-<!--
-<ion-view class="loginView">
-  <ion-content class="padding">
-    <div class="loginTitleContainer">
-      <div class="loginTitle">RIPPLE</div>
-    </div>
-    <div class="loginInputContainer">
-      <div class="loginInputBox">
-        <input class="loginInputItem" type="text" placeholder="Username" ng-model="vm.data.username">
-        <input class="loginInputItem" type="email" placeholder="Email" ng-model="vm.data.email">
-        <input class="loginInputItem" type="password" placeholder="Password" ng-model="vm.data.password">
-      </div>
-    </div>
-    <div class="padding">
-      <button ng-if="vm.badCombo" class="button button-outline button-assertive">
-        Incorrect username/password combination
-      </button>
-    </div>
-    <div class="loginButtonContainer">
-      <button class="item button loginButton" ng-click="vm.login()">Login</button>
-      <button class="item button loginButton" ng-hide=false ui-sref="signup">Sign Up</button>
-    </div>
-  </ion-content>
-</ion-view>
--->
+      <!--   <button style="width:50%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Google+</button> -->
+      <!--   <button style="width:45%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Facebook</button> -->

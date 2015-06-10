@@ -37,7 +37,6 @@ function s3($http, API_HOST) {
   function sendFile(s3Params, callback) {
     console.log('sendFile');
     var extension = file.type.match(/\w+$/)[0];
-    // console.log('extension: ', extension);
     var params = {
       'key': 's3Upload/' + file.name + '.' + extension,
       'acl': 'public-read',
