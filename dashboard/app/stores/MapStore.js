@@ -34,7 +34,6 @@ AppDispatcher.register(function (payload) {
 module.exports = MapStore; 
 
 function _geoJSON (data) {
-  console.log('geo data: ', data);
   var radius = 1; 
   var broadcasts = 0; 
   var recipients = 0; 
@@ -88,7 +87,6 @@ function _geoJSON (data) {
     feature.geometry.coordinates.push([recipient.x, recipient.y]);
     });
   });
-  console.log('broadcasts: ', broadcasts, ' recipients: ', recipients);
   return {
           events: geoJSON,
           feature: feature, 

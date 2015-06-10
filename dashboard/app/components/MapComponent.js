@@ -2,14 +2,20 @@ var React = require('react');
 var Map = require('./Map');
 
 var MapComponent = React.createClass({
-  // propTypes: {
-  //   data: React.PropTypes.array
-  // },
-  
   componentDidMount: function() {
     var el = this.getDOMNode();
-    console.log('component mounted: ', el);
     Map.create(el);
+  },
+
+  shouldComponentUpdate: function(nextProps) {
+    if (nextProps.data.photoId != this.props.data.photoId) {
+      //if the incoming props' photoId is different 
+      return true; 
+    } else if (nextProps.data.broadcasts != this.props.data.broadcasts){
+      //if the incoming props' photoId is the same, but the number of broadcasts has changed 
+      return true;
+    }
+    return false; 
   },
 
   componentDidUpdate: function() {
@@ -23,10 +29,6 @@ var MapComponent = React.createClass({
     };
   },
 
-  // componentWillUnmount: function() {
-  //   var el = this.getDOMNode();
-  //   Map.destroy(el);
-  // },
 
   render: function() {
     return (
