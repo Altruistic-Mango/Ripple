@@ -14,7 +14,7 @@ function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, Use
 
   return services;
 
-  function newPhoto(settings) {
+  function newPhoto(settings, cb) {
     console.log('newPhoto');
 
     var pos = LocationFactory.getUsersPosition();
@@ -41,7 +41,7 @@ function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, Use
         $http.post(API_HOST + '/photos/newPhoto', photo)
           .success(function() {
             console.log('photo data sent to server');
-            $state.go('tab.inbox');
+            cb(); 
           });
       });
     });

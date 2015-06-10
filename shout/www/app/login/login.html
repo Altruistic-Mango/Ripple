@@ -30,6 +30,15 @@
         <span class="input-label">PASSWORD</span>
         <input style="background-color:transparent" type="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
       </label>
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+          <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
+        </div>
+        <div class="col">
+        </div>
+      </div>  
         <div class="padding">
           <button class="button button-block button-positive" data-ink-color="#3AFEA4" data-ink-opacity=".8" ng-click="vm.login()">Sign In</button>
           <div style="background-color:transparent" class="bar bar-footer bar-clear">
