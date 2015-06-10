@@ -32,23 +32,24 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
         title: 'No username entered',
         template: 'Please enter a username'
       });
-    }
-    vm.toggleSpinner();
-    vm.data.username = vm.data.username.toLowerCase();
-    LoginFactory.loginUser(vm.data)
-    .success(function(data){
+    } else {
       vm.toggleSpinner();
-      LoginFactory.successfulLogin(data);
-    })
-      .error(function(res) {
+      vm.data.username = vm.data.username.toLowerCase();
+      LoginFactory.loginUser(vm.data)
+      .success(function(data){
         vm.toggleSpinner();
-        console.log('loginUser error');
-        var errorCode = res.errorCode;
-        $ionicPopup.alert({
-          title: 'Login Error - ' + errorCode + ' incorrect',
-          template: 'Please re-enter ' + errorCode
+        LoginFactory.successfulLogin(data);
+      })
+        .error(function(res) {
+          vm.toggleSpinner();
+          console.log('loginUser error');
+          var errorCode = res.errorCode;
+          $ionicPopup.alert({
+            title: 'Login Error - ' + errorCode + ' incorrect',
+            template: 'Please re-enter ' + errorCode
+          });
         });
-      });
+    }
   }
 
   function toggleSpinner(){
