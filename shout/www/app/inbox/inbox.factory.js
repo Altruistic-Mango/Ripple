@@ -27,7 +27,7 @@ function InboxFactory($rootScope, $http, User, API_HOST) {
         updateInbox(data);
       })
       .error(function() {
-        console.log('error getting inbox');
+        console.log('error getting inbox'); 
       });
   }
 

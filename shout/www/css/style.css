@@ -201,6 +201,17 @@ input[type="color"] {
   line-height: 10px;
   text-decoration: none;
 }
+
+.emptyInbox {
+  position: absolute;
+  height: 50px;
+  width: 300px;
+  top: 25%;
+  left: 50%;
+  margin-left: -150px;
+  text-align: center;
+  color: #FFFFFF;
+}
 /* Sketch doesnt export gradient borders at this point */
 
 /* oval: */
@@ -503,7 +514,12 @@ div {
   display: block;
 }
 .spinner svg {
-  width: 75px;
-  height: 75px;
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 50%;
+  margin-top: -40px;
+  margin-left: -40px;
   stroke: #3AFEA4;
   fill: #3AFEA4;

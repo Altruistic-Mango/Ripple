@@ -10,6 +10,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
 
   var vm = this;
 
+  vm.inbox.length;
   vm.inbox = [];
   vm.url = User.url;
   vm.deleteFromInbox = deleteFromInbox;
