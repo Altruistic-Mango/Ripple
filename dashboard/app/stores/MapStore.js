@@ -60,7 +60,8 @@ function _geoJSON (data) {
       }, 
       'properties' : {
         isBroadcast: true, 
-        isVisible: false
+        isVisible: false, 
+        scale: 0
       }
     });
 
