@@ -57,13 +57,15 @@ var Dashboard = React.createClass({
               <div className="Map">
                 <MapComponent data={this.state.data} />
               </div>
-              <div className="photo-holder">
-                <PhotoEntry photoId={this.state.data.photoId}/>
-              </div>
-              <div className="stats">
-                Ripple Id: {this.state.data.photoId} <br/>
-                Broadcasts: {this.state.data.broadcasts} <br/>
-                Recipients: {this.state.data.recipients} <br/>
+              <div className="photo-info">
+                <div className="photo-holder">
+                  <PhotoEntry photoId={this.state.data.photoId}/>
+                </div>
+                <div className="stats">
+                  Ripple Id: {this.state.data.photoId} <br/>
+                  Broadcasts: {this.state.data.broadcasts} <br/>
+                  Recipients: {this.state.data.recipients} <br/>
+                </div>
               </div>
             </div>  
           </div>
@@ -91,8 +93,10 @@ var Dashboard = React.createClass({
               <div className="Map">
                 <MapComponent data={this.state.data} />
               </div>
-              <div className="photo-holder">
-                <PhotoEntry photoId={this.state.data.photoId}/>
+              <div className="photo-info">
+                <div className="photo-holder">
+                  <PhotoEntry photoId={this.state.data.photoId}/>
+                </div>
               </div>
             </div>  
           </div>

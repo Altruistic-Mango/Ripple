@@ -30,8 +30,9 @@ Map.update = function(el, state) {
     var radius = state.data.radius;
     if (feature.getProperty('isVisible')){
       if (feature.getProperty('isBroadcast')){
+        var scale = feature.getProperty('scale');
         return {
-          icon: Map.getBroadcastCircle(radius)
+          icon: Map.getBroadcastCircle(radius * scale, scale/20)
         };
       } else if (feature.getProperty('isRecipient')){
         return {
@@ -56,6 +57,17 @@ Map.update = function(el, state) {
     var time = i * 100; 
     setTimeout(function(){
       feature.setProperty('isVisible', true);
+      if (feature.getProperty('isBroadcast')){
+        for (var j = 0; j <= 10; j++) {
+            console.log('j: ', j);
+
+          setTimeout(function(j){
+            var newScale = Math.sin((Math.PI/2) * j/10) * 5
+            feature.setProperty('scale', newScale);
+            console.log('set scale to : ', newScale);
+          }, j * 60, j);
+        }
+      }
     }, time);
     i++; 
   });
@@ -71,12 +83,13 @@ Map.update = function(el, state) {
   map.fitBounds(bounds)
 }
 
-Map.getBroadcastCircle = function(radius) {
+Map.getBroadcastCircle = function(setRadius, setOpacity) {
+  console.log('setRadius: ', setRadius);
     return {
       path: google.maps.SymbolPath.CIRCLE,
-      scale: radius * 4,
+      scale: setRadius,
       fillColor: 'red',
-      fillOpacity: .5,
+      fillOpacity: setOpacity,
       strokeColor: 'white',
       strokeWeight: .5
     };
