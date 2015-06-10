@@ -1,21 +1,12 @@
 <ion-view view-title="BroadCast">
-  <ion-nav-buttons side="primary">
-    <button class="button icon ion-chevron-left button-clear" ng-click="doSomething()">
-      <!-- <i class="ion&#45;chevron&#45;left"></i> -->
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" ng-click="vm.goBack()">
+      <i class="ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
 
   <ion-content class="padding">
     <ion-list>
-      <ion-item class="item item-toggle item-divider">
-        Enable</br>
-        <label class="toggle toggle-positive">
-          <input type="checkbox" ng-model="vm.settings.enabled" ng-change="vm.toggleEnable()">
-          <div class="track">
-            <div class="handle"></div>
-          </div>
-        </label>
-      </ion-item>
 
       <ion-item class="item item-toggle item-divider">
         Trickle</br>
