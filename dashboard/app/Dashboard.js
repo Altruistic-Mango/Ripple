@@ -27,6 +27,10 @@ var Dashboard = React.createClass({
     MapStore.addListener(MapConstants.GET_DATA, this.handleNewData)
   },
 
+  componentWillUnmount : function () {
+    MapStore.removeDaListener(MapConstants.GET_DATA, null);
+  },
+
   handleNewData: function(data) {
     //set state so chart renders
     this.setState({
@@ -43,7 +47,7 @@ var Dashboard = React.createClass({
 
           <Navigation className="nav-bar"items={ [
             {name:'Explore'},
-            {name:'Search'},
+            {name:'Search'}
           ] } />
 
           <div className="content">

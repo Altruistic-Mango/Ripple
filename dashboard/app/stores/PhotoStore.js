@@ -21,27 +21,22 @@ AppDispatcher.register(function (payload) {
   var action = payload.action; 
 
   actions[PhotoConstants.FETCH_PHOTOS] = function () {
-    console.log('fetch photos dispatch heard in store');
     _fetchPhotos()
       .then(function(data) {
-        console.log('fetched: ', data);
         PhotoStore.emit(PhotoConstants.FETCH_PHOTOS, data);
       });
   };
 
   actions[PhotoConstants.PHOTO_CLICKED] = function () {
     var photo = action.data;
-    console.log('photo clicked dispatch heard in store: ', action.data);
     _fetchEvents(photo.photoId)
       .then(function(data) {
-        console.log('events: ', data);
         MapActions.getData(data);
       });
   };
 
   actions[PhotoConstants.GET_NEW] = function () {
     var timestamp = action.data;
-    console.log('get new action heard in store: ', timestamp);
     _getNewPhotos(timestamp)
       .then(function(data) {
         PhotoStore.emit(PhotoConstants.GET_NEW, data);
@@ -56,7 +51,6 @@ AppDispatcher.register(function (payload) {
 });
 
 function _fetchPhotos () {
-  console.log('fetch photos called');
   return new Promise(function(resolve, reject) {
     $.get('/dashboard/photos', function(data) {
       resolve(data);

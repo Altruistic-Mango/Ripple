@@ -86,7 +86,7 @@ html{
 input[type=text] {
   padding: 0 5px;
   display: block;
-  width: 200px;
+  width: 90%;
   height: 40px;
   margin: 10px auto;
   font-size: 20px;

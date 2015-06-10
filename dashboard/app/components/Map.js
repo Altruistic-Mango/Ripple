@@ -15,7 +15,6 @@ Map.create = function(el) {
 }
 
 Map.update = function(el, state) {
-  console.log('update: ', state);
   var bounds = new google.maps.LatLngBounds();
   var map = this.map; 
   //remove the points that are already on the map
@@ -59,12 +58,10 @@ Map.update = function(el, state) {
       feature.setProperty('isVisible', true);
       if (feature.getProperty('isBroadcast')){
         for (var j = 0; j <= 10; j++) {
-            console.log('j: ', j);
 
           setTimeout(function(j){
             var newScale = Math.sin((Math.PI/2) * j/10) * 5
             feature.setProperty('scale', newScale);
-            console.log('set scale to : ', newScale);
           }, j * 60, j);
         }
       }
@@ -75,7 +72,6 @@ Map.update = function(el, state) {
   state.data.feature.geometry.coordinates.forEach(function(coordinate) {
           a = coordinate[1];
           b = coordinate[0];
-          console.log('a,b', a, ' ', b);
           point = new google.maps.LatLng(a, b);
           bounds.extend(point);
   });
@@ -84,7 +80,6 @@ Map.update = function(el, state) {
 }
 
 Map.getBroadcastCircle = function(setRadius, setOpacity) {
-  console.log('setRadius: ', setRadius);
     return {
       path: google.maps.SymbolPath.CIRCLE,
       scale: setRadius,
