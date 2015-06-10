@@ -19,6 +19,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.add = InboxFactory.add;
   vm.remove = InboxFactory.remove;
 
+
   //TODO: make this work
   //When the controller is loaded, see if the user is logged in, start sending GPS
   LoginFactory.checkLogin();
