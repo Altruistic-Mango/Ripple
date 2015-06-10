@@ -2,9 +2,9 @@ angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
-AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'InboxFactory', 'User', '$http', 'API_HOST'];
+AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'InboxFactory', 'User', '$http', 'API_HOST', '$ionicModal'];
 
-function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_HOST) {
+function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_HOST, $ionicModal) {
   console.log('AlbumCtrl');
 
   var vm = this;
@@ -15,12 +15,15 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   vm.deleteFromAlbum = deleteFromAlbum;
   vm.add = InboxFactory.add;
   vm.remove = InboxFactory.remove;
+  vm.openModal = openModal;
+  vm.closeModal = closeModal;
+  vm.getAlbum = getAlbum;
 
   console.log(vm.album);
 
-  $scope.$on('updateAlbum', function(event) {
+  $scope.$on('updateInbox', function(event) {
     console.log('onUpdateAlbum');
-    vm.add(User.album(), vm.album);
+    vm.getAlbum();
   });
 
   function deleteFromAlbum(photo) {
@@ -29,4 +32,22 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     User.album('remove', photo);
     AlbumFactory.deleteFromAlbum(photo);
   }
+
+  $ionicModal.fromTemplateUrl('app/album/imgView.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+  }).then(function(modal) {
+      $scope.modal = modal;
+  });
+
+  function openModal(photo) {
+    vm.bigPhoto = vm.url(photo.photoId);
+    $scope.modal.show();
+  };
+  
+  function closeModal() {
+    console.log('close modal')
+    $scope.modal.hide();
+  };
+
 }

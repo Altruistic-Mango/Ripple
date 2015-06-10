@@ -243,6 +243,13 @@ var userController = {
     })
   },
 
+  insertBroadcastItem: function(userId, photoId) {
+    User.findOneAndUpdate({userId: userId}, {$push: {album: {photoId: photoId}}}, function(error, user){
+      if (error) console.log(error);
+      else console.log('item added to ' + user.username)
+    })
+  },
+
   cullInbox: function(userId, photoId) {
     var query = {
       userId: userId
@@ -312,9 +319,13 @@ var userController = {
     User.findOne({userId: userId}, function(error, user){
       if (error) {
         res.status(500).send();
-      } else {
+      } else if (user) {
         console.log('USER.ALBUM: ', user.album);
         res.status(200).send(user.album);
+      }
+      else {
+        console.log('User not found');
+        res.status(500).send('User not found');
       }
     });
   },
@@ -324,9 +335,13 @@ var userController = {
     User.findOne({userId: userId}, function(error, user){
       if (error) {
         res.status(500).send();
-      } else {
+      } else if (user) {
         console.log('USER.INBOX: ', user.inbox);
         res.status(200).send(user.inbox);
+      }
+      else {
+        console.log('User not found');
+        res.status(500).send('User not found');
       }
     });
   },

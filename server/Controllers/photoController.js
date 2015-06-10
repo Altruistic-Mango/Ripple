@@ -17,14 +17,15 @@ var photoController = {
     var TTL = +req.body.TTL * 60000;
     var userId = req.body.userId;
     var photoId = req.body.photoId;
-    //TODO: Change TTL, will be received as milliseconds
+    var caption = req.body.caption;
     var data = {
       photoId: photoId,
       radius: +req.body.radius,
       TTL: TTL,
       timestamp: +req.body.timestamp,
       userId: userId,
-      recipientList: [userId]
+      recipientList: [userId],
+      caption: caption
     };
     Photo.findOne({
       photoId: photoId

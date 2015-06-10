@@ -29,6 +29,8 @@ var eventController = {
       userId: userId,
       radius: +radius
     };
+
+    userController.insertBroadcastItem(userId, photoId);
     console.log('calling gps controller and getting nodes')
     var tree = gpsController.getNodes(searchParams);
     var nodes = tree.traverse();

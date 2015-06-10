@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'ionicMaterialInk', 'API_HOST'];
+InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'ionicMaterialInk', 'API_HOST', '$ionicModal'];
 
-function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST) {
+function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST, $ionicModal) {
   console.log('InboxCtrl');
   ionicMaterialInk.displayEffect({'duration':2000});
 
@@ -61,6 +61,23 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
     while(photosToRemove.length)
       vm.remove(photosToRemove.pop(), vm.inbox);
   }
+
+  $ionicModal.fromTemplateUrl('app/inbox/imgView.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  function openModal(photo) {
+    vm.bigPhoto = vm.url(photo.photoId);
+    $scope.modal.show();
+  };
+  
+  function closeModal() {
+    console.log('close modal')
+    $scope.modal.hide();
+  };
 
 
   function deleteFromInbox(photo) {

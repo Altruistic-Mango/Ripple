@@ -55,5 +55,19 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
         console.log('Error uploading to album',error);
       });
   }
+
+  function getAlbum() {
+    console.log('AlbumFactory getAlbum');
+    $http.get(API_HOST + '/users/album/' + User.userId())
+      .success(function(data) {
+        console.log(JSON.stringify(data));
+        data.forEach(function(photo) {
+          saveToAlbum(photo);
+        })
+      })
+      .error(function() {
+        console.log('error getting inbox'); 
+      });
+  }
 }
 

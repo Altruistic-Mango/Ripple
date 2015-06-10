@@ -565,6 +565,7 @@ div {
   margin: 0 auto;
   display: block;
 }
+
 .spinner svg {
   position: fixed;
   width: 80px;
@@ -581,7 +582,28 @@ div {
   background-color: rgba(0,0,0,0);
 }
 
+.modal .scroll {
+  height: 100% !important;
+  background: transparent !important;
 
-
-
-
+   display: -webkit-box !important;
+    display: -moz-box !important;
+    display: -ms-flexbox !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+    
+   -webkit-box-direction: normal !important;
+    -moz-box-direction: normal !important;
+    -webkit-box-orient: horizontal !important;
+    -moz-box-orient: horizontal !important;
+    -webkit-flex-direction: row !important;
+    -ms-flex-direction: row !important;
+    flex-direction: row !important;
+   
+  
+    -webkit-box-align: center !important;
+    -moz-box-align: center !important;
+    -webkit-align-items: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
+}
