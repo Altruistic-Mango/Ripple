@@ -11,6 +11,7 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
 
   vm.settings = User.settings();
   vm.goBack = goBack;
+  vm.goInbox = goInbox;
   vm.saveSettings = saveSettings;
   vm.toggleEnable = toggleEnable;
   vm.toggleSpinner = toggleSpinner;
@@ -19,6 +20,10 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
 
   function goBack() {
     $state.go('review');
+  }
+
+  function goInbox() {
+    $state.go('tab.inbox');
   }
 
   function saveSettings() {

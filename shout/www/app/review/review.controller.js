@@ -15,11 +15,15 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   vm.title = "";
   vm.description = "";
   vm.charsLeft = 140;
+  vm.goInbox = goInbox;
   vm.getRemaining = getRemaining;
   vm.takePhoto = takePhoto;
-
   vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
+
+  function goInbox() {
+    $state.go('tab.inbox');
+  }
         
   function getRemaining() {
     vm.charsLeft = 140-vm.description.length;

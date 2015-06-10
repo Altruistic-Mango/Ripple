@@ -1,8 +1,4 @@
 /* Empty. Add your own CSS if you like */
-
-* {
-  border: 0px;
-}
 * {
   font-family: Avenir-Book, RobotoDraft, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
 }
@@ -37,6 +33,18 @@ h6,
 
 .item {
   border: none;
+}
+
+.item-input {
+  padding: 0;
+}
+
+ion-header-bar.flat.bar.bar-header {
+  background-color: rgba(255,255,255,.1);
+}
+
+div.tab-nav.tabs {
+  background-color: rgba(255,255,255,.15);
 }
 
 .item p {

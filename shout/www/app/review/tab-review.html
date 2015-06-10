@@ -1,21 +1,25 @@
 <ion-view view-title="Review">
   <ion-nav-buttons side="left">
     <button class="button button-clear" ng-click="vm.takePhoto()">
-      <i class="ion-chevron-left"></i>
+      <i class="ion-ios-arrow-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="vm.goInbox()">
+      <i class="ion-ios-email-outline"></i>
     </button>
   </ion-nav-buttons>
   <ion-content class="padding">
-      <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
-    <div class="item item-input review">
-      <input type="text" maxlength="25" placeholder="Title" ng-model="vm.title">
-    </div>
+    <ion-item>
+    <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
     <div class="item item-input flat review">
       <div style="position:relative, width:100%" class="counter-container">
-        <textarea class="photo-description" rows="3" cols="50" placeholder="Description"
+        <textarea class="photo-description" rows="3" cols="50" placeholder="Caption"
         ng-model="vm.chars" ng-trim="false" maxlength="140"></textarea>
         <span class="counter">{{140 - vm.chars.length}}</span>
       </div>
     </div>
+    <ion-item>
     <button class="button button-block button-positive" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>
 </ion-view>
