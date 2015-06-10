@@ -8,8 +8,8 @@
               <div class="thumb" style="background-image: url({{photo.url}})"></div>
             </div>
             <div class="col ripplecard">
+                <p>{{photo.caption}}</p>
               <div class="row ripplecardinfo">
-                <p>{{photo.description}}</p>
                 <p>Ripple ID: {{photo.photoId}}</p>
                 <p>{{photo.timeRemaining | date : "m:ss"}}</p>
               </div>
@@ -22,25 +22,6 @@
           </div>
         </div>
       </ion-item>
-      <!-- <ion&#45;item class="row photo" ng&#45;repeat="photo in vm.inbox"> -->
-      <!--   <a class="col item clear&#45;bg item&#45;thumbnail&#45;left photo" href="#"> -->
-      <!--     <img ng&#45;src="{{vm.url(photo.photoId)}}"> -->
-      <!--   </a> -->
-      <!--   <div class="col float&#45;container"> -->
-      <!--     <h2>Pretty Hate Machine</h2> -->
-      <!--     <p>Nine Inch Nails</p> -->
-      <!--     <p>{{photo.timeRemaining | date : "m:ss"}}</p> -->
-      <!--       <div class="inbox button&#45;bar flat"> -->
-      <!--         <button class="button button&#45;clear flat icon ion&#45;ios&#45;trash&#45;outline" ng&#45;click="vm.deleteFromInbox(photo)"></button> -->
-      <!--         <button class="button button&#45;clear flat icon ion&#45;ios&#45;book&#45;outline" ng&#45;click="vm.saveToAlbum(photo)"></button> -->
-      <!--         <button class="button button&#45;clear flat icon ion&#45;ios&#45;world&#45;outline" ng&#45;click="vm.reBroadCast(photo)"></button> -->
-      <!--       </div> -->
-      <!--   </div> -->
-      <!-- </ion&#45;item> -->
-      <!-- <h2>{{vm.getSrc(photo.Title)}}</h2> -->
-      <!-- <p>Broadcasts: {{vm.getSrc(photo.Broadcasts)}}</p> -->
-      <!--   </a> -->
-      <!-- </ion&#45;item> -->
     </ion-list>
     <ion-refresher on-refresh="vm.refresh()"></ion-refresher>
   </ion-content>

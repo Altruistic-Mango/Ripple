@@ -2,9 +2,9 @@ angular
   .module('shout.review')
   .controller('ReviewCtrl', ReviewCtrl);
 
-ReviewCtrl.$inject = ['$state', 'ReviewFactory', 'CameraFactory'];
+ReviewCtrl.$inject = ['$state', 'ReviewFactory', 'CameraFactory', 'User'];
 
-function ReviewCtrl($state, ReviewFactory, CameraFactory) {
+function ReviewCtrl($state, ReviewFactory, CameraFactory, User) {
   console.log('ReviewCtrl');
 
   CameraFactory.registerObserverCallback(displayPhoto);
@@ -13,10 +13,8 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
 
   vm.photo = CameraFactory.filePath || "https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/goldengate.jpeg";
   vm.title = "";
-  vm.description = "";
-  vm.charsLeft = 140;
+  vm.caption= "";
   vm.goInbox = goInbox;
-  vm.getRemaining = getRemaining;
   vm.takePhoto = takePhoto;
   vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
@@ -25,10 +23,6 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
     $state.go('tab.inbox');
   }
         
-  function getRemaining() {
-    vm.charsLeft = 140-vm.description.length;
-  }
-
   function takePhoto() {
     CameraFactory.takePicture(function () {
       console.log('tookPhoto');
@@ -36,6 +30,7 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   }
 
   function displayPhoto() {
+    vm.caption = "";//clear caption if new photo
     vm.photo = CameraFactory.filePath;
   }
 
@@ -45,6 +40,7 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory) {
   }
 
   function sharePhoto(){
+    User.caption(vm.caption);
     $state.go('broadcast');
   }
 }

@@ -11,6 +11,7 @@ function User($localstorage) {
 
   //volatile
   var _position = {};
+  var _caption = "";
 
   //grab user data if present
   loadUser();
@@ -21,6 +22,7 @@ function User($localstorage) {
   services.saveUser = saveUser;
   services.userId = userId;
   services.url = url;
+  services.caption = caption;
   services.isSignedIn = isSignedIn;
   services.position = position;
   services.settings = settings;
@@ -94,6 +96,15 @@ function User($localstorage) {
 
   function url(photoId) {
     return user.url + photoId + '.jpeg';
+  }
+
+
+  function caption(cap) {
+    if (arguments.length === 0) {
+      return _caption;
+    } else {
+      _caption = cap;
+    }
   }
 
 

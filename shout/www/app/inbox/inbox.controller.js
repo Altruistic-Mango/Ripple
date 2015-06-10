@@ -38,7 +38,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
         photoId: 'goldengate',
         timestamp: Date.now(), 
         TTL: 5*1000*60,
-        description: 'The beautiful Golden Gate Bridge',
+        caption: 'The beautiful Golden Gate Bridge',
         url: vm.url('goldengate')
       };
       vm.add(photo, vm.inbox);

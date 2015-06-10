@@ -42,6 +42,7 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
     vm.toggleSpinner(); 
     console.log('BroadCastCtrl sharePhoto');
     BroadCastFactory.newPhoto(vm.settings, function() {
+      User.caption('');//clear caption
       vm.toggleSpinner(); 
       $state.go('tab.inbox');
     });

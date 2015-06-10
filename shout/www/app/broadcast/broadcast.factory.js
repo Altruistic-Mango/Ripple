@@ -24,6 +24,7 @@ function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, Use
       timestamp: timestamp,
       userId: User.userId(),
       photoId: User.userId() + timestamp, 
+      caption: User.caption(), 
       TTL: settings.TTL,
       radius: settings.radius,
       trickle: settings.trickle,
