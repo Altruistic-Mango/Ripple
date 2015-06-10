@@ -12,7 +12,9 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
   vm.settings = User.settings();
   vm.saveSettings = saveSettings;
   vm.toggleEnable = toggleEnable;
+  vm.toggleSpinner = toggleSpinner;
   vm.sharePhoto = sharePhoto;
+  vm.spinner = false; 
 
   function saveSettings() {
     User.settings(vm.settings);
@@ -27,8 +29,16 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
   }
 
   function sharePhoto() {
+    vm.toggleSpinner(); 
     console.log('BroadCastCtrl sharePhoto');
-    BroadCastFactory.newPhoto(vm.settings);
+    BroadCastFactory.newPhoto(vm.settings, function() {
+      vm.toggleSpinner(); 
+      $state.go('tab.inbox');
+    });
+  }
+
+  function toggleSpinner(){
+    vm.spinner = !vm.spinner; 
   }
 
 }

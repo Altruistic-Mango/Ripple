@@ -11,7 +11,9 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, ionicMaterialInk, User) 
   vm.data.username = '';
   vm.data.email = '';
   vm.data.password = '';
+  vm.toggleSpinner = toggleSpinner;
   vm.badUsername = false;
+  vm.spinner = false; 
 
   vm.signup = signup;
   vm.fbLogin = fbLogin;
@@ -26,14 +28,17 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, ionicMaterialInk, User) 
     console.log('vm.data: ', vm.data);
     var usernameValidated = SignupFactory.validateUser(vm.data.username);
     if (usernameValidated) {
+      vm.toggleSpinner();
       vm.data.username = vm.data.username.toLowerCase();
       SignupFactory.signupUser(vm.data)
         .success(function(res) {
+          vm.toggleSpinner();
           console.log('response from server on singup: ', res);
           User.newUser(res);
           $state.go('tab.inbox');
         })
         .error(function(res) {
+          vm.toggleSpinner();
           console.log('error on signup ' + res.errorCode);
           var errorCode = res.errorCode;
           $ionicPopup.alert({
@@ -48,6 +53,10 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, ionicMaterialInk, User) 
         template: 'Username must contain at least five alphanumeric characters.'
       });
     }
+  }
+
+  function toggleSpinner() {
+    vm.spinner = !vm.spinner; 
   }
 
   function fbLogin() {

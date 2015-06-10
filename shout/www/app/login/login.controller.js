@@ -18,6 +18,8 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
 
   vm.login = login;
   vm.fbLogin = fbLogin;
+  vm.toggleSpinner = toggleSpinner; 
+  vm.spinner = false; 
 
 
   //TODO:Form validation for all required fields
@@ -31,10 +33,15 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
         template: 'Please enter a username'
       });
     }
+    vm.toggleSpinner();
     vm.data.username = vm.data.username.toLowerCase();
     LoginFactory.loginUser(vm.data)
-    .success(LoginFactory.successfulLogin)
+    .success(function(data){
+      vm.toggleSpinner();
+      LoginFactory.successfulLogin(data);
+    })
       .error(function(res) {
+        vm.toggleSpinner();
         console.log('loginUser error');
         var errorCode = res.errorCode;
         $ionicPopup.alert({
@@ -42,6 +49,10 @@ function LoginCtrl($state, LoginFactory, ionicMaterialInk, $ionicPopup, User) {
           template: 'Please re-enter ' + errorCode
         });
       });
+  }
+
+  function toggleSpinner(){
+    vm.spinner = !vm.spinner; 
   }
 
   function fbLogin() {
