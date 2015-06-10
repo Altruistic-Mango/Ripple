@@ -223,13 +223,14 @@ input[type="color"] {
   height: 200px;
 }
 .hero .hero-icon {
-  box-shadow: 0 0 2px 0 rgba(255, 255, 255, 1);
+  box-shadow: 0 0 2px 0 #07FE8D;
   border-radius: 50%;
   display: inline-block;
   height: 150px;
   padding: 00px 30px;
-  line-height: 136px;
+  line-height: 150px;
   width: 150px;
+  color: #07FE8D;
 }
 .loginTitle {
   font-family: Avenir-Book;
@@ -477,6 +478,7 @@ div {
 .float-container {
   position: relative;
 }
+
 .spinner {
   margin: 0 auto;
   display: block;
@@ -486,5 +488,3 @@ div {
   height: 75px;
   stroke: #3AFEA4;
   fill: #3AFEA4;
-}
-
