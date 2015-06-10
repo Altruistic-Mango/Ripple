@@ -9,17 +9,25 @@
       <i class="ion-ios-email-outline"></i>
     </button>
   </ion-nav-buttons>
-  <ion-content class="padding">
+  <ion-content class="no-padding">
     <ion-item>
-    <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
-    <div class="item item-input flat review">
-      <div style="position:relative, width:100%" class="counter-container">
-        <textarea class="photo-description" rows="3" cols="50" placeholder="Caption"
-        ng-model="vm.chars" ng-trim="false" maxlength="140"></textarea>
-        <span class="counter">{{140 - vm.chars.length}}</span>
+      <div class="card">
+        <div class="row ripplecard">
+          <div class="col ripplecard">
+            <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
+          </div>
+          <div class="col ripplecard">
+            <!-- <h2>{{Title}}</h2> -->
+            <p>{{vm.chars}}</p>
+            <!-- <p>Ripple ID: {{photo.photoId}}</p> -->
+          </div>
+        </div>
       </div>
-    </div>
-    <ion-item>
+    </ion-item>
+        <label class="item item-input review">
+          <input type="text" maxlength="50" placeholder="Caption" ng-model="vm.chars">
+          <span class="counter">{{50 - vm.chars.length}}</span>
+        </label>
     <button class="button button-block button-positive" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>
 </ion-view>

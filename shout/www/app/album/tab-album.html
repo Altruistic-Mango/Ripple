@@ -2,17 +2,19 @@
   <ion-content class="no-padding">
     <!-- <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher> -->
     <ion-list class="condensed-space no-padding" can-swipe="true">
-      <ion-item class="row photo" ng-repeat="photo in vm.album">
-        <a class="col item clear-bg item-thumbnail-left photo" href="#">
-          <img ng-src="{{vm.url(photo.photoId)}}">
-        </a>
-        <div class="col float-container">
-          <h2>Pretty Hate Machine</h2>
-          <p>Nine Inch Nails</p>
-          <p>Ripple ID: {{photo.photoId}}</p>
+      <ion-item ng-repeat="photo in vm.album">
+        <div class="row card">
+          <div class="col">
+            <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
+          </div>
+          <div class="col">
+            <h2>Pretty Hate Machine</h2>
+            <p>Nine Inch Nails</p>
+            <p>Ripple ID: {{photo.photoId}}</p>
             <div class="inbox button-bar flat">
               <button class="button button-clear flat icon ion-ios-trash-outline" ng-click="vm.deleteFromAlbum(photo)"></button>
             </div>
+          </div>
         </div>
       </ion-item>
     </ion-list>

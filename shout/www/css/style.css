@@ -31,6 +31,21 @@ h6,
     position: relative;
 }*/
 
+div.row {
+  justify-content: center;
+}
+
+div.col.ripplecard {
+  padding: 0;
+  margin: 0;
+}
+
+div.row.ripplecard {
+  padding: 0;
+  margin: 5px 0;
+  background-color: rgba(255,255,255,.1);
+}
+
 .item {
   border: none;
 }
@@ -41,6 +56,10 @@ h6,
 
 ion-header-bar.flat.bar.bar-header {
   background-color: rgba(255,255,255,.1);
+}
+ion-item.item {
+  padding:0;
+  margin:0;
 }
 
 div.tab-nav.tabs {
@@ -393,7 +412,6 @@ input[type="color"] {
   min-height: 48px;
   text-align: left;
   background-color: transparent;
-  padding-right: 16px;
 }
 .item.item-divider {
   border-top: solid 1px rgba(255, 255, 255, .25);
@@ -416,13 +434,14 @@ input[type="color"] {
   padding-bottom: 1px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   background-color: transparent;
+  margin:0px;
 }
 div.thumb {
   display: inline-block;
-  width: 50vw;
-  height: 50vw;
-  margin: 5px;
-  border: 3px solid #555;
+  width: 49vw;
+  height: 49vw;
+  margin: 0px;
+  border: 0px solid #555;
   background-position: center center;
   background-size: cover;
 }
@@ -499,6 +518,7 @@ div {
   bottom: 0;
   right: 0;
   position: absolute;
+  width:100%;
 }
 .button-bar>.button .icon:before,
 .button-bar>.button:before {
