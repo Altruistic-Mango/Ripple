@@ -18,15 +18,15 @@
           </div>
           <div class="col ripplecard">
             <!-- <h2>{{Title}}</h2> -->
-            <p>{{vm.chars}}</p>
+            <p>{{vm.caption}}</p>
             <!-- <p>Ripple ID: {{photo.photoId}}</p> -->
           </div>
         </div>
       </div>
     </ion-item>
         <label class="item item-input review">
-          <input type="text" maxlength="50" placeholder="Caption" ng-model="vm.chars">
-          <span class="counter">{{50 - vm.chars.length}}</span>
+          <input type="text" maxlength="50" placeholder="Caption" ng-model="vm.caption">
+          <span class="counter">{{50 - vm.caption.length}}</span>
         </label>
     <button class="button button-block button-positive" ng-click="vm.sharePhoto()">Share</button>
   </ion-content>
