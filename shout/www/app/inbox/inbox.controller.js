@@ -10,7 +10,6 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
 
   var vm = this;
 
-  vm.inbox.length;
   vm.inbox = [];
   vm.url = User.url;
   vm.deleteFromInbox = deleteFromInbox;
@@ -32,6 +31,18 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   $scope.$on('updateInbox', function(event, photos) {
     console.log('onUpdateInbox');
     vm.add(photos, vm.inbox);
+
+    //Dummy photo for testing
+    if (!vm.inbox.length) {
+      var photo = {
+        photoId: 'goldengate',
+        timestamp: Date.now(), 
+        TTL: 5*1000*60,
+        description: 'The beautiful Golden Gate Bridge',
+        url: vm.url('goldengate')
+      };
+      vm.add(photo, vm.inbox);
+    }
     $scope.$broadcast('scroll.refreshComplete');
   });
 

@@ -3,20 +3,55 @@
     <!-- <ion-refresher on-refresh="vm.doRefresh()"></ion-refresher> -->
     <ion-list class="condensed-space no-padding" can-swipe="true">
       <ion-item ng-repeat="photo in vm.album">
-        <div class="row card">
-          <div class="col">
-            <div class="thumb" style="background-image: url('{{vm.photo}}');"></div>
-          </div>
-          <div class="col">
-            <h2>Pretty Hate Machine</h2>
-            <p>Nine Inch Nails</p>
-            <p>Ripple ID: {{photo.photoId}}</p>
-            <div class="inbox button-bar flat">
-              <button class="button button-clear flat icon ion-ios-trash-outline" ng-click="vm.deleteFromAlbum(photo)"></button>
+        <div class="card">
+          <div class="row ripplecard">
+            <div class="col ripplecard">
+              <div class="thumb" style="background-image: url({{photo.url}})"></div>
+            </div>
+            <div class="col ripplecard">
+              <div class="row ripplecardinfo">
+                <p>{{photo.description}}</p>
+                <p>Ripple ID: {{photo.photoId}}</p>
+              </div>
+              <div class="ripplecardinfobuttons">
+                <button class="button button-clear flat icon ion-ios-trash-outline" ng-click="vm.deleteFromAlbum(photo)"></button>
+              </div>
             </div>
           </div>
         </div>
       </ion-item>
+      <!-- <ion&#45;item ng&#45;repeat="photo in vm.album"> -->
+      <!--   <div class="card"> -->
+      <!--     <div class="row ripplecard"> -->
+      <!--       <div class="col ripplecard"> -->
+      <!--         <div class="thumb" style="background&#45;image: url('{{photo.photoId}}');"></div> -->
+      <!--       </div> -->
+      <!--       <div class="col ripplecard"> -->
+      <!--         <!&#45;&#45; <h2>{{Title}}</h2> &#45;&#45;> -->
+      <!--         <p>{{photo.description}}</p> -->
+      <!--         <p>Ripple ID: {{photo.photoId}}</p> -->
+      <!--         <p>{{photo.timeRemaining | date : "m:ss"}}</p> -->
+      <!--         <div class="inbox button&#45;bar flat"> -->
+      <!--         </div> -->
+      <!--       </div> -->
+      <!--     </div> -->
+      <!--   </div> -->
+      <!-- </ion&#45;item> -->
+      <!-- <ion&#45;item ng&#45;repeat="photo in vm.album"> -->
+      <!--   <div class="row card"> -->
+      <!--     <div class="col"> -->
+      <!--       <div class="thumb" style="background&#45;image: url('{{vm.photo}}');"></div> -->
+      <!--     </div> -->
+      <!--     <div class="col"> -->
+      <!--       <h2>Pretty Hate Machine</h2> -->
+      <!--       <p>Nine Inch Nails</p> -->
+      <!--       <p>Ripple ID: {{photo.photoId}}</p> -->
+      <!--       <div class="inbox button&#45;bar flat"> -->
+      <!--         <button class="button button&#45;clear flat icon ion&#45;ios&#45;trash&#45;outline" ng&#45;click="vm.deleteFromAlbum(photo)"></button> -->
+      <!--       </div> -->
+      <!--     </div> -->
+      <!--   </div> -->
+      <!-- </ion&#45;item> -->
     </ion-list>
   </ion-content>
 </ion-view>
