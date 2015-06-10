@@ -39,7 +39,7 @@
       <!--   <button class="button button&#45;small button&#45;outline button&#45;assertive light&#45;bg icon&#45;left ion&#45;social&#45;google waves&#45;effect waves&#45;button waves&#45;light">Google+</button> -->
       <!--   <button class="button button&#45;small button&#45;outline button&#45;positive light&#45;bg icon&#45;left ion&#45;social&#45;facebook waves&#45;effect waves&#45;button waves&#45;light">Facebook</button> -->
       <!-- </div> -->
-        <div><img type="image/svg+xml" data="img/line.svg"/></div>
+      <div><img type="image/svg+xml" data="img/line.svg"/></div>
 
     <!-- <div class="list"> -->
     <!--   <label class="item item&#45;input item&#45;stacked&#45;label"> -->
@@ -53,13 +53,13 @@
     <!--   </label> -->
     <!--   <button class="item button loginButton" ng&#45;click="vm.login()">Sign In</button> -->
     <!-- </div> -->
+    <div class="col">
+      <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
+    </div>
 
   </ion-content>
   <div style="background-color:transparent" class="bar bar-footer bar-clear">
     <a style="background-color:transparent" class="title" href="#/login"><span class="account">ALREADY HAVE AN ACCOUNT?</span> <span class="signup">SIGN IN</span></a>
-  </div>
-  <div class="col">
-    <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
   </div>
 </ion-view>
 
