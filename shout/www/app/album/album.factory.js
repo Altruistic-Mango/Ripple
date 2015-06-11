@@ -11,12 +11,14 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
 
   services.saveToAlbum = saveToAlbum;
   services.deleteFromAlbum = deleteFromAlbum;
+  services.getAlbum = getAlbum;
 
   return services;
 
 
   function saveToAlbum(photo) {
     console.log('saveToAlbum');
+    photo.url = User.url(photo.photoId);
     var saved = User.album('add', photo);
     $rootScope.$broadcast('updateAlbum');
     if (saved) {
@@ -53,6 +55,22 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
       })
       .error(function(error, data) {
         console.log('Error uploading to album',error);
+      });
+  }
+
+  function getAlbum() {
+    console.log('AlbumFactory getAlbum');
+    $http.get(API_HOST + '/users/album/' + User.userId())
+      .success(function(data) {
+        console.log(JSON.stringify(data));
+        data.forEach(function(photo) {
+          console.log(JSON.stringify(photo))
+          photo.url = User.url(photo.photoId)
+          saveToAlbum(photo);
+        })
+      })
+      .error(function() {
+        console.log('error getting inbox'); 
       });
   }
 }

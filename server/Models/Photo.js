@@ -36,8 +36,13 @@ var PhotoSchema = new mongoose.Schema({
     type: Number,
     required: true,
     unique: false 
-  }
+  },
 
+  caption: {
+    type: String,
+    required: false,
+    unique: false
+  }
 });
 
 module.exports = mongoose.model('Photo', PhotoSchema);

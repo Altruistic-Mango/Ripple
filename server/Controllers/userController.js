@@ -179,11 +179,13 @@ var userController = {
   retrieveInbox: function(userId, eventObj, cb) {
 
     if (eventObj && eventObj.photoId) {
+      var caption = eventObj.caption || "";
           var broadcastEvent = {
             photoId: eventObj.photoId,
             TTL: eventObj.TTL,
             radius: eventObj.radius,
-            timestamp: eventObj.timestamp
+            timestamp: eventObj.timestamp,
+            caption: caption
           };
         }
 
@@ -243,6 +245,13 @@ var userController = {
     })
   },
 
+  insertBroadcastItem: function(userId, photoId, caption) {
+    User.findOneAndUpdate({userId: userId}, {$push: {album: {photoId: photoId, caption: caption}}}, function(error, user){
+      if (error) console.log(error);
+      else console.log('item added to ' + user.username)
+    })
+  },
+
   cullInbox: function(userId, photoId) {
     var query = {
       userId: userId
@@ -268,8 +277,8 @@ var userController = {
   },
 
   addToAlbum: function(req, res) {
-    console.log('addToAlbum: ', req.body);
-    User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId}}}, function(error, user){
+    console.log('addToAlbum: ', JSON.stringify(req.body));
+    User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId, caption: req.body.caption}}}, function(error, user){
       if (error) {
         res.status(500).send();
       } else {
@@ -312,9 +321,13 @@ var userController = {
     User.findOne({userId: userId}, function(error, user){
       if (error) {
         res.status(500).send();
-      } else {
+      } else if (user) {
         console.log('USER.ALBUM: ', user.album);
         res.status(200).send(user.album);
+      }
+      else {
+        console.log('User not found');
+        res.status(500).send('User not found');
       }
     });
   },
@@ -324,9 +337,13 @@ var userController = {
     User.findOne({userId: userId}, function(error, user){
       if (error) {
         res.status(500).send();
-      } else {
+      } else if (user) {
         console.log('USER.INBOX: ', user.inbox);
         res.status(200).send(user.inbox);
+      }
+      else {
+        console.log('User not found');
+        res.status(500).send('User not found');
       }
     });
   },
