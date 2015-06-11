@@ -8,10 +8,10 @@
               <div class="thumb" style="background-image: url({{photo.url}})" ng-click="vm.openModal(photo)"></div>
             </div>
             <div class="col ripplecard">
-                <p>{{photo.caption}}</p>
+                <p class="ripple-font">{{photo.caption}}</p>
               <div class="row ripplecardinfo">
-                <p>Ripple ID: {{photo.photoId}}</p>
-                <p>{{photo.timeRemaining | date : "m:ss"}}</p>
+                <p class="ripple-font">Ripple ID: {{photo.photoId}}</p>
+                <p class="ripple-font">{{photo.timeRemaining | date : "m:ss"}}</p>
               </div>
               <div class="ripplecardinfobuttons">
                 <button class="button button-clear flat icon ion-ios-trash-outline" ng-click="vm.deleteFromInbox(photo)"></button>

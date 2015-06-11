@@ -18,13 +18,13 @@
           </div>
           <div class="col ripplecard">
             <!-- <h2>{{Title}}</h2> -->
-            <p>{{vm.caption}}</p>
+            <p class="ripple-font">{{vm.caption}}</p>
             <!-- <p>Ripple ID: {{photo.photoId}}</p> -->
           </div>
         </div>
       </div>
     </ion-item>
-        <label class="item item-input review">
+        <label class="item item-input review row">
           <input type="text" maxlength="50" placeholder="Caption" ng-model="vm.caption">
           <span class="counter">{{50 - vm.caption.length}}</span>
         </label>
