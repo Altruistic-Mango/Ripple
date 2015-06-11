@@ -245,8 +245,8 @@ var userController = {
     })
   },
 
-  insertBroadcastItem: function(userId, photoId) {
-    User.findOneAndUpdate({userId: userId}, {$push: {album: {photoId: photoId}}}, function(error, user){
+  insertBroadcastItem: function(userId, photoId, caption) {
+    User.findOneAndUpdate({userId: userId}, {$push: {album: {photoId: photoId, caption: caption}}}, function(error, user){
       if (error) console.log(error);
       else console.log('item added to ' + user.username)
     })
