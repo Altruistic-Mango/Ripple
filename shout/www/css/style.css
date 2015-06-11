@@ -428,3 +428,11 @@ div.thumb {
     -ms-flex-align: center !important;
     align-items: center !important;
 }
+
+.modalCaption {
+  bottom: 5%;
+  left: 0;
+  right: 0;
+  top: 90%;
+  position: fixed;
+}

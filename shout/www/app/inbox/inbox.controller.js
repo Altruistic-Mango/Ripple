@@ -87,7 +87,6 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
     InboxFactory.deleteFromInbox(photo);
   }
 
-
   function saveToAlbum(photo) {
     AlbumFactory.saveToAlbum(photo);
   }
