@@ -21,12 +21,9 @@ function SettingsFactory(LocationFactory, InboxFactory, $http, API_HOST, $locals
   function setWatch(watch) {
     console.log('settings factory set watch called with watch: ', watch);
     if (!watch) {
-      LocationFactory.clearWatch();
       LocationFactory.clearPingInterval();
       services.emptyInbox(); 
     } else {
-      LocationFactory.getCurrentPosition(LocationFactory.getSuccessCallback, LocationFactory.errorCallback);
-      LocationFactory.setWatch(LocationFactory.watchSuccessCallback, LocationFactory.errorCallback);
       LocationFactory.triggerPingInterval();
     }
   }

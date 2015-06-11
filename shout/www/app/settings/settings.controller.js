@@ -23,7 +23,8 @@ function SettingsCtrl($http, $state, $timeout, $ionicHistory, ionicMaterialInk, 
   }
 
   function toggleEnable() {
-    User.settings(vm.settings.enabled);
+    User.settings('enabled', vm.settings.enabled);
+    SettingsFactory.setWatch(vm.settings.enabled);
   }
 
   function setTrickle() {

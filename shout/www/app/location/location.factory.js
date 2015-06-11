@@ -19,15 +19,12 @@ function LocationFactory($http, InboxFactory, API_HOST, User) {
 
 
   function triggerPingInterval() {
-    if (!intervalId) {
-      sendPosition();
-      intervalId = setInterval(sendPosition, 60000);
-    }
+    sendPosition();
+    intervalId = setInterval(sendPosition, 60000);
   }
 
 
   function clearPingInterval() {
-    console.log('clearPingInterval');
     clearInterval(intervalId);
   }
 
