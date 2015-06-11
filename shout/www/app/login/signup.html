@@ -1,23 +1,17 @@
 <ion-view class="signupScreen" hide-nav-bar="true" view-title="Login" align-title="left">
-  <ion-content>
+  <ion-content class="login">
     <div class="loginTitle">Ripple</div>
-    <div class="hero no-header flat">
-      <div class="content">
-        <i class="ion-ios-color-filter-outline icon hero-icon clear-bg"></i>
-      </div>
     </div>
-    <div class="list padding login">
+    <div class="list padding">
       <label class="item item-input item-stacked-label">
         <i class="icon ion-ios-person-outline placeholder-icon"></i>
         <span class="input-label">NAME</span>
-        <input class="clear-bg" type="text" placeholder="Enter Name"
-        ng-model="vm.data.username">
+        <input class="clear-bg" type="text" placeholder="Enter Name" ng-model="vm.data.username">
       </label>
       <label class="item item-input item-stacked-label">
         <i class="icon ion-ios-email-outline placeholder-icon"></i>
         <span class="input-label">EMAIL</span>
-        <input class="clear-bg" type="email" placeholder="Enter Email"
-        ng-model="vm.data.email">
+        <input class="clear-bg" type="email" placeholder="Enter Email" ng-model="vm.data.email">
       </label>
       <label class="item item-input item-stacked-label">
         <i class="icon ion-ios-locked-outline placeholder-icon"></i>
@@ -26,20 +20,14 @@
         ng-model="vm.data.password">
       </label>
     </div>
-      <label class="item item-input item-stacked-label">
-        <div class="">
-          <button class="button button-block button-positive" ng-show="!vm.spinner" ng-click="vm.signup()">Sign Up</button>
-        </div>
-        <div class="row">
-          <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
-        </div>
-        <div class="row">
-          <button class="button button-clear facebook" ng-show="!vm.spinner" ng-click="vm.fbLogin()">Sign up with Facebook</button>
-        </div>
-      </label>
   </ion-content>
   <div class="row signup">
-    <a class="signup" href="#/login"><span class="account">ALREADY HAVE AN ACCOUNT?</span> <span class="signup">SIGN IN</span></a>
+    <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
+    <button class="button button-block button-positive" ng-click="vm.signup()">Sign Up</button>
+    <button class="button button-clear facebook" ng-click="vm.fbLogin()">Sign up with Facebook</button>
+    <div class="row">
+      <a class="signup" href="#/login"><span class="account">ALREADY HAVE AN ACCOUNT?</span> <span class="signup">SIGN IN</span></a>
+    </div>
   </div>
 </ion-view>
 
