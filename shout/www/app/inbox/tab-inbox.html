@@ -16,7 +16,7 @@
               <div class="ripplecardinfobuttons">
                 <button class="button button-clear flat icon ion-ios-trash-outline" ng-click="vm.deleteFromInbox(photo)"></button>
                 <button class="button button-clear flat icon ion-ios-book-outline" ng-click="vm.saveToAlbum(photo)"></button>
-                <button class="button button-clear flat icon ion-ios-world-outline" ng-click="vm.reBroadCast(photo)"></button>
+                <button class="button button-clear flat icon ion-ios-world-outline" ng-click="vm.reBroadCast(photo)" ng-disabled="vm.isDisabled[photo.photoId]"></button>
               </div>
             </div>
           </div>

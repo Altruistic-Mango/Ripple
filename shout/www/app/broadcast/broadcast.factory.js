@@ -49,20 +49,24 @@ function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, Use
 
   }
 
-  function reBroadCast(photo) {
+  function reBroadCast(photo, cb) {
     var pos = LocationFactory.getUsersPosition();
     console.log('currentPosition: ', pos);
     if (pos.userId && pos.x && pos.y) {
       photo = _.extend(photo, pos);
       photo.timestamp = new Date().getTime();
       console.log('reBroadCast this photo: ', photo);
-      services.sendBroadCastEvent(photo);
+      services.sendBroadCastEvent(photo, cb);
     } else {
       console.log('sorry cant broadcast that photo');
     }
   }
 
-  function sendBroadCastEvent (broadcastEvent) {
-    $http.post(API_HOST + '/events/broadcast', broadcastEvent).success(function(){console.log('sent broadcast event to server!!!');});
+  function sendBroadCastEvent (broadcastEvent, cb) {
+    $http.post(API_HOST + '/events/broadcast', broadcastEvent)
+         .success(function(){
+            console.log('sent broadcast event to server!!!');
+            cb();
+          });
   }
 }

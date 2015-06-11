@@ -18,6 +18,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.refresh = refresh;
   vm.add = InboxFactory.add;
   vm.remove = InboxFactory.remove;
+  vm.isDisabled = {};
 
 
   //TODO: make this work
@@ -76,7 +77,9 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   //TODO: TEST
   //TODO: check if photo has been broadcast already?
   function reBroadCast(photo) {
-    BroadCastFactory.reBroadCast(photo);
+    BroadCastFactory.reBroadCast(photo, function() {
+      vm.isDisabled[photo.photoId] = true; 
+    });
   }
 
   function refresh() {

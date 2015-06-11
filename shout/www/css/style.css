@@ -575,3 +575,13 @@ div {
   margin-left: -40px;
   stroke: #3AFEA4;
   fill: #3AFEA4;
+}
+
+.button.button:disabled, .button.button:disabled:hover, .button.button:hover {
+  background-color: rgba(0,0,0,0);
+}
+
+
+
+
+
