@@ -486,7 +486,7 @@ curl -i http://localhost:3000/users/list
 
 
 curl -H "Content-Type: application/json" -X POST -d 
-curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603090", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/events/broadcast
+curl -H "Content-Type: application/json" -X POST -d '{"userId": "", "photoId" : "15453411434045339893", "radius" : "5", "TTL" : "5", "timestamp" : "1434045339893", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/events/broadcast
 curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170689","TTL":"99","radius":"99","timestamp":"1433024170689"}'  http://localhost:3000/events/broadcast
 
 
