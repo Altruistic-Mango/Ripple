@@ -43,8 +43,8 @@ var eventController = {
         photoId: photoId,
         TTL: TTL,
         radius: radius,
-        timestamp: timestamp
-        caption: caption;
+        timestamp: timestamp,
+        caption: caption
     };
 
     var event = new Event({
