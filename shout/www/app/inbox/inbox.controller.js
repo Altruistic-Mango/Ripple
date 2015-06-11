@@ -75,13 +75,12 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
     console.log('called openModal');
     vm.bigPhoto = vm.url(photo.photoId);
     $scope.modal.show();
-  };
+  }
   
   function closeModal() {
-    console.log('close modal')
+    console.log('close modal');
     $scope.modal.hide();
-  };
-
+  }
 
   function deleteFromInbox(photo) {
     vm.remove(photo, vm.inbox);
@@ -93,12 +92,10 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
     AlbumFactory.saveToAlbum(photo);
   }
 
-
-  //TODO: TEST
   //TODO: check if photo has been broadcast already?
   function reBroadCast(photo) {
+    vm.isDisabled[photo.photoId] = true; 
     BroadCastFactory.reBroadCast(photo, function() {
-      vm.isDisabled[photo.photoId] = true; 
     });
   }
 
