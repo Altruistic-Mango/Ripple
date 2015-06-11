@@ -21,6 +21,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.isDisabled = {};
   vm.openModal = openModal;
   vm.closeModal = closeModal;
+  vm.isDisabled = {};
 
 
   //TODO: make this work
