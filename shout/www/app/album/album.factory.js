@@ -64,6 +64,7 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
       .success(function(data) {
         console.log(JSON.stringify(data));
         data.forEach(function(photo) {
+          console.log(JSON.stringify(photo))
           photo.url = User.url(photo.photoId)
           saveToAlbum(photo);
         })
