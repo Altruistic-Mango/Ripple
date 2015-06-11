@@ -179,11 +179,13 @@ var userController = {
   retrieveInbox: function(userId, eventObj, cb) {
 
     if (eventObj && eventObj.photoId) {
+      var caption = eventObj.caption || "";
           var broadcastEvent = {
             photoId: eventObj.photoId,
             TTL: eventObj.TTL,
             radius: eventObj.radius,
-            timestamp: eventObj.timestamp
+            timestamp: eventObj.timestamp,
+            caption: caption
           };
         }
 
@@ -275,8 +277,8 @@ var userController = {
   },
 
   addToAlbum: function(req, res) {
-    console.log('addToAlbum: ', req.body);
-    User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId}}}, function(error, user){
+    console.log('addToAlbum: ', JSON.stringify(req.body));
+    User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId, caption: req.body.caption}}}, function(error, user){
       if (error) {
         res.status(500).send();
       } else {

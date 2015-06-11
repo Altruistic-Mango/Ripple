@@ -584,7 +584,7 @@ div {
 
 .modal .scroll {
   height: 100% !important;
-  background: transparent !important;
+  background-color: black !important;
 
    display: -webkit-box !important;
     display: -moz-box !important;

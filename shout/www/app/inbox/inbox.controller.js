@@ -19,6 +19,8 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.add = InboxFactory.add;
   vm.remove = InboxFactory.remove;
   vm.isDisabled = {};
+  vm.openModal = openModal;
+  vm.closeModal = closeModal;
 
 
   //TODO: make this work
@@ -70,6 +72,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   });
 
   function openModal(photo) {
+    console.log('called openModal');
     vm.bigPhoto = vm.url(photo.photoId);
     $scope.modal.show();
   };

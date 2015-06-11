@@ -2,9 +2,9 @@ angular
   .module('shout.broadcast')
   .factory('BroadCastFactory', BroadCastFactory);
 
-BroadCastFactory.$inject = ['$state', '$http', 'LocationFactory', 'CameraFactory', 's3', 'User', 'API_HOST'];
+BroadCastFactory.$inject = ['$rootScope', '$state', '$http', 'LocationFactory', 'CameraFactory', 's3', 'User', 'API_HOST'];
 
-function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, User, API_HOST) {
+function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFactory, s3, User, API_HOST) {
 
   var services = {};
 
@@ -38,6 +38,7 @@ function BroadCastFactory($state, $http, LocationFactory, CameraFactory, s3, Use
       s3.upload(file, function() {
         console.log('s3 upload success');
         console.log('photo',photo);
+        $rootScope.$broadcast('broadcastEvent');
 
         $http.post(API_HOST + '/photos/newPhoto', photo)
           .success(function() {

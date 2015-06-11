@@ -21,7 +21,8 @@ var eventController = {
     var timestamp = req.body.timestamp;
     var userId = req.body.userId;
     var TTL = +req.body.TTL * 60000;
-    var radius = +req.body.radius;
+    var radius = +req.body.radius; 
+    var caption = req.body.caption || "";
 
     var searchParams = {
       x: +req.body.x,
@@ -43,6 +44,7 @@ var eventController = {
         TTL: TTL,
         radius: radius,
         timestamp: timestamp
+        caption: caption;
     };
 
     var event = new Event({
