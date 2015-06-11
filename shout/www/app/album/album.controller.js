@@ -36,7 +36,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     vm.remove(photo, vm.album);
     User.album('remove', photo);
     AlbumFactory.deleteFromAlbum(photo);
-  };
+  }
 
   function getAlbum() {
     console.log('called getAlbum on album controller');
@@ -51,13 +51,15 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   });
 
   function openModal(photo) {
-    vm.bigPhoto = vm.url(photo.photoId);
+    vm.photoId = photo.photoId;
+    vm.bigPhoto = vm.url(vm.photoId);
+    vm.caption = photo.caption;
     $scope.modal.show();
-  };
+  }
   
   function closeModal() {
-    console.log('close modal')
+    console.log('close modal');
     $scope.modal.hide();
-  };
+  }
 
 }
