@@ -16,7 +16,7 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
   vm.toggleEnable = toggleEnable;
   vm.toggleSpinner = toggleSpinner;
   vm.sharePhoto = sharePhoto;
-  vm.spinner = false; 
+  vm.spinner = false;
 
   function goBack() {
     $state.go('review');
@@ -33,23 +33,23 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
   function toggleEnable() {
     User.settings('enabled', vm.settings.enabled);
   }
-  
+
   function setTrickle() {
     User.settings('trickle', vm.settings.trickle);
   }
 
   function sharePhoto() {
-    vm.toggleSpinner(); 
+    vm.toggleSpinner();
     console.log('BroadCastCtrl sharePhoto');
     BroadCastFactory.newPhoto(vm.settings, function() {
       User.caption('');//clear caption
-      vm.toggleSpinner(); 
+      vm.toggleSpinner();
       $state.go('tab.inbox');
     });
   }
 
   function toggleSpinner(){
-    vm.spinner = !vm.spinner; 
+    vm.spinner = !vm.spinner;
   }
 
 }
