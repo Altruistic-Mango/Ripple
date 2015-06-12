@@ -26,11 +26,6 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     vm.getAlbum();
   });
 
-  $scope.$on('broadcastEvent', function(event) {
-    console.log('onUpdateAlbum');
-    vm.getAlbum();
-  });
-
   function deleteFromAlbum(photo) {
     console.log('deleteFromAlbum');
     vm.remove(photo, vm.album);
@@ -43,7 +38,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     AlbumFactory.getAlbum();
   }
 
-  $ionicModal.fromTemplateUrl('app/album/imgView.html', {
+  $ionicModal.fromTemplateUrl('app/modal/imgView.html', {
       scope: $scope,
       animation: 'slide-in-up'
   }).then(function(modal) {

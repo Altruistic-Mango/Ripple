@@ -66,6 +66,7 @@ var gpsController = {
   // this function will traverse through the entire quadtree and delete any nodes that are past their expiration, and is executed every two minutes
   pruneTree: function() {
     var timestamp = new Date().getTime();
+    console.log('called pruneTree with timestamp ' + timestamp);
     quadtree.clearOut(timestamp);
     var self = this;
     setTimeout(function() {
