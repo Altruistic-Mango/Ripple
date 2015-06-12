@@ -45,7 +45,8 @@ function CameraFactory($state) {
           destinationType: destinationType,
           sourceType: pictureSource,
           encodingType: Camera.EncodingType.JPEG,
-          correctOrientation: true
+          correctOrientation: true,
+          targetWidth: 720
         };
       }
       callback();
