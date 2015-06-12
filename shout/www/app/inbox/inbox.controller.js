@@ -94,8 +94,9 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
 
   //TODO: check if photo has been broadcast already?
   function reBroadCast(photo) {
-    vm.isDisabled[photo.photoId] = true; 
-    BroadCastFactory.reBroadCast(photo, function() {
+    var rebroadcastPhoto = _.clone(photo);
+    BroadCastFactory.reBroadCast(rebroadcastPhoto, function() {
+      vm.isDisabled[photo.photoId] = true; 
     });
   }
 
