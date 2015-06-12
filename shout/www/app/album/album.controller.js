@@ -26,11 +26,6 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     vm.getAlbum();
   });
 
-  $scope.$on('broadcastEvent', function(event) {
-    console.log('broadCast event fired, received broadcast in albumctrl');
-    vm.getAlbum();
-  });
-
   function deleteFromAlbum(photo) {
     console.log('deleteFromAlbum');
     vm.remove(photo, vm.album);

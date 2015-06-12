@@ -38,7 +38,7 @@ function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFact
       s3.upload(file, function() {
         console.log('s3 upload success');
         console.log('photo',photo);
-        $rootScope.$broadcast('broadcastEvent');
+        User.album('add', photo);
 
         $http.post(API_HOST + '/photos/newPhoto', photo)
           .success(function() {
