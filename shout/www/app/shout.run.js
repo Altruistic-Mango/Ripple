@@ -2,9 +2,9 @@ angular
   .module('shout')
   .run(run);
 
-run.$inject = ['$http', '$state', 'User', 'API_HOST'];
+run.$inject = ['$http', '$state', 'User', 'API_HOST', '$ionicPlatform', '$ionicHistory'];
 
-function run($http, $state, User, API_HOST) {
+function run($http, $state, User, API_HOST, $ionicPlatform, $ionicHistory) {
   console.log('shout run');
 
   ionic.Platform.ready(function() {
@@ -27,4 +27,13 @@ function run($http, $state, User, API_HOST) {
     }
 
   });
+
+  $ionicPlatform.registerBackButtonAction(function (event) {
+      if($ionicHistory.currentStateName() === 'tab.inbox'){
+        //do nothing
+      }
+      else {
+        $ionicHistory.goBack();
+      }
+    }, 100);
 }
