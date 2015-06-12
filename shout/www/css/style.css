@@ -302,9 +302,12 @@ a.signup span.signup {
   color: #FFFFFF;
   letter-spacing: 2px;
   line-height: 10px;
-  text-decoration: none;
-  padding: 0;
-  margin: 0;
+  text-decoration: none !important;
+  padding:0;
+  margin:0;
+  -webkit-any-link{
+    text-decoration: none !important;
+  }
 }
 a.signup span.account {
   /* DON’T HAVE AN ACCOUN: */
@@ -314,9 +317,12 @@ a.signup span.account {
   color: #FFFFFF;
   letter-spacing: 2px;
   line-height: 10px;
-  text-decoration: none;
-  padding: 0;
-  margin: 0;
+  text-decoration: none !important;
+  padding:0;
+  margin:0;
+  -webkit-any-link{
+    text-decoration:none !important;
+  }
 }
 .emptyInbox {
   position: absolute;
