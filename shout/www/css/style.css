@@ -206,7 +206,7 @@ div.tab-nav.tabs {
   margin: 0;
 }
 .row.loginspinner {
-  position: absolute;
+  position: fixed;
   bottom: 25px;
 }
 .item-stacked-label .input-label,
@@ -413,7 +413,6 @@ div.thumb {
   right: 2px;
 }
 .spinner svg {
-<<<<<<< HEAD
   position: fixed;
   width: 160px;
   height: 160px;
@@ -421,11 +420,6 @@ div.thumb {
   left: 50%;
   margin-top: -80px;
   margin-left: -80px;
-=======
-  width: 80px;
-  height: 80px;
-  left: 50%;
->>>>>>> rebase
   stroke: #3AFEA4;
   fill: #3AFEA4;
 }
