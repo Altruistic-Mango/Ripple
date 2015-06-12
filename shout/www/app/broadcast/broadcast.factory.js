@@ -56,7 +56,7 @@ function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFact
     console.log('currentPosition: ', pos);
     if (pos.userId && pos.x && pos.y) {
       photo = _.extend(photo, pos);
-      photo.timestamp = new Date().getTime();
+      photo.timestamp = Date.now();
       console.log('reBroadCast this photo: ', photo);
       services.sendBroadCastEvent(photo, cb);
     } else {
