@@ -98,6 +98,9 @@ div.row.ripplecard {
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
   align-items: flex-start;
+  padding: 0;
+  margin: 2px 0;
+  background-color: rgba(255, 255, 255, .1);
 }
 .item {
   border: none;
@@ -111,11 +114,6 @@ div.col.ripplecard {
   padding: 0;
   margin: 0;
 }
-div.row.ripplecard {
-  padding: 0;
-  margin: 5px 0;
-  background-color: rgba(255, 255, 255, .1);
-}
 div.row.ripplecardinfo {
   overflow: hidden;
   flex-direction: column;
@@ -125,10 +123,32 @@ div.row.ripplecardinfo {
   align-content: stretch;
   height: 100%;
 }
-div.ripplecardinfobuttons {
+div.ripplecardbuttons {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-content: flex-end;
+  -ms-flex-line-pack: end;
+  align-content: flex-end;
+  -webkit-align-items: flex-end;
+  -ms-flex-align: end;
+  align-items: flex-end;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 10px;
+  width:50vw;
+  /* right: 0; */
+  font-size:2em;
+  padding: 0 2vw;
+  color:white;
 }
 ion-header-bar.flat.bar.bar-header {
   background-color: rgba(255, 255, 255, .1);
@@ -283,8 +303,8 @@ a.signup span.signup {
   letter-spacing: 2px;
   line-height: 10px;
   text-decoration: none;
-  padding:0;
-  margin:0;
+  padding: 0;
+  margin: 0;
 }
 a.signup span.account {
   /* DON’T HAVE AN ACCOUN: */
@@ -295,8 +315,8 @@ a.signup span.account {
   letter-spacing: 2px;
   line-height: 10px;
   text-decoration: none;
-  padding:0;
-  margin:0;
+  padding: 0;
+  margin: 0;
 }
 .emptyInbox {
   position: absolute;
@@ -343,7 +363,7 @@ a.signup span.account {
 div.loginTitle {
   font-family: Avenir-Book;
   font-size: 40px;
-  font-weight:100;
+  font-weight: 100;
   line-height: 1em;
   letter-spacing: 10px;
   padding-left: 3vh;
@@ -395,7 +415,7 @@ div.loginTitle.extraspace {
   margin: 0px;
 }
 div.thumb {
-  display: inline-block;
+  display: block;
   width: 49vw;
   height: 49vw;
   margin: 0px;
@@ -456,7 +476,6 @@ div.thumb {
   top: 90%;
   position: fixed;
 }
-
 .modalCaption p {
   font-size: 125%;
   line-height: 2;
