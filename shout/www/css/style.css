@@ -206,7 +206,7 @@ div.tab-nav.tabs {
   margin: 0;
 }
 .row.loginspinner {
-  position: absolute;
+  position: fixed;
   bottom: 25px;
 }
 .item-stacked-label .input-label,
