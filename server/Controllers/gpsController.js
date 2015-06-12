@@ -1,4 +1,5 @@
 var quadtree = require('../Utils/QTree.js');
+var queue = require('../Utils/Queue.js')
 var userController = require('../Controllers/userController.js');
 
     if (typeof(Number.prototype.toRad) === "undefined") {
@@ -20,17 +21,16 @@ var gpsController = {
     var timestamp = new Date().getTime();
 
     var node = {
-
       x: +req.body.x,
       y: +req.body.y,
       userId: userId
-
     };
 
       quadtree.update(node);
 
       node.timestamp = timestamp;
 
+      queue.addToQueue(node);
 
       userController.retrieveInbox(userId, node, function(inbox) {
         res.send(inbox);
@@ -65,34 +65,47 @@ var gpsController = {
 
   // this function will traverse through the entire quadtree and delete any nodes that are past their expiration, and is executed every two minutes
   pruneTree: function() {
-    var timestamp = new Date().getTime();
-    console.log('called pruneTree with timestamp ' + timestamp);
-    quadtree.clearOut(timestamp);
     var self = this;
+    var node = queue.removeFromQueue();
+    if (node) {
+      var removedNode = this.removeNode(node);
+      console.log('Removed ' + removedNode + ' from quadtree');
+    }
     setTimeout(function() {
       self.pruneTree();
-    }, 120000);
+    }, 1000);
   },
 
   // This will get the distance between two coordinates
 
   calculateDist: function(item1, nodes) {
 
-    // let's remove the node that initiated the broadcast before checking for nearby coordinates
+    var nodeObj = {},
+      nodes = nodes || this.getNodes(item1),
+      recipients = [];
+
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].userId === item1.userId) nodes.splice(i, 1);
+      break;
+    }
+
+    // let's remove the node that initiated the broadcast before checking for nearby coordinates
+    for (var i = 0; i < nodes.length; i++) {
+      if (!nodeObj[nodes[i].userId]) {
+        console.log('adding this object to list ' + JSON.stringify(nodes[i]));
+        recipients.push(nodes[i]);
+      }
     }
 
 
     // The haversine formula is used to calculate the distance between two points, factoring in the spherical shape of the Earth
     var R = 6371;
-    nodes = nodes || this.getNodes(item1);
     var lat1 = +item1.x;
     var lon1 = +item1.y;
     var lat2, lon2, dlat, dlon;
     var result = [];
 
-    nodes.forEach(function(item2) {
+    recipients.forEach(function(item2) {
       lat2 = +item2.x;
       lon2 = +item2.y;
       dLat = (lat2 - lat1).toRad();

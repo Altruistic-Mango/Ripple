@@ -14,7 +14,7 @@ function Quadtree(boundaries, maxChildren, root, depth) {
     height: 57.5
   };
 
-  this.maxChildren = maxChildren || 4;
+  this.maxChildren = maxChildren || 10;
   this.root = root || null;
   this.depth = depth || 0;
   this.quadrants = [];
@@ -87,7 +87,7 @@ Quadtree.prototype.put = function(item) {
 
   // check length against the max number of coordinates per quadrant
   var length = this.children.length;
-  if (length > this.maxChildren && !(this.depth > 100)) { // (this.depth < this.maxChildren + 1) && 
+  if (length > this.maxChildren && !(this.depth > 50)) { // (this.depth < this.maxChildren + 1) && 
 
     // create new quadrants
     this.subDivide();
@@ -199,6 +199,7 @@ Quadtree.prototype.update = function(item) {
 
 // find last position then delete according to user id
 Quadtree.prototype.remove = function(item) {
+  console.log(JSON.stringify(item));
   var quadrant = this.get(item);
   var results = quadrant.children;
   var removedItem;
@@ -206,6 +207,7 @@ Quadtree.prototype.remove = function(item) {
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
     if (results[i].userId === item.userId) {
+      console.log('found a match = ' + results[i].userId);
       removedItem = results.splice(i, 1);
     }
   }
@@ -220,29 +222,6 @@ Quadtree.prototype.remove = function(item) {
 
 
 // tree traversal
-  // this function will clear out any coordinates that are past their expiration date of five minutes
-Quadtree.prototype.clearOut = function(timestamp) {
-  console.log('calling clearout');
-  if (this.children.length) {
-    var tempChildren = [];
-    var length = this.children.length;
-    for (var i = 0; i < length; i++) {
-      if (timestamp - this.children[i].timestamp < 30000) { // 
-        console.log('this child ' + this.children[i] + ' passed the test, will remain in qtree');
-        tempChildren.push(this.children[i]);
-      }
-    }
-    this.children = tempChildren;
-  }
-
-  else if (this.quadrants.length) {
-    var quadLength = this.quadrants.length;
-    for (var j = 0; j < quadLength; j++) {
-      this.quadrants[j].clearOut(timestamp);
-    }
-  }
-}; 
-
 // this function will traverse through the quadtree, either executing a callback on every child or returning all of the children in a single array
 Quadtree.prototype.traverse = function(callback, nodes) {
 
