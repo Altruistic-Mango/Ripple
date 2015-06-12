@@ -37,16 +37,16 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
     vm.add(photos, vm.inbox);
 
     //Dummy photo for testing
-    if (!vm.inbox.length) {
-      var photo = {
-        photoId: 'goldengate',
-        timestamp: Date.now(), 
-        TTL: 5*1000*60,
-        caption: 'The beautiful Golden Gate Bridge',
-        url: vm.url('goldengate')
-      };
-      vm.add(photo, vm.inbox);
-    }
+    // if (!vm.inbox.length) {
+    //   var photo = {
+    //     photoId: 'goldengate',
+    //     timestamp: Date.now(), 
+    //     TTL: 5*1000*60,
+    //     caption: 'The beautiful Golden Gate Bridge',
+    //     url: vm.url('goldengate')
+    //   };
+    //   vm.add(photo, vm.inbox);
+    // }
     $scope.$broadcast('scroll.refreshComplete');
   });
 
@@ -64,7 +64,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
       vm.remove(photosToRemove.pop(), vm.inbox);
   }
 
-  $ionicModal.fromTemplateUrl('app/inbox/imgView.html', {
+  $ionicModal.fromTemplateUrl('app/modal/imgView.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {

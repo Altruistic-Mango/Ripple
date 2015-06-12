@@ -27,7 +27,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   });
 
   $scope.$on('broadcastEvent', function(event) {
-    console.log('onUpdateAlbum');
+    console.log('broadCast event fired, received broadcast in albumctrl');
     vm.getAlbum();
   });
 
@@ -43,7 +43,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     AlbumFactory.getAlbum();
   }
 
-  $ionicModal.fromTemplateUrl('app/album/imgView.html', {
+  $ionicModal.fromTemplateUrl('app/modal/imgView.html', {
       scope: $scope,
       animation: 'slide-in-up'
   }).then(function(modal) {

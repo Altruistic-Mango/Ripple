@@ -228,6 +228,7 @@ Quadtree.prototype.clearOut = function(timestamp) {
     var length = this.children.length;
     for (var i = 0; i < length; i++) {
       if (timestamp - this.children[i].timestamp < 300000) { // 
+        console.log('this child ' + this.children[i] + ' passed the test, will remain in qtree');
         tempChildren.push(this.children[i]);
       }
     }
@@ -496,7 +497,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" 
 
 curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615"}' http://localhost:3000/gps/getlocal
 
-curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.50933233333333", "y": "37.63016666666667", "radius": "0.25"}' http://localhost:3000/gps/getlocal
+curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.50933233333333", "y": "37.63016666666667", "radius": "5"}' http://ripple.photos/gps/getlocal
 
 curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603099", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/photos/newPhoto
 curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170680","TTL":"20","radius":"5","timestamp":"1433024170680"}'  http://localhost:3000/photos/newPhoto
