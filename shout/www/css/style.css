@@ -1,9 +1,3 @@
-/* Empty. Add your own CSS if you like */
-
-* {
-  font-family: Avenir-Book, RobotoDraft, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
-  color: white;
-}
 p.ripple-font {
   font-family: Avenir-Book, "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
   color: #FFF;
@@ -64,27 +58,47 @@ input[type="color"] {
 input.clear-bg {
   background-color: transparent;
 }
-/* div.row { */
-/*   display: -ms-flexbox; */
-/*   display: -webkit-flex; */
-/*   display: flex; */
-/*   -webkit-flex-direction: column; */
-/*   -ms-flex-direction: column; */
-/*   flex-direction: column; */
-/*   -webkit-flex-wrap: nowrap; */
-/*   -ms-flex-wrap: nowrap; */
-/*   flex-wrap: nowrap; */
-/*   -webkit-justify-content: center; */
-/*   -ms-flex-pack: center; */
-/*   justify-content: center; */
-/*   -webkit-align-content: stretch; */
-/*   -ms-flex-line-pack: stretch; */
-/*   align-content: stretch; */
-/*   -webkit-align-items: center; */
-/*   -ms-flex-align: center; */
-/*   align-items: center; */
-/*   justify-content: center; */
-/* } */
+div.row {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-content: center;
+}
+div.row.ripplecard {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
 .item {
   border: none;
   padding: 0;
@@ -201,7 +215,7 @@ div.tab-nav.tabs {
   padding: 4px 0 0 0px;
   vertical-align: middle;
   font-family: Avenir-Book;
-  font-size: 14px;
+  font-size: 10px;
   color: #FFFFFF;
   line-height: 28px;
   letter-spacing: 4px;
@@ -225,6 +239,7 @@ button.button.button-block {
 }
 button.button-block.facebook {
   opacity: .2;
+  color: rgba(200, 200, 200, .5);
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
   padding: 0px;
   margin: 0px;
@@ -255,30 +270,33 @@ div.row.signup {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-
   position: absolute;
   bottom: 10px;
+  padding: 10px 0;
+  margin: 0 0;
 }
 a.signup span.signup {
-  display: inline;
   color: #fff;
   font-family: Avenir-Book;
-  font-size: 12px;
+  font-size: 10px;
   color: #FFFFFF;
   letter-spacing: 2px;
   line-height: 10px;
   text-decoration: none;
+  padding:0;
+  margin:0;
 }
 a.signup span.account {
   /* DON’T HAVE AN ACCOUN: */
-  display: inline;
   opacity: 0.5;
   font-family: Avenir-Book;
-  font-size: 12px;
+  font-size: 10px;
   color: #FFFFFF;
   letter-spacing: 2px;
   line-height: 10px;
   text-decoration: none;
+  padding:0;
+  margin:0;
 }
 .emptyInbox {
   position: absolute;
@@ -310,29 +328,33 @@ a.signup span.account {
   border-color: white;
 }
 .hero.no-header {
-  height: 200px;
+  height: 20vh;
 }
 .hero .hero-icon {
-  box-shadow: 0 0 2px 0 #07FE8D;
+  box-shadow: 0 0 0px 0 #07FE8D;
   border-radius: 50%;
   display: inline-block;
-  height: 150px;
+  height: 20vh;
   padding: 00px 30px;
-  line-height: 150px;
+  line-height: 20vh;
   width: 150px;
   color: #07FE8D;
 }
-.loginTitle {
+div.loginTitle {
   font-family: Avenir-Book;
-  font-size: 8vh;
+  font-size: 40px;
+  font-weight:100;
   line-height: 1em;
-  letter-spacing: 2vh;
+  letter-spacing: 10px;
   padding-left: 3vh;
   color: #FFF;
   text-align: center;
   margin-top: 5vh;
   margin-bottom: 0;
   opacity: 0.5;
+}
+div.loginTitle.extraspace {
+  margin-bottom: 25vh;
 }
 .pane,
 .view {
@@ -391,8 +413,13 @@ div.thumb {
   right: 2px;
 }
 .spinner svg {
-  width: 80px;
-  height: 80px;
+  position: fixed;
+  width: 160px;
+  height: 160px;
+  top: 50%;
+  left: 50%;
+  margin-top: -80px;
+  margin-left: -80px;
   stroke: #3AFEA4;
   fill: #3AFEA4;
 }
@@ -422,7 +449,6 @@ div.thumb {
   -ms-flex-align: center !important;
   align-items: center !important;
 }
-  
 .modalCaption {
   bottom: 0%;
   left: 0;

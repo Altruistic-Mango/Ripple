@@ -20,11 +20,6 @@ function LoginCtrl($state, LoginFactory, $ionicPopup, User) {
   vm.toggleSpinner = toggleSpinner; 
   vm.spinner = false; 
 
-
-  //TODO:Form validation for all required fields
-  //TODO: username exists, password incorrect
-  //TODO: no username error
-  //TODO: facebook auth
   function login() {
     if (!vm.data.username) {
       $ionicPopup.alert({
