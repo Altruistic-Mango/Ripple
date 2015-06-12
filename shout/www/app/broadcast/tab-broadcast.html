@@ -26,8 +26,8 @@
       <ion-item class="item item-range item-divider no-padding">
         <label class="range range-positive">
           {{vm.settings.radius | number:1}} mi&nbsp&nbsp</br>
-          <input type="range" name="radius" ng-model="vm.settings.radius" min="0.1" step="0.1"
-          max="5" value="{{vm.radius}}">
+          <input type="range" name="radius" ng-model="vm.settings.radius" min="1" step="1"
+          max="50" value="{{vm.radius}}">
           <i class="icon ion-ios-world-outline"></i>
           <div class="track">
             <div class="handle"></div>
@@ -39,7 +39,7 @@
       <ion-item class="item item-range item-divider no-padding">
         <label class="range range-positive">
           {{vm.settings.TTL | number:1}} min</br>
-          <input type="range" ng-model="vm.settings.TTL" min="0.5" step="0.5" max="5" ng-init="5"
+          <input type="range" ng-model="vm.settings.TTL" min="1" step="1" max="30" ng-init="30"
           value="{{vm.TTL}}">
           <i class="icon ion-ios-stopwatch-outline"></i>
           <div class="track">
