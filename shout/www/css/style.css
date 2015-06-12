@@ -443,11 +443,21 @@ div.thumb {
   stroke: #3AFEA4;
   fill: #3AFEA4;
 }
-.button.button:disabled,
-.button.button:disabled:hover,
-.button.button:hover {
-  background-color: rgba(0, 0, 0, 0);
+
+button {
+  background-color: rgba(0,0,0,0);
+  border: none;
+  outline: none;
+  color: white;
+  width: 30%;
+  font-size: 25px;
 }
+
+button:disabled,
+button:active {
+  color: rgba(0,0,0,0.5);
+}
+
 .modal .scroll {
   height: 100% !important;
   background-color: black !important;
