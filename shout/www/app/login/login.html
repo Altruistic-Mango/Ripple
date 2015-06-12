@@ -1,39 +1,44 @@
 <ion-view class="loginScreen" hide-nav-bar="true" view-title="Login" align-title="left">
-  <!--<ion-content style="background: url(img/ripple.jpeg) center; background-size: cover;">-->
   <ion-content>
-
-    <!-- <div class="loginTitle" class="animated infinite bounce">Ripple</div> -->
     <div class="animated bounceInDown loginTitle">Ripple</div>
     <div class="ionic login">
-      <div class="hero no-header flat">
-        <div class="content">
-          <i class="ion-ios-color-filter-outline icon hero-icon clear-bg"></i>
-        </div>
-      </div>
       <div class="list padding">
+        <div class="hero no-header flat">
+          <div class="content">
+            <i class="ion-ios-color-filter-outline icon hero-icon clear-bg"></i>
+          </div>
+        </div>
         <label class="item item-input item-stacked-label bottom-border">
           <i class="icon ion-ios-person-outline placeholder-icon"></i>
           <span class="input-label">NAME</span>
           <input class="clear-bg" type="text" placeholder="Enter Name" ng-model="vm.data.username">
         </label>
+        <!-- <label class="item item&#45;input item&#45;stacked&#45;label"> -->
+        <!--   <i class="icon ion&#45;ios&#45;email&#45;outline placeholder&#45;icon"></i> -->
+        <!--   <span class="input&#45;label">EMAIL</span> -->
+        <!--   <input class="clear&#45;bg" type="email" placeholder="Enter Email" ng&#45;model="vm.data.email"> -->
+        <!-- </label> -->
         <label class="item item-input item-stacked-label bottom-border">
           <i class="icon ion-ios-locked-outline placeholder-icon"></i>
           <span class="input-label">PASSWORD</span>
           <input class="clear-bg" type="password" ng-model="vm.data.password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
         </label>
+        <div class="padding">
+          <div class="row">
+            <ion-spinner ng-show="vm.spinner" class="spinner" icon="ripple"></ion-spinner>
+          </div>
+          <div class="row">
+            <button class="button button-block button-positive" ng-click="vm.login()">Sign In</button>
+          </div>
+          <div class="row">
+            <button class="button button-clear facebook" ng-click="vm.fbLogin()"><span class="signup">Sign in with Facebook</span>
+            </button>
+          </div>
+          <div class="row">
+            <a class="signup" href="#/signup"><span class="account">DON'T HAVE AN ACCOUNT?</span><span class="signup">&nbsp;SIGN UP.</span></a>
+          </div>
+        </div>
       </div>
     </div>
-
   </ion-content>
-  <div class="row loginspinner">
-  </div>
-  <div class="row signup padding">
-    <ion-spinner ng-show="vm.spinner" icon="ripple"></ion-spinner>
-    <button class="button button-block button-positive" ng-click="vm.login()">Sign In</button>
-    <button class="button button-clear facebook" ng-click="vm.fbLogin()">Sign in with Facebook</button>
-    <a class="signup" href="#/signup"><span class="account">DON'T HAVE AN ACCOUNT?</span> <span class="signup">SIGN UP</span></a>
-  </div>
 </ion-view>
-
-<!--   <button style="width:50%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Google+</button> -->
-<!--   <button style="width:45%" class="button button&#45;small button&#45;clear button&#45;flat waves&#45;effect waves&#45;button waves&#45;light">Facebook</button> -->
