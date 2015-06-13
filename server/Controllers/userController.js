@@ -71,7 +71,7 @@ var userController = {
             console.log('error');
           }
           else if (match) {
-            console.log('a match')
+            console.log('a match');
             res.status(200).send(user);
           } else {
             console.log('not a match');
@@ -248,7 +248,7 @@ var userController = {
   insertBroadcastItem: function(userId, photoId, caption) {
     User.findOneAndUpdate({userId: userId}, {$push: {album: {photoId: photoId, caption: caption}}}, function(error, user){
       if (error) console.log(error);
-      else console.log('item added to ' + user.username)
+      else console.log('item added to ' + user.username);
     })
   },
 

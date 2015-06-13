@@ -14,7 +14,7 @@ function Quadtree(boundaries, maxChildren, root, depth) {
     height: 57.5
   };
 
-  this.maxChildren = maxChildren || 4;
+  this.maxChildren = maxChildren || 10;
   this.root = root || null;
   this.depth = depth || 0;
   this.quadrants = [];
@@ -87,7 +87,7 @@ Quadtree.prototype.put = function(item) {
 
   // check length against the max number of coordinates per quadrant
   var length = this.children.length;
-  if (length > this.maxChildren && !(this.depth > 100)) { // (this.depth < this.maxChildren + 1) && 
+  if (length > this.maxChildren && !(this.depth > 50)) { // (this.depth < this.maxChildren + 1) && 
 
     // create new quadrants
     this.subDivide();
@@ -199,13 +199,15 @@ Quadtree.prototype.update = function(item) {
 
 // find last position then delete according to user id
 Quadtree.prototype.remove = function(item) {
+  console.log(JSON.stringify(item));
   var quadrant = this.get(item);
   var results = quadrant.children;
   var removedItem;
   item.x = +item.x;
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
-    if (results[i].userId === item.userId) {
+    if (results[i].userId === item.userId && results[i].x === item.x && results[i].y === item.y) {
+      console.log('found a match = ' + results[i].userId);
       removedItem = results.splice(i, 1);
     }
   }
@@ -220,29 +222,6 @@ Quadtree.prototype.remove = function(item) {
 
 
 // tree traversal
-  // this function will clear out any coordinates that are past their expiration date of five minutes
-Quadtree.prototype.clearOut = function(timestamp) {
-
-  if (this.children.length) {
-    var tempChildren = [];
-    var length = this.children.length;
-    for (var i = 0; i < length; i++) {
-      if (timestamp - this.children[i].timestamp < 300000) { // 
-        console.log('this child ' + this.children[i] + ' passed the test, will remain in qtree');
-        tempChildren.push(this.children[i]);
-      }
-    }
-    this.children = tempChildren;
-  }
-
-  else if (this.quadrants.length) {
-    var quadLength = this.quadrants.length;
-    for (var j = 0; j < quadLength; j++) {
-      this.quadrants[j].clearOut(timestamp);
-    }
-  }
-}; 
-
 // this function will traverse through the quadtree, either executing a callback on every child or returning all of the children in a single array
 Quadtree.prototype.traverse = function(callback, nodes) {
 
@@ -394,151 +373,3 @@ Quadtree.prototype.checkRange = function(coord, range) {
 
 module.exports = new Quadtree();
 
-
-
-/*
-
-
-
-// san francisco
-  // northwest point
-  // 37.809455, -122.525293
-
-  // northeast point
-  // 37.811552, -122.354177
-
-  // southwest point
-  // 37.613581, -122.510663
-
-  // southeast point
-  // 37.615192, -122.351613
-
-
-//california
-
-// northwest point
-// 41.9874797,-124.2301429
-
-// northeast point
-// 41.9874797, -114.7396131
-
-// southwest point
-// 32.4969499,-116.9726225
-
-// southeast point
-// 32.4969499, -114.7396131
-
-
-    x: -122.526000,
-    y: 37.613500,
-    width: 0.2,
-    height: 0.2
-  };
-
-
-
-*/
-
-
-
-// san francisco
-  // northwest point
-  // 37.809455, -122.525293
-
-  // northeast point
-  // 37.811552, -122.354177
-
-  // southwest point
-  // 37.613581, -122.510663
-
-  // southeast point
-  // 37.615192, -122.351613
-
-
-//california
-
-// northwest point
-// 41.9874797,-124.2301429
-
-// northeast point
-// 41.9874797, -114.7396131
-
-// southwest point
-// 32.4969499,-116.9726225
-
-// southeast point
-// 32.4969499, -114.7396131
-
-
-
-
-/*
-
-work in progress
-
- var node = {
-      x: +req.body.x,
-      y: +req.body.y,
-      userId: userId
-    };
-curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "122.515", "y" : "37.615"}' http://localhost:3000/gps/position
-curl -i http://localhost:3000/gps/postdata
-curl -i http://localhost:3000/users/list
-
-
-curl -H "Content-Type: application/json" -X POST -d 
-curl -H "Content-Type: application/json" -X POST -d '{"userId": "", "photoId" : "15453411434045339893", "radius" : "5", "TTL" : "5", "timestamp" : "1434045339893", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/events/broadcast
-curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170689","TTL":"99","radius":"99","timestamp":"1433024170689"}'  http://localhost:3000/events/broadcast
-
-
-curl -H "Content-Type: application/json" -X POST -d '{"username" : "henry", "password": "henry"}' http://localhost:3000/users/signup
-
-curl -H "Content-Type: application/json" -X POST -d '{"userId" : "3145326", "x" : "-122.515", "y" : "37.615"}' http://localhost:3000/gps/position
-
-curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615"}' http://localhost:3000/gps/getlocal
-
-curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.50933233333333", "y": "37.63016666666667", "radius": "5"}' http://ripple.photos/gps/getlocal
-
-curl -H "Content-Type: application/json" -X POST -d '{"userId": "9999999", "photoId" : "92698511433014477875", "radius" : "5", "TTL" : "5", "timestamp" : "1433023603099", "x" : "-122.4184462", "y": "37.723746"}' http://localhost:3000/photos/newPhoto
-curl -H "Content-Type: application/json" -X POST -d '{"x":"-122.4091744","y":"37.7833672","userId":"1717757","photoId":"92698511433024170680","TTL":"20","radius":"5","timestamp":"1433024170680"}'  http://localhost:3000/photos/newPhoto
-
-curl -H "Content-Type:application/json" -X POST -d '{"x": "-122.515", "y": "37.615", "userId": "3852851", "TTL": "55", "radius": "55", "timestamp" : "1432780946323", "photoId" : "38528511432780946323"}' http://localhost:3000/photos/newPhoto
-
-
-curl -H "Content-Type:application/json" -X POST -d '{"username" : "henry"}' http://localhost:3000/users/clearInbox
-
-curl -H "Content-Type: application/json" -X POST -d '{"x": "-122.515" , "y" : "37.615"}' http://localhost:3000/gps/distance
-
-{userId: "5134983", y: 37.7837719, x: -122.4092927, timestamp: 1432927321487}
-
-curl -H "Content-Type: application/json" -X POST -d '{"y" : "37.7837725", "x" : "-122.4092930", "userId" : "6000000", "timestamp": "1432927321487"}' http://localhost:3000/gps/position
-
-    // Quadtree.prototype.addData = function() {
-    //   this.put({x: -122.408978, y: 37.783724, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4184462, y: 37.7237467, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4832054, y: 37.7241541, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4806091, y: 37.7828379, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.3235064, y: 37.7141402, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.3646192, y: 37.7032078, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4572735, y: 37.6769565, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4158602, y: 37.7611788, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.416182, y: 37.7876884, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4275959, y: 37.6725777, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4931705, y: 37.6754989, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.4074967, y: 37.7542639, userId: Math.floor(Math.random() * 100000)});
-    //   this.put({x: -122.515, y: 37.615, userId: 4296166});
-    //   this.put({x: -122.515, y: 37.619, userId: 4227385});
-    //   this.put({x: -122.515, y: 37.618, userId: 1857132});
-    // };
-
-
-
-// Add functionality to unfold and check radius on elements if
-  // radius is greater than the length from one coordinate to the border
-    // item.x + radius > x || item.x - radius < x || item.y + radius > y || item.y - y < y
-      //force unfold
-      //check all node children for distance calculation
-      //subdivide using children.forEach(this.put(node))
-
-
-*/
