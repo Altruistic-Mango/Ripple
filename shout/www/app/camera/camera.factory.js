@@ -41,7 +41,7 @@ function CameraFactory($state) {
         pictureSource = navigator.camera.PictureSourceType.CAMERA;
         destinationType = navigator.camera.DestinationType.FILE_URI;
         options = {
-          quality: 50,
+          quality: 5,
           destinationType: destinationType,
           sourceType: pictureSource,
           encodingType: Camera.EncodingType.JPEG,
