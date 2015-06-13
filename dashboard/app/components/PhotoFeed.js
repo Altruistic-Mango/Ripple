@@ -1,9 +1,10 @@
-var React = require('react');
+var React = require('react/addons');
 var PhotoActions = require('../actions/PhotoActions');
 var PhotoStore = require('../stores/PhotoStore');
 var PhotoConstants = require('../constants/PhotoConstants');
 var PhotoEntry = require('./PhotoEntry');
 var SetIntervalMixin = require('../mixins/SetIntervalMixin');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var PhotoFeed = React.createClass({
     mixins: [SetIntervalMixin],
@@ -21,7 +22,7 @@ var PhotoFeed = React.createClass({
     },
 
     componentDidMount: function() {
-      this.setInterval(this.getNewPhotos, 60000); 
+      this.setInterval(this.getNewPhotos, 20000); 
     },
 
     getNewPhotos: function() {
@@ -50,14 +51,16 @@ var PhotoFeed = React.createClass({
     render: function () {
       var photoItems = this.state.photos.map(function (photo, index) {
         return (
-          <PhotoEntry key={index} photoId = {photo.photoId} />
+          <PhotoEntry key={photo.photoId} photoId = {photo.photoId} />
         );
       });
 
       return (
         <div className="scroll">
           <div className="photos">
-            {photoItems}
+            <ReactCSSTransitionGroup transitionName="example">
+              {photoItems}
+            </ReactCSSTransitionGroup>
           </div>  
         </div>
       );
