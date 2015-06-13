@@ -69,7 +69,7 @@ var gpsController = {
     var node = queue.removeFromQueue();
     if (node) {
       var removedNode = this.removeNode(node);
-      console.log('Removed ' + removedNode + ' from quadtree');
+      console.log('Removed ' + JSON.stringify(removedNode) + ' from quadtree');
     }
     setTimeout(function() {
       self.pruneTree();
