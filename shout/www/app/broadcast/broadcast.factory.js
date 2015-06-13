@@ -23,8 +23,8 @@ function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFact
     var photo = {
       timestamp: timestamp,
       userId: User.userId(),
-      photoId: User.userId() + timestamp, 
-      caption: User.caption(), 
+      photoId: User.userId() + timestamp,
+      caption: User.caption(),
       TTL: settings.TTL,
       radius: settings.radius,
       trickle: settings.trickle,
@@ -44,7 +44,7 @@ function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFact
         $http.post(API_HOST + '/photos/newPhoto', photo)
           .success(function() {
             console.log('photo data sent to server');
-            cb(); 
+            cb();
           });
       });
     });
@@ -64,11 +64,11 @@ function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFact
     }
   }
 
-  function sendBroadCastEvent (broadcastEvent, cb) {
+  function sendBroadCastEvent(broadcastEvent, cb) {
     $http.post(API_HOST + '/events/broadcast', broadcastEvent)
-         .success(function(){
-            console.log('sent broadcast event to server!!!');
-            cb();
-          });
+      .success(function() {
+        console.log('sent broadcast event to server!!!');
+        cb();
+      });
   }
 }

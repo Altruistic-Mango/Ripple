@@ -13,9 +13,9 @@
                 <p class="ripple-font">{{photo.timeRemaining | date : "m:ss"}}</p>
               </div>
               <div class="ripplecardbuttons">
-                <button class="ion-ios-trash-outline" ng-click="vm.deleteFromInbox(photo)"></button>
-                <button class="ion-ios-book-outline" ng-click="vm.saveToAlbum(photo)"></button>
-                <button class="ion-ios-world-outline" ng-click="vm.reBroadCast(photo)" ng-disabled="vm.isDisabled[photo.photoId]"></button>
+                <button class="ripplecardbuttons ion-ios-trash-outline" ng-click="vm.deleteFromInbox(photo)"></button>
+                <button class="ripplecardbuttons ion-ios-book-outline" ng-click="vm.saveToAlbum(photo)"></button>
+                <button class="ripplecardbuttons ion-ios-world-outline" ng-click="vm.reBroadCast(photo)" ng-disabled="vm.isDisabled[photo.photoId]"></button>
               </div>
             </div>
           </div>

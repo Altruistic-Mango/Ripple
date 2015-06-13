@@ -450,7 +450,7 @@ div.thumb {
   fill: #3AFEA4;
 }
 
-button {
+button.ripplecardbuttons {
   background-color: rgba(0,0,0,0);
   border: none;
   outline: none;
@@ -459,8 +459,8 @@ button {
   font-size: 25px;
 }
 
-button:disabled,
-button:active {
+button.ripplecardbuttons:disabled,
+button.ripplecardbuttons:active {
   color: rgba(0,0,0,0.5);
 }
 
