@@ -23,13 +23,11 @@ var gpsController = {
     var node = {
       x: +req.body.x,
       y: +req.body.y,
-      userId: userId
+      userId: userId,
+      timestamp: timestamp
     };
 
       quadtree.update(node);
-
-      node.timestamp = timestamp;
-
       queue.addToQueue(node);
 
       userController.retrieveInbox(userId, node, function(inbox) {

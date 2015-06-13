@@ -206,7 +206,7 @@ Quadtree.prototype.remove = function(item) {
   item.x = +item.x;
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
-    if (results[i].userId === item.userId && results[i].x === item.x && results[i].y === item.y) {
+    if (results[i].userId === item.userId && results[i].timestamp === item.timestamp) {
       console.log('found a match = ' + results[i].userId);
       removedItem = results.splice(i, 1);
     }
