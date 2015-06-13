@@ -18,6 +18,11 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   vm.openModal = openModal;
   vm.closeModal = closeModal;
   vm.getAlbum = getAlbum;
+  vm.clearView = clearView;
+
+  function clearView() {
+    console.log('clearView');
+  }
 
   console.log(vm.album);
 
@@ -51,10 +56,10 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
     vm.caption = photo.caption;
     $scope.modal.show();
   }
-  
+
   function closeModal() {
     console.log('close modal');
     $scope.modal.hide();
   }
-
 }
+
