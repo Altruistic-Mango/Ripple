@@ -464,6 +464,10 @@ button.ripplecardbuttons:active {
   color: rgba(0,0,0,0.5);
 }
 
+button.ripplecardbuttons.active {
+  color: rgba(0,0,0,0.5);
+}
+
 .modal .scroll {
   height: 100% !important;
   background-color: black !important;
