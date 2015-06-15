@@ -10,7 +10,7 @@ The web client was built using React and utilizes the Google Maps api to show th
 
 All photos are uploaded to an Amazon s3 bucket using a temporary signed policy that allows uploads from the devices and expires after a limited time. The server must sign and provide this policy to the client when a photo is taken, ensuring that proper security is upheld and preventing mass uploads of data or other manipulation.
 
-![ripplePhoto](https://cloud.githubusercontent.com/assets/7958636/8152686/6beff634-12d5-11e5-9e4d-4fcb474a715c.png")
+![ripplePhoto](https://cloud.githubusercontent.com/assets/7958636/8152686/6beff634-12d5-11e5-9e4d-4fcb474a715c.png)
 
 # Mobile Client Structure
 
