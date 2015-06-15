@@ -1,4 +1,5 @@
 <ion-view view-title="Settings">
+  <button id="ripple-fab" class="button button-fab button-balanced icon ion-ios-camera" ng-click="vm.takePhoto()"></button>
   <ion-content class="padding">
     <ion-list>
 
@@ -12,15 +13,15 @@
         </label>
       </ion-item>
 
-      <ion-item class="item item-toggle item-divider">
-        Trickle</br>
-          <label class="toggle toggle-positive">
-            <input type="checkbox" ng-model="vm.settings.trickle" ng-change="vm.setTrickle()">
-          <div class="track">
-            <div class="handle"></div>
-          </div>
-          </label>
-      </ion-item>
+      <!-- <ion&#45;item class="item item&#45;toggle item&#45;divider"> -->
+      <!--   Trickle</br> -->
+      <!--     <label class="toggle toggle&#45;positive"> -->
+      <!--       <input type="checkbox" ng&#45;model="vm.settings.trickle" ng&#45;change="vm.setTrickle()"> -->
+      <!--     <div class="track"> -->
+      <!--       <div class="handle"></div> -->
+      <!--     </div> -->
+      <!--     </label> -->
+      <!-- </ion&#45;item> -->
 
       <ion-item class="item item-range item-divider no-padding">
         <label class="range range-positive">

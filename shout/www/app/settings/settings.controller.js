@@ -7,15 +7,14 @@ SettingsCtrl.$inject = ['$http', '$state', '$timeout', '$ionicHistory', 'ionicMa
 function SettingsCtrl($http, $state, $timeout, $ionicHistory, ionicMaterialInk, SettingsFactory, $localstorage, CameraFactory, LocationFactory, s3, API_HOST, User) {
   console.log('SettingsCtrl');
 
-  //TODO: explanations of Enable, Trickle.
-  //  Possibly with pop ups.
   var vm = this;
 
   vm.settings = User.settings();
   vm.toggleEnable = toggleEnable;
-  vm.setTrickle = setTrickle;
+  //vm.setTrickle = setTrickle;
   vm.saveSettings = saveSettings;
   vm.logOut = logOut;
+  vm.takePhoto = CameraFactory.takePicture;
 
   function saveSettings() {
     console.log(vm.settings);
@@ -27,9 +26,9 @@ function SettingsCtrl($http, $state, $timeout, $ionicHistory, ionicMaterialInk, 
     SettingsFactory.setWatch(vm.settings.enabled);
   }
 
-  function setTrickle() {
-    User.settings(vm.settings.trickle);
-  }
+  // function setTrickle() {
+  //   User.settings(vm.settings.trickle);
+  // }
 
   function logOut() {
     User.isSignedIn(false);

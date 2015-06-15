@@ -34,9 +34,9 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
     User.settings('enabled', vm.settings.enabled);
   }
 
-  function setTrickle() {
-    User.settings('trickle', vm.settings.trickle);
-  }
+  // function setTrickle() {
+  //   User.settings('trickle', vm.settings.trickle);
+  // }
 
   function sharePhoto() {
     vm.toggleSpinner();

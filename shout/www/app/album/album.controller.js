@@ -2,9 +2,9 @@ angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
-AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'InboxFactory', 'User', '$http', 'API_HOST', '$ionicModal'];
+AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'InboxFactory', 'CameraFactory', 'User', '$http', 'API_HOST', '$ionicModal'];
 
-function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_HOST, $ionicModal) {
+function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, User, $http, API_HOST, $ionicModal) {
   console.log('AlbumCtrl');
 
   var vm = this;
@@ -18,6 +18,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   vm.closeModal = closeModal;
   vm.getAlbum = getAlbum;
   vm.getItemHeight = getItemHeight;
+  vm.takePhoto = CameraFactory.takePicture;
 
   function getItemHeight() {
     var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;

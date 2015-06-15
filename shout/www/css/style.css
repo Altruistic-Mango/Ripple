@@ -27,6 +27,19 @@ h6,
 .button.button-clear {
   color: #FFF;
 }
+
+#ripple-fab {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  bottom: 60px;
+  right: 10px;
+  margin-top: -25px;
+  margin-left: -25px;
+  background-color: #3AFEA4;
+  opacity:.8;
+}
+
 .list .item {
   border: none;
   min-height: 48px;

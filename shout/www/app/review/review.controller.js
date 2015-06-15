@@ -16,7 +16,6 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory, User) {
   vm.caption = "";
   vm.goInbox = goInbox;
   vm.takePhoto = takePhoto;
-  vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
 
   function goInbox() {
@@ -33,11 +32,6 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory, User) {
     console.log('displayPhoto');
     vm.caption = ""; //clear caption if new photo
     vm.photo = CameraFactory.filePath;
-  }
-
-  //TODO: save to album
-  function savePhoto() {
-
   }
 
   function sharePhoto() {
