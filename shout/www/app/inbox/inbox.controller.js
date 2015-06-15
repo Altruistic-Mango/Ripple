@@ -22,6 +22,13 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.openModal = openModal;
   vm.closeModal = closeModal;
 
+  vm.getItemHeight = getItemHeight;
+
+  function getItemHeight() {
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    return Math.floor(width/2);
+  }
+
   //When the controller is loaded, see if the user is logged in, start sending GPS
   LoginFactory.checkLogin();
 

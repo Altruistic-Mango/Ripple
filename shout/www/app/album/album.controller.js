@@ -17,6 +17,12 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   vm.openModal = openModal;
   vm.closeModal = closeModal;
   vm.getAlbum = getAlbum;
+  vm.getItemHeight = getItemHeight;
+
+  function getItemHeight() {
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    return Math.floor(width/2);
+  }
 
   AlbumFactory.createThumbData(vm.album);
 

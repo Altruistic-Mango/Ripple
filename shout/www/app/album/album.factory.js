@@ -16,7 +16,6 @@ function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
 
   return services;
 
-
   function saveToAlbum(photo) {
     console.log('saveToAlbum');
     photo.url = User.url(photo.photoId);
