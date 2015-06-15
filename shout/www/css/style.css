@@ -44,7 +44,6 @@ h6,
   border: none;
   min-height: 48px;
   text-align: left;
-  background-color: transparent;
 }
 textarea,
 input[type="text"],
@@ -113,7 +112,8 @@ div.row.ripplecard {
   align-items: flex-start;
   padding: 0;
   margin: 2px 0;
-  background-color: rgba(255, 255, 255, .1);
+  background-color: rgba(255, 255, 255, .2);
+  border-radius: 50vw 0 0 50vw;
 }
 .item {
   border: none;
@@ -441,6 +441,7 @@ div.thumb {
   border: 0px solid #555;
   background-position: center center;
   background-size: cover;
+  border-radius:50%;
 }
 .toggle .track {
   background-color: transparent;
