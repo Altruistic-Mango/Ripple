@@ -21,10 +21,13 @@ function CameraFactory($state) {
   return services;
 
 
-  function takePicture(callback) {
+  function takePicture() {
     console.log('CameraFactory.takePicture');
     initialize(function() {
-      getPicture(callback);
+      getPicture(function(imageURI) {
+        $localstorage.set('imagePath', imageURI);
+        $state.go('review');
+      });
     });
   }
 

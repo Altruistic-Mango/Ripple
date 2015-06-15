@@ -2,9 +2,9 @@ angular
   .module('shout.inbox')
   .controller('InboxCtrl', InboxCtrl);
 
-InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'ionicMaterialInk', 'API_HOST', '$ionicModal'];
+InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'CameraFactory', 'User', 'LoginFactory', 'BroadCastFactory', 'ionicMaterialInk', 'API_HOST', '$ionicModal'];
 
-function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST, $ionicModal) {
+function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, CameraFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST, $ionicModal) {
   console.log('InboxCtrl');
   //ionicMaterialInk.displayEffect({'duration':2000});
 
@@ -21,6 +21,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.isDisabled = {};
   vm.openModal = openModal;
   vm.closeModal = closeModal;
+  vm.takePhoto = CameraFactory.takePicture;
 
   vm.getItemHeight = getItemHeight;
 

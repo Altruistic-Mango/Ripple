@@ -1,4 +1,5 @@
 <ion-view view-title="Album">
+  <button id="ripple-fab" class="button button-fab button-balanced icon ion-ios-camera" ng-click="vm.takePhoto()"></button>
   <ion-content class="no-padding">
     <ion-list class="condensed-space no-padding" can-swipe="true">
       <ion-item collection-repeat="photo in vm.album track by $index" item-width="100%" item-height="vm.getItemHeight()">
