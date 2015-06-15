@@ -55,7 +55,11 @@ function CameraFactory($state) {
 
   function getPicture(callback) {
     console.log('CameraFactory.getPicture');
-    navigator.camera.getPicture(success, failure, options);
+    try {
+      navigator.camera.getPicture(success, failure, options);
+    } catch (e) {
+      console.log('no camera available');
+    }
 
     function success(imageURI) {
       console.log('getPicture success with:' + imageURI);
@@ -71,7 +75,13 @@ function CameraFactory($state) {
 
   function getFile(callback) {
     console.log('CameraFactory.getFile');
-    window.resolveLocalFileSystemURL(services.filePath, success, failure);
+    try {
+      window.resolveLocalFileSystemURL(services.filePath, success, failure);
+    } catch (e) {
+      console.log('no picture URL available');
+    }
+
+      
 
     function success(fileEntry) {
       console.log('getFile success');

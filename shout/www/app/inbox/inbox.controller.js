@@ -22,8 +22,6 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   vm.openModal = openModal;
   vm.closeModal = closeModal;
 
-
-  //TODO: make this work
   //When the controller is loaded, see if the user is logged in, start sending GPS
   LoginFactory.checkLogin();
 

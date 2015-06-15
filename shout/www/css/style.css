@@ -485,6 +485,7 @@ button.ripplecardbuttons:active {
   -ms-flex-align: center !important;
   align-items: center !important;
 }
+
 .modalCaption {
   bottom: 0%;
   left: 0;
