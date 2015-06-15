@@ -8,3 +8,8 @@ plugins/
 www/lib/
 www/platforms/
 www/dist/
+
+resources/android/icon
+resources/android/splash
+resources/ios/icon
+resources/ios/splash
