@@ -1,12 +1,5 @@
 function Quadtree(boundaries, maxChildren, root, depth) {
 
-  // this.boundaries = boundaries || {
-  //   x: -122.526000,
-  //   y: 37.613500,
-  //   width: 0.2,
-  //   height: 0.2
-  // }
-
   this.boundaries = boundaries || {
     x: -125.3,
     y: 10,
@@ -21,41 +14,6 @@ function Quadtree(boundaries, maxChildren, root, depth) {
   this.children = [];
 
 }
-
- // north america
-
-// northwest point
-// 67.5, -125.3
-
-// northeast point
-// 67.5, -67.8
-
-// southwest point
-// 10, -125.3
-
-// southeast point
-// 10, -67.8
-
-// total width 57.5
-
-
-
-
-
-// san francisco
-  // northwest point
-  // 37.809455, -122.525293
-
-  // northeast point
-  // 37.811552, -122.354177
-
-  // southwest point
-  // 37.613581, -122.510663
-
-  // southeast point
-  // 37.615192, -122.351613
-
-
 
 // if we do not check if the coordinate is in bounds the tree will sudivide forever once it reaches max children...
 Quadtree.prototype.inBounds = function(item) {
@@ -206,7 +164,7 @@ Quadtree.prototype.remove = function(item) {
   item.x = +item.x;
   item.y = +item.y;
   for (var i = 0; i < results.length; i++) {
-    if (results[i].userId === item.userId && results[i].x === item.x && results[i].y === item.y) {
+    if (results[i].userId === item.userId && results[i].timestamp === item.timestamp) {
       console.log('found a match = ' + results[i].userId);
       removedItem = results.splice(i, 1);
     }
@@ -257,10 +215,6 @@ Quadtree.prototype.traverse = function(callback, nodes) {
 }
 
 
-
-
-
-
 // broadcast function
 // use find then find others in same quadrant
 
@@ -307,9 +261,9 @@ Quadtree.prototype.subDivide = function() {
 };
 
 
-// this function will 
+// this function will reduce four quadrants in a node to just the parent, and distribute the nodes within those quadrants to the parent's 
+// children array
 
-// todo - verify that this works
 Quadtree.prototype.unfold = function(quad) {
 
   // check if root 
@@ -338,6 +292,9 @@ Quadtree.prototype.unfold = function(quad) {
     });
   }
  };
+
+// The Checkrange function will check if the radius of a broadcast events exceeds the boundaries of a quadrant, and if so the recursive process of finding
+// nodes will stop and the node containing all of the children will be returned in the 'get' function
 
 Quadtree.prototype.checkRange = function(coord, range) {
   var radius = coord.radius * 0.027065;

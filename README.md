@@ -8,6 +8,9 @@ The mobile client app was coded according to John Papa’s Angular style guide a
 
 The web client was built using React and utilizes the Google Maps api to show the history of an initial broadcast and any broadcasts that other users made. This dashboard can be visited at http://ripple.photos/dashboard and is hosted on an instance of an Amazon ECS server.
 
+The server portion of the app tracks all users with a quadtree data structure that lives in volatile memory and is continually cleaned of expired data and re-populated by the mobile client every one minute. The quadtree optimizes the entry and search of GPS coordinates to provide rapid communication between the client and the server to keep users constantly updated when new photos are taken and broadcast. As more and more users sign in on the app and are entered into the quadtree, it will subdivide and collapse quadrants when necessary and is fully self-maintaining.
+![spppq5](https://cloud.githubusercontent.com/assets/7958636/8152700/7c582ffa-12d5-11e5-8aa8-5b2639e4cfc0.gif)
+
 All photos are uploaded to an Amazon s3 bucket using a temporary signed policy that allows uploads from the devices and expires after a limited time. The server must sign and provide this policy to the client when a photo is taken, ensuring that proper security is upheld and preventing mass uploads of data or other manipulation.
 
 ![ripplePhoto](https://cloud.githubusercontent.com/assets/7958636/8152686/6beff634-12d5-11e5-9e4d-4fcb474a715c.png)
@@ -27,6 +30,3 @@ Location data is provided by the Cordova Geolocation plugin, and updates every m
 The server uses Node.js, Express and MongoDB to save photo metadata, broadcast history and user data. A quadtree data structure and queue system are used to keep location data current and immediately retrievable. Stress testing has shown the system is capable of handling over one million simultaneous users without hampering the user experience.
 
 The server is hosted on an Amazon ECS instance running Ubuntu 14.10 and  setup with continuous integration with Gulp and secure ssh connections between the development team, GitHub and Amazon. 
-
-All users are tracked using a quadtree data structure that lives in volatile memory and is continually cleaned of expired data and re-populated by the mobile client every one minute. The quadtree optimizes the entry and search of GPS coordinates to provide rapid communication between the client and the server to keep users constantly updated when new photos are taken and broadcast. As more and more users sign in on the app and are entered into the quadtree, it will subdivide and collapse quadrants when necessary and is fully self-maintaining.
-![spppq5](https://cloud.githubusercontent.com/assets/7958636/8152700/7c582ffa-12d5-11e5-8aa8-5b2639e4cfc0.gif)

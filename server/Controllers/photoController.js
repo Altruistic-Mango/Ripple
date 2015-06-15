@@ -7,12 +7,11 @@ var userController = require('../Controllers/userController.js');
 
 var photoController = {
 
-  storePhoto: function(req, res) {
+// The store photo function is used whenever a new photo is taken by the client and shared. The photo metadata is created and saved to the database
+// after the photo has been uploaded to the Amazon S3 bucket. Once the photo metadata is saved, the storePhoto function calls the broadcast event function
+// on the event Controller, which starts the process of updating all of the local users' inboxes with the photo.
 
-    // incoming photo: '{"userId: "", "photoId": "", "timestamp": "", "x":"", "y": "", "radius": "", "TTL":""}'
-// curl -H "Content-Type:application/json" -X POST -d '{"userId: "9651598", "photoId": "11111111", "timestamp": "1432937843430", "x":"-122.4093594", "y": "37.783795", "radius": "10000", "TTL":"100000000"} http://localhost:3000/photos/newPhoto
-// {userId: "9651598", y: 37.783795, x: -122.4093594, timestamp: 1432937843430}
-    // res();
+  storePhoto: function(req, res) {
     console.log(JSON.stringify(req.body));
     var TTL = +req.body.TTL * 60000;
     var userId = req.body.userId;

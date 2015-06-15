@@ -23,16 +23,14 @@ var gpsController = {
     var node = {
       x: +req.body.x,
       y: +req.body.y,
-      userId: userId
+      userId: userId,
+      timestamp: timestamp
     };
 
       quadtree.update(node);
-
-      node.timestamp = timestamp;
-
       queue.addToQueue(node);
 
-      userController.retrieveInbox(userId, node, function(inbox) {
+      userController.updateInbox(userId, node, function(inbox) {
         res.send(inbox);
       });
     }
@@ -63,7 +61,11 @@ var gpsController = {
 
   },
 
-  // this function will traverse through the entire quadtree and delete any nodes that are past their expiration, and is executed every two minutes
+  // this function will delete any nodes that are past their expiration, and is called every second. The function will take a node from the queue
+  // thta is due to be removed, and will call the quadtree's remove function and pass in the node returned from the queue. If a node has been updated
+  // with more recent coordinates and a new timestamp, the function will not remove it. This ensures that only nodes with old timestamps will be 
+  // removed.
+
   pruneTree: function() {
     var self = this;
     var node = queue.removeFromQueue();
@@ -76,10 +78,10 @@ var gpsController = {
     }, 1000);
   },
 
-  // This will get the distance between two coordinates
+  // This will get the distance between two coordinates. The formula used below is the Haversine formula, which takes the arc of the earth's surface
+  // into account when performing proximity calculations.
 
   calculateDist: function(item1, nodes) {
-
     var nodeObj = {},
       nodes = nodes || this.getNodes(item1),
       recipients = [];

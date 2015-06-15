@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var userController = {
 
+  // This function will generate a unique user ID for a user on signup.
   generateUserId: function() {
     var id = "";
     while (id.length < 7) {
@@ -12,8 +13,8 @@ var userController = {
     return id;
   },
 
+  // This function saves a new user into the database and encrypts that user's password.
   signupUser: function(req, res) {
-
     var username = req.body.username;
     var password = bcrypt.hashSync(req.body.password);
     var email = req.body.email;
@@ -35,7 +36,10 @@ var userController = {
             console.log(err);
             res.status(500).send(err);
           }
-          res.status(200).send(newUser);
+          else {
+            newUser.newUser = true;
+            res.status(200).send(newUser);
+          }
         });
       } 
       else {
@@ -45,6 +49,7 @@ var userController = {
         }
       })
   },
+
 
   retrieveUsers: function(req, res, cb) {
     User.find({}, function(err, data) {
@@ -57,6 +62,8 @@ var userController = {
     });
   },
 
+  // This signup function can be used for users who sign up through the app or using their facebook accounts to authenticate. Depending on the size
+  // of the password, the server will determine which method the client used to authenticate, and reacts appropriately.
   signinUser: function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -93,6 +100,8 @@ var userController = {
     });
   },
 
+// The facebook sign in function checks the user's access token that is sent by facebook against the user record in the database. If the user
+// does not exist, this function will create him or her.
   fbSignin: function(req, res) {
     var self = this;
     var fbId = +req.body.password;
@@ -129,6 +138,7 @@ var userController = {
     })
   },
 
+// this function is used by other functions in the user controller to retrieve a user by userid, username or facebook access token when logging in.
   getUserFromDB: function(person, cb) {
     if (person.uuId) {
       User.findOne({
@@ -170,13 +180,11 @@ var userController = {
     }
   },
 
-  updateInbox: function(userId, eventObj) {
-    this.retrieveInbox(userId, eventObj, function(inbox) {
-      console.log('inbox = ' + inbox);
-    });
-  },
+  // this function takes in an event object from the event controller, and either updates the inbox and returns the inbox to be sent to the client,
+  // or simply returns the inbox to the client if no event object is passed in. It also performs checks to be sure that no event broadcast is added
+  // to the inbox more than once, and that there are no expired items in the user's inbox.
 
-  retrieveInbox: function(userId, eventObj, cb) {
+  updateInbox: function(userId, eventObj, cb) {
 
     if (eventObj && eventObj.photoId) {
       var caption = eventObj.caption || "";
@@ -199,26 +207,20 @@ var userController = {
       }
 
       else if (user) {
-
+        // any items that have expired do not remain in the inbox, depending on the time to live on the event and the current time
         var newInbox = user.inbox.reduce(function(acc, inboxItem) {
-          console.log('removing items from inbox. \n this is the event obj timestamp: ' + eventObj.timestamp +
-            '\n this is the inboxItem timestamp: ' + inboxItem.timestamp + '\n this is the inboxItem.TTL : ' + inboxItem.TTL +
-            '\n this is the difference: ' + (eventObj.timestamp - inboxItem.timestamp));
+ 
 
           var diff = eventObj.timestamp - inboxItem.timestamp;
-          console.log(diff < inboxItem.TTL);
           if (diff < inboxItem.TTL) {
-            console.log('inboxItem ' + inboxItem + ' passed the test')
-
             acc.push(inboxItem);
           }
-
           return acc;
         }, []);
 
+        // this function will check the current inbox to ensure that no duplicates are entered into the user's inbox
         if (broadcastEvent) {
           var bool = true;
-
           newInbox.reduce(function(bool, eventItem) {
             if (bool && eventItem.photoId !== eventObj.photoId) {
               return true;
@@ -226,14 +228,13 @@ var userController = {
           }, true);
 
           if (bool) {
-            console.log('check did not find a match in user inbox, saving');
             newInbox.push(broadcastEvent);
             user.inbox = newInbox;
             user.save();
           }
 
         }
-
+        // save the inbox to the user object in the database
         user.update({
           inbox: newInbox
         }, function(err, data) {
@@ -245,6 +246,7 @@ var userController = {
     })
   },
 
+  // this function is triggered by the client's saving a broadcast item to their album for later viewing
   insertBroadcastItem: function(userId, photoId, caption) {
     User.findOneAndUpdate({userId: userId}, {$push: {album: {photoId: photoId, caption: caption}}}, function(error, user){
       if (error) console.log(error);
@@ -252,6 +254,7 @@ var userController = {
     })
   },
 
+  // this function will clear out a user's inbox entirely.
   cullInbox: function(userId, photoId) {
     var query = {
       userId: userId
@@ -276,6 +279,7 @@ var userController = {
     });
   },
 
+
   addToAlbum: function(req, res) {
     console.log('addToAlbum: ', JSON.stringify(req.body));
     User.findOneAndUpdate({userId: req.body.userId}, {$push: {album: {photoId: req.body.photoId, caption: req.body.caption}}}, function(error, user){
@@ -287,6 +291,7 @@ var userController = {
     });
   },
 
+  // this function clears out a user's album entirely
   cullAlbum: function(req, res, userId, photoId) {
     var query = {
       userId: userId
@@ -315,6 +320,7 @@ var userController = {
     });
   },
 
+  // 
   getAlbum: function(req, res) {
     console.log('USERID: ', req.params.userId);
     var userId = req.params.userId;
