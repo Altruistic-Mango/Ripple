@@ -13,7 +13,7 @@ function SettingsCtrl($http, $state, $timeout, $ionicHistory, ionicMaterialInk, 
 
   vm.settings = User.settings();
   vm.toggleEnable = toggleEnable;
-  vm.setTrickle = setTrickle;
+  //vm.setTrickle = setTrickle;
   vm.saveSettings = saveSettings;
   vm.logOut = logOut;
 
@@ -27,9 +27,9 @@ function SettingsCtrl($http, $state, $timeout, $ionicHistory, ionicMaterialInk, 
     SettingsFactory.setWatch(vm.settings.enabled);
   }
 
-  function setTrickle() {
-    User.settings(vm.settings.trickle);
-  }
+  // function setTrickle() {
+  //   User.settings(vm.settings.trickle);
+  // }
 
   function logOut() {
     User.isSignedIn(false);
