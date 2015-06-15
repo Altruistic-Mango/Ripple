@@ -41,7 +41,7 @@ function CameraFactory($state) {
         pictureSource = navigator.camera.PictureSourceType.CAMERA;
         destinationType = navigator.camera.DestinationType.FILE_URI;
         options = {
-          quality: 5,
+          quality: 50,
           destinationType: destinationType,
           sourceType: pictureSource,
           encodingType: Camera.EncodingType.JPEG,
@@ -87,6 +87,7 @@ function CameraFactory($state) {
       console.log('getFile failed because: ' + message);
     }
   }
+
 
   function registerObserverCallback(callback) {
     observerCallbacks.push(callback);

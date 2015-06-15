@@ -35,7 +35,7 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFac
   $scope.$on('updateInbox', function(event, photos) {
     console.log('onUpdateInbox');
     vm.add(photos, vm.inbox);
-
+    AlbumFactory.createThumbData(vm.inbox);
     //Dummy photo for testing
     // if (!vm.inbox.length) {
     //   var photo = {

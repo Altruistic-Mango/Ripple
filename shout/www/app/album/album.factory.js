@@ -2,9 +2,9 @@ angular
   .module('shout.album')
   .factory('AlbumFactory', AlbumFactory);
 
-AlbumFactory.$inject = ['$rootScope', '$http', 'User', 'API_HOST'];
+AlbumFactory.$inject = ['$rootScope', '$http', 'CameraFactory', 'User', 'API_HOST'];
 
-function AlbumFactory($rootScope, $http, User, API_HOST) {
+function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
   console.log('AlbumFactory');
 
   var services = {};
@@ -12,6 +12,7 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
   services.saveToAlbum = saveToAlbum;
   services.deleteFromAlbum = deleteFromAlbum;
   services.getAlbum = getAlbum;
+  services.createThumbData = createThumbData;
 
   return services;
 
@@ -72,6 +73,56 @@ function AlbumFactory($rootScope, $http, User, API_HOST) {
       .error(function() {
         console.log('error getting inbox'); 
       });
+  }
+
+  function createThumbData(album) {
+    album.forEach(function(photo) {
+      if (!photo.thumb) {
+        resizeFile(photo.url, function(imageData) {
+          photo.thumb = imageData;
+        });
+      }
+    });
+  }
+
+  function resizeFile(filePath, callback) {
+    var tempImg = new Image();
+    tempImg.src = filePath;
+    tempImg.onload = function() {
+
+      var MAX_WIDTH = 200;
+      var MAX_HEIGHT = 200;
+
+      srcSize = 0;
+      destSize = 0;
+      var dx = 0;
+      var dy = 0;
+
+      if (this.height >= this.width) {
+        srcSize = this.width;
+        destSize = srcSize;
+        while(destSize/2 >= 200) {
+          destSize = destSize/2;
+        }
+        dy = Math.floor((this.height-this.width)/2);
+      } else {
+        dx = Math.floor((this.height-this.width)/2);
+        srcSize = this.height;
+        destSize = srcSize;
+        while(destSize/2 >= 200) {
+          destSize = destSize/2;
+        }
+      }
+        
+      var canvas = document.createElement('canvas');
+      canvas.width = destSize;
+      canvas.height = destSize;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(this, dx, dy, srcSize, srcSize, 0, 0, destSize, destSize);
+      var dataURL = canvas.toDataURL("image/jpeg");
+      var imageData = ""+dataURL;
+      callback(imageData);
+    };
   }
 }
 

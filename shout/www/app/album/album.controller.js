@@ -10,7 +10,6 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   var vm = this;
 
   vm.album = User.album();
-  console.log(vm.album);
   vm.url = User.url;
   vm.deleteFromAlbum = deleteFromAlbum;
   vm.add = InboxFactory.add;
@@ -18,16 +17,17 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, User, $http, API_
   vm.openModal = openModal;
   vm.closeModal = closeModal;
   vm.getAlbum = getAlbum;
-  vm.clearView = clearView;
 
-  function clearView() {
-    console.log('clearView');
-  }
+  AlbumFactory.createThumbData(vm.album);
 
-  console.log(vm.album);
+  $scope.$on('updateAlbum', function(event) {
+    console.log('onUpdateAlbum');
+    vm.album = User.album();
+    AlbumFactory.createThumbData(vm.album);
+  });
 
   $scope.$on('updateInbox', function(event) {
-    console.log('onUpdateAlbum');
+    console.log('onUpdateInbox');
     vm.getAlbum();
   });
 
