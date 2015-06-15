@@ -25,7 +25,7 @@ function CameraFactory($state) {
     console.log('CameraFactory.takePicture');
     initialize(function() {
       getPicture(function(imageURI) {
-        $localstorage.set('imagePath', imageURI);
+        services.filePath =  imageURI;
         $state.go('review');
       });
     });
