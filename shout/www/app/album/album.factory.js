@@ -107,12 +107,12 @@ function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
         }
         dy = Math.floor((this.height-this.width)/2);
       } else {
-        dx = Math.floor((this.height-this.width)/2);
         srcSize = this.height;
         destSize = srcSize;
         while(destSize/2 >= 200) {
           destSize = destSize/2;
         }
+        dx = Math.floor((this.width-this.height)/2);
       }
         
       var canvas = document.createElement('canvas');
