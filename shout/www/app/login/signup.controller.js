@@ -18,7 +18,7 @@ function SignupCtrl($state, SignupFactory, $ionicPopup, ionicMaterialInk, User) 
   vm.signup = signup;
   vm.fbLogin = fbLogin;
 
-  ionicMaterialInk.displayEffect();
+  //ionicMaterialInk.displayEffect();
 
   //TODO: response message if username exists
   //TODO: form validation, no weird characters in username A-z0-9 only
