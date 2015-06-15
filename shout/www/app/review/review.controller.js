@@ -18,8 +18,6 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory, User) {
   vm.takePhoto = takePhoto;
   vm.savePhoto = savePhoto;
   vm.sharePhoto = sharePhoto;
-  vm.thumbsrc = "";
-  vm.thumbsrcJSON = {};
 
   function goInbox() {
     $state.go('tab.inbox');
@@ -35,11 +33,6 @@ function ReviewCtrl($state, ReviewFactory, CameraFactory, User) {
     console.log('displayPhoto');
     vm.caption = ""; //clear caption if new photo
     vm.photo = CameraFactory.filePath;
-    CameraFactory.getFile(function(file) {
-      resizeFile(CameraFactory.filePath, function(data) {
-        vm.thumbsrc = data;
-      });
-    });
   }
 
   //TODO: save to album

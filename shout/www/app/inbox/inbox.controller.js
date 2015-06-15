@@ -6,7 +6,7 @@ InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'Use
 
 function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST, $ionicModal) {
   console.log('InboxCtrl');
-  ionicMaterialInk.displayEffect({'duration':2000});
+  //ionicMaterialInk.displayEffect({'duration':2000});
 
   var vm = this;
 
