@@ -1,3 +1,8 @@
+// The queue is responsible for removing nodes from the quadtree that have remained in the quadtree for more than one minute. The queue will 
+// return any item that has expired, and checks the first item in the queue every one second. There are safeguards in place to keep the process
+// from removing items from the quadtree that are not due to be removed, such as an exact timestamp check for an item being used to identify the
+// correct node to be removed.
+
 function Queue() {
 	var _queue = [];
 

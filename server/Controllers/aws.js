@@ -4,12 +4,16 @@ var config = require('../lib/config/aws.json');
 var createS3Policy;
 var getExpiryTime;
 
+// The AWS module provides the client with the hash key used to send photos from the device to the Amazon S3 bucket.
+
+// This function provides the expiration configuration for the authentication token used to upload photos to Amazon S3
 getExpiryTime = function() {
   var _date = new Date();
   return '' + (_date.getFullYear()) + '-' + (_date.getMonth() + 1) + '-' +
     (_date.getDate() + 1) + 'T' + (_date.getHours() + 3) + ':' + '00:00.000Z';
 };
 
+// the S3 policy is used to create the policy object needed to upload to Amazon
 createS3Policy = function(contentType, callback) {
   var date = new Date();
   var s3Policy = {
