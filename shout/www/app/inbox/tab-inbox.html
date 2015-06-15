@@ -1,11 +1,11 @@
 <ion-view view-title="Inbox">
   <ion-content class="no-padding">
     <ion-list class="condensed-space no-padding" can-swipe="true">
-      <ion-item ng-repeat="photo in vm.inbox">
+      <ion-item collection-repeat="photo in vm.inbox track by $index" item-width="100%">
         <div class="card">
           <div class="row ripplecard">
             <div class="col ripplecard">
-              <div class="thumb" style="background-image: url({{photo.url}})" ng-click="vm.openModal(photo)"></div>
+              <div class="thumb" style="background-image: url({{photo.thumb}})" ng-click="vm.openModal(photo)"></div>
             </div>
             <div class="col ripplecard">
               <p class="ripple-font">{{photo.caption}}</p>

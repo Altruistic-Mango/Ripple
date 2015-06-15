@@ -87,6 +87,7 @@ function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
 
   function resizeFile(filePath, callback) {
     var tempImg = new Image();
+    tempImg.crossOrigin="anonymous";
     tempImg.src = filePath;
     tempImg.onload = function() {
 
