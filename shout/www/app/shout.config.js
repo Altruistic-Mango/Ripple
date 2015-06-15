@@ -5,7 +5,7 @@ configure.$inject = ['$stateProvider', '$urlRouterProvider', '$compileProvider',
 
 function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDelegateProvider, $ionicConfigProvider) {
   console.log('shout configure');
-  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|data):/);
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
     'https://s3-us-west-1.amazonaws.com/ripple-photos/s3Upload/**'

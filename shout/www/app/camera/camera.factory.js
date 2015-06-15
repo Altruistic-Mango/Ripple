@@ -88,6 +88,7 @@ function CameraFactory($state) {
     }
   }
 
+
   function registerObserverCallback(callback) {
     observerCallbacks.push(callback);
   }
