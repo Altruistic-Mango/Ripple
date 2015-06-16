@@ -5,6 +5,7 @@ configure.$inject = ['$stateProvider', '$urlRouterProvider', '$compileProvider',
 
 function configure($stateProvider, $urlRouterProvider, $compileProvider, $sceDelegateProvider, $ionicConfigProvider) {
   console.log('shout configure');
+  
   $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|data):/);
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
