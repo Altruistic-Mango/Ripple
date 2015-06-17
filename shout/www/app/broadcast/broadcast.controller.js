@@ -2,9 +2,9 @@ angular
   .module('shout.broadcast')
   .controller('BroadCastCtrl', BroadCastCtrl);
 
-BroadCastCtrl.$inject = ['$http', '$state', '$ionicHistory', 'BroadCastFactory', 'CameraFactory', 'LocationFactory', 's3', 'API_HOST', 'User'];
+BroadCastCtrl.$inject = ['$http', '$state', '$ionicHistory', 'BroadCastFactory', 'CameraFactory', 'AlbumFactory', 'LocationFactory', 's3', 'API_HOST', 'User'];
 
-function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFactory, LocationFactory, s3, API_HOST, User) {
+function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFactory, AlbumFactory, LocationFactory, s3, API_HOST, User) {
   console.log('BroadCastCtrl');
 
   var vm = this;
@@ -41,7 +41,8 @@ function BroadCastCtrl($http, $state, $ionicHistory, BroadCastFactory, CameraFac
   function sharePhoto() {
     vm.toggleSpinner();
     console.log('BroadCastCtrl sharePhoto');
-    BroadCastFactory.newPhoto(vm.settings, function() {
+    BroadCastFactory.newPhoto(vm.settings, function(photo) {
+      AlbumFactory.saveToAlbum(photo);
       User.caption('');//clear caption
       vm.toggleSpinner();
       $state.go('tab.inbox');

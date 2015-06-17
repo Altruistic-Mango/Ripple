@@ -1,0 +1,15 @@
+<ion-modal-view>
+  <ion-content>
+    <div class="modal" ng-click="$scope.photo.closeModal()">
+      <ion-content>
+        <img src="{{$scope.photo.bigPhoto}}" style="display:block; width:100%; max-width:600px; margin:auto"/>
+        <div class='modalCaption'>
+          <div class="row ripplecardinfo">
+            <p class="ripple-font">{{$scope.photo.caption}}</p>
+            <br />
+            <p class="ripple-font">Ripple ID: {{$scope.photo.photoId}}</p>
+          </div>
+        </div>
+    </div>
+    </ion-content>
+</ion-modal-view>

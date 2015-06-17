@@ -2,37 +2,59 @@ angular
   .module('shout.inbox')
   .factory('InboxFactory', InboxFactory);
 
-InboxFactory.$inject = ['$rootScope', '$http', 'User', 'API_HOST'];
+InboxFactory.$inject = ['$rootScope', '$http', '$interval', 'CameraFactory', 'User', 'API_HOST'];
 
-function InboxFactory($rootScope, $http, User, API_HOST) {
+function InboxFactory($rootScope, $http, $interval, CameraFactory, User, API_HOST) {
   console.log('InboxFactory');
+
+  var inbox = [];
+  var timer = $interval(updateTimers, 1000);
+
+  requestInbox();
 
   var services = {};
 
-  services.requestInbox = requestInbox;
+  services.inbox           = inbox;
+  services.requestInbox    = requestInbox;
+  services.addToInbox      = addToInbox;
   services.deleteFromInbox = deleteFromInbox;
-  services.updateInbox = updateInbox;
-  services.newphotos = [];
-  services.add = add;
-  services.remove = remove;
+  services.newphotos       = [];
 
   return services;
 
+  function updateTimers() {
+    var photosToRemove = [];
+    inbox.forEach(function(photo) {
+      photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp) );
+      if (photo.timeRemaining <= 0)
+        photosToRemove.push(photo);
+    });
+    while(photosToRemove.length)
+      User.remove(photosToRemove.pop(), vm.inbox);
+  }
 
   function requestInbox() {
-    console.log('InboxFactory requestInbox');
-
     $http.get(API_HOST + '/users/inbox/' + User.userId())
       .success(function(data) {
-        updateInbox(data);
+        inbox = data;
+        
+        CameraFactory.createThumbData(inbox);
+        updateInbox();
       })
       .error(function() {
         console.log('error getting inbox'); 
       });
   }
 
+  function addToInbox(photos) {
+    User.add(photos, inbox);
+    updateInbox();
+  }
 
   function deleteFromInbox(photo) {
+    User.remove(photo, inbox);
+    updateInbox();
+
     var data = {
       userId: User.userId(),
       photoId: photo.photoId
@@ -40,39 +62,13 @@ function InboxFactory($rootScope, $http, User, API_HOST) {
 
     $http.post(API_HOST + '/photos/delete/', data)
       .success(function(data) {
-        console.log('success deleteing photo from inbox');
       })
       .error(function() {
         console.log('error deleting photo from inbox');
       });
   }
 
-  function updateInbox(photos) {
-    $rootScope.$broadcast('updateInbox', photos);
+  function updateInbox() {
+    $rootScope.$broadcast('updateInbox', inbox);
   }
-    
-  function add(photos, collection) {
-    if (!(photos instanceof Array))
-      photos = [photos];
-
-    var photoIds = {};
-
-    collection.forEach(function(photo) {
-      photoIds[photo.photoId] = true;
-    });
-
-    photos.forEach(function(photo) {
-      if (!photoIds.hasOwnProperty(photo.photoId)) {
-        collection.push(photo);
-        photo.url = User.url(photo.photoId);
-      }
-    });
-  }
-
-  function remove(photo, collection) {
-    var index = collection.indexOf(photo);
-    if (index !== -1)
-      collection.splice(index, 1);
-  }
-
 }

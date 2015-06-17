@@ -2,9 +2,9 @@ angular
   .module('shout.camera')
   .factory('CameraFactory', CameraFactory);
 
-CameraFactory.$inject = ['$state'];
+CameraFactory.$inject = ['$state', 'User'];
 
-function CameraFactory($state) {
+function CameraFactory($state, User) {
   console.log('CameraFactory');
 
   var pictureSource;
@@ -13,13 +13,14 @@ function CameraFactory($state) {
   var observerCallbacks = [];
 
   var services = {};
+
   services.takePicture = takePicture;
   services.getFile = getFile;
   services.filePath = '';
+  services.createThumbData = createThumbData;
   services.registerObserverCallback = registerObserverCallback;
 
   return services;
-
 
   function takePicture() {
     console.log('CameraFactory.takePicture');
@@ -99,6 +100,61 @@ function CameraFactory($state) {
     function failure(message) {
       console.log('getFile failed because: ' + message);
     }
+  }
+
+  function createThumbData(collection) {
+    if(! (collection instanceof Array) )
+      collection = [collection];
+
+    collection.forEach(function(photo) {
+      if (!photo.thumb) {
+        photo.url = photo.url || User.url(photo.photoId);
+        resizeFile(photo.url, function(imageData) {
+          photo.thumb = imageData;
+        });
+      }
+    });
+  }
+
+  function resizeFile(filePath, callback) {
+    var tempImg = new Image();
+    tempImg.crossOrigin="anonymous";
+    tempImg.src = filePath;
+    tempImg.onload = function() {
+
+      var MAX_WIDTH = 200;
+      var MAX_HEIGHT = 200;
+
+      srcSize = 0;
+      destSize = 0;
+      var dx = 0;
+      var dy = 0;
+
+      if (this.height >= this.width) {
+        srcSize = this.width;
+        destSize = srcSize;
+        while(destSize/2 >= 200) {
+          destSize = destSize/2;
+        }
+        dy = Math.floor((this.height-this.width)/2);
+      } else {
+        srcSize = this.height;
+        destSize = srcSize;
+        while(destSize/2 >= 200) {
+          destSize = destSize/2;
+        }
+        dx = Math.floor((this.width-this.height)/2);
+      }
+
+      var canvas = document.createElement('canvas');
+      canvas.width = destSize;
+      canvas.height = destSize;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(this, dx, dy, srcSize, srcSize, 0, 0, destSize, destSize);
+      var dataURL = canvas.toDataURL("image/jpeg");
+      var imageData = ""+dataURL;
+      callback(imageData);
+    };
   }
 
 
