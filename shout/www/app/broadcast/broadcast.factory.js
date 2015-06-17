@@ -49,7 +49,7 @@ function BroadCastFactory($rootScope, $state, $http, LocationFactory, CameraFact
     if (pos.userId && pos.x && pos.y) {
       photo = _.extend(photo, pos);
       photo.timestamp = Date.now();
-      $http.post(API_HOST + '/events/broadcast', broadcastEvent)
+      $http.post(API_HOST + '/events/broadcast', photo)
         .success(function() {
           cb();
         });
