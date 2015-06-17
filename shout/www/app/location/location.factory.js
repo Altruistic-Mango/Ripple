@@ -17,22 +17,18 @@ function LocationFactory($http, InboxFactory, API_HOST, User) {
 
   return services;
 
-
   function triggerPingInterval() {
     sendPosition();
     intervalId = setInterval(sendPosition, 60000);
   }
 
-
   function clearPingInterval() {
     clearInterval(intervalId);
   }
 
-
   function getUsersPosition(){
     return currentPosition;
   }
-
 
   function sendPosition() {
     console.log('sendPosition');
@@ -43,7 +39,7 @@ function LocationFactory($http, InboxFactory, API_HOST, User) {
       if (currentPosition.x && currentPosition.y) {
         $http.post(API_HOST + '/gps/position', currentPosition)
           .success(function(data) {
-            InboxFactory.updateInbox(data);
+            InboxFactory.addToInbox(data);
         });
       } else {
         console.log('Error: Incomplete Position Data');
@@ -51,12 +47,10 @@ function LocationFactory($http, InboxFactory, API_HOST, User) {
     });
   }
 
-
   function getCurrentPosition(successCallback, errorCallback) {
     console.log('getCurrentPosition');
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
-
 
   function setPosition(position) {
     currentPosition = {
@@ -67,7 +61,6 @@ function LocationFactory($http, InboxFactory, API_HOST, User) {
     };
     console.log('currentPosition', currentPosition);
   }
-
 
   function errorCallback(error) {
     console.log('error getting position: ', error);

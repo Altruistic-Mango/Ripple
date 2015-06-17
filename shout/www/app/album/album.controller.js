@@ -2,51 +2,34 @@ angular
   .module('shout.album')
   .controller('AlbumCtrl', AlbumCtrl);
 
-AlbumCtrl.$inject = ['$scope', '$state', 'AlbumFactory', 'InboxFactory', 'CameraFactory', 'User', '$http', 'API_HOST', '$ionicModal'];
+AlbumCtrl.$inject = ['$scope', '$state', '$http', '$ionicModal', 'AlbumFactory', 'InboxFactory', 'CameraFactory', 'User', 'API_HOST'];
 
-function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, User, $http, API_HOST, $ionicModal) {
+function AlbumCtrl($scope, $state, $http, $ionicModal, AlbumFactory, InboxFactory, CameraFactory, User, API_HOST) {
   console.log('AlbumCtrl');
 
   var vm = this;
 
-  vm.album = User.album();
-  vm.url = User.url;
+  vm.album           = User.album(); 
+  vm.getItemHeight   = getItemHeight;
   vm.deleteFromAlbum = deleteFromAlbum;
-  vm.add = InboxFactory.add;
-  vm.remove = InboxFactory.remove;
-  vm.openModal = openModal;
-  vm.closeModal = closeModal;
-  vm.getAlbum = getAlbum;
-  vm.getItemHeight = getItemHeight;
-  vm.takePhoto = CameraFactory.takePicture;
+  vm.openModal       = openModal;
+  vm.closeModal      = closeModal;
+  vm.takePhoto       = CameraFactory.takePicture;
+
+  $scope.$on('updateAlbum', function(event, album) {
+    vm.album = album;
+  });
 
   function getItemHeight() {
     var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     return Math.floor(width/2);
   }
 
-  $scope.$on('updateAlbum', function(event) {
-    console.log('onUpdateAlbum');
-    AlbumFactory.createThumbData(vm.album);
-  });
-
-  $scope.$on('updateInbox', function(event) {
-    console.log('onUpdateInbox');
-    vm.getAlbum();
-  });
-
   function deleteFromAlbum(photo) {
-    console.log('deleteFromAlbum');
-    vm.remove(photo, vm.album);
-    User.album('remove', photo);
     AlbumFactory.deleteFromAlbum(photo);
   }
 
-  function getAlbum() {
-    console.log('called getAlbum on album controller');
-    AlbumFactory.getAlbum();
-  }
-
+  //MODAL
   $ionicModal.fromTemplateUrl('app/modal/imgView.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -56,7 +39,7 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, Us
 
   function openModal(photo) {
     vm.photoId = photo.photoId;
-    vm.bigPhoto = vm.url(vm.photoId);
+    vm.bigPhoto = User.url(vm.photoId);
     vm.caption = photo.caption;
     $scope.modal.show();
   }
@@ -65,5 +48,6 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, Us
     console.log('close modal');
     $scope.modal.hide();
   }
+
 }
 

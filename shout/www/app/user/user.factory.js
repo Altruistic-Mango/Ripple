@@ -28,6 +28,8 @@ function User($localstorage) {
   services.settings = settings;
   services.album = album;
   services.fbId = fbId;
+  services.add = add;
+  services.remove = remove;
 
   return services;
 
@@ -159,33 +161,38 @@ function User($localstorage) {
     if (arguments.length === 0)
       return user.album;
     else if (addRemove === 'add')
-      add(photo);
+      add(photo, user.album);
     else if (addRemove === 'remove')
-      remove(photo);
+      remove(photo, user.album);
+  }
 
-    function add(photo) {
-      var photoIds = {};
+  function add(photos, collection) {
+    var added = false;
 
-      user.album.forEach(function(photo) {
-        photoIds[photo.photoId] = true;
-      });
+    if (!(photos instanceof Array))
+      photos = [photos];
 
+    var photoIds = {};
+
+    collection.forEach(function(photo) {
+      photoIds[photo.photoId] = true;
+    });
+
+    photos.forEach(function(photo) {
       if (!photoIds.hasOwnProperty(photo.photoId)) {
-        user.album.push(photo);
-        save(user);
-        return true;
+        collection.push(photo);
+        photo.url = url(photo.photoId);
+        added = true;
       }
+    });
 
-      return false;
-    }
+    return added;
+  }
 
-    function remove(photo) {
-      var index = user.album.indexOf(photo);
-      if (index !== -1)
-        user.album.splice(index, 1);
-      save(user);
-    }
-
+  function remove(photo, collection) {
+    var index = collection.indexOf(photo);
+    if (index !== -1)
+      collection.splice(index, 1);
   }
 
   //Internal Functions

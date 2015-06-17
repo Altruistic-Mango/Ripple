@@ -10,14 +10,13 @@ function SettingsFactory(LocationFactory, InboxFactory, $http, API_HOST, $locals
   var services = {};
 
   services.setSettings = setSettings;
-  services.emptyInbox = emptyInbox;
+  //services.emptyInbox = emptyInbox;
   services.setWatch = setWatch;
   services.radius = radius;
   services.TTL = TTL;
   
   return services;
 
-  //TODO: set to local storage
   function setWatch(watch) {
     console.log('settings factory set watch called with watch: ', watch);
     if (!watch) {
@@ -28,7 +27,6 @@ function SettingsFactory(LocationFactory, InboxFactory, $http, API_HOST, $locals
     }
   }
 
-  //TODO:  save to local storage
   function setSettings(userRadius, userTTL) {
     console.log('settings set in factory: ', TTL, radius);
     if (userRadius !== radius) {
@@ -39,11 +37,11 @@ function SettingsFactory(LocationFactory, InboxFactory, $http, API_HOST, $locals
     }
   }
 
-  function emptyInbox() {
-    var user = $localstorage.getObject('user');
-    $http.get(API_HOST + '/users/deleteInbox/' + user.userId).success(function(data) {
-        InboxFactory.updateInbox(data);
-      });
-  }
+  // function emptyInbox() {
+  //   var user = $localstorage.getObject('user');
+  //   $http.get(API_HOST + '/users/deleteInbox/' + user.userId).success(function(data) {
+  //       //InboxFactory.updateInbox(data);
+  //     });
+  // }
 
 }

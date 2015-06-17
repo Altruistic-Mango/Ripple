@@ -1,19 +1,14 @@
 <ion-modal-view>
-    </ion-header-bar>
+  <div class="modal" ng-click="vm.closeModal()">
     <ion-content>
-
-         <div class="modal" ng-click="vm.closeModal()">
-              <ion-content>
-
-                <img src="{{vm.bigPhoto}}" style="display:block; width:100%; max-width:600px; margin:auto"/>
-        		<div class='modalCaption'>
-        		<div class="row ripplecardinfo">
-        		<p class="ripple-font">{{vm.caption}}</p><br />
-                <p class="ripple-font">Ripple ID: {{vm.photoId}}</p>
-                </div>
-        		</div>
-               
-
-            </div>
-    </ion-content>
-  </ion-modal-view>
+      <img src="{{vm.bigPhoto}}" style="display:block; width:100%; max-width:600px; margin:auto" alt="No Image Found">
+      <div class='modalCaption'>
+        <div class="row ripplecardinfo">
+          <p class="ripple-font">{{vm.caption}}</p>
+          <br />
+          <p class="ripple-font">Ripple ID: {{vm.photoId}}</p>
+        </div>
+      </div>
+  </div>
+  </ion-content>
+</ion-modal-view>
