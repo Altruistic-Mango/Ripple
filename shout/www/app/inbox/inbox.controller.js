@@ -6,69 +6,38 @@ InboxCtrl.$inject = ['$scope', '$interval', 'InboxFactory', 'AlbumFactory', 'Cam
 
 function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, CameraFactory, User, LoginFactory, BroadCastFactory, ionicMaterialInk, API_HOST, $ionicModal) {
   console.log('InboxCtrl');
-  //ionicMaterialInk.displayEffect({'duration':2000});
 
   var vm = this;
 
-  vm.inbox = [];
-  vm.url = User.url;
+  vm.inbox           = [];
+  vm.url             = User.url;
   vm.deleteFromInbox = deleteFromInbox;
-  vm.saveToAlbum = saveToAlbum;
-  vm.reBroadCast = reBroadCast;
-  vm.refresh = refresh;
-  vm.add = InboxFactory.add;
-  vm.remove = InboxFactory.remove;
-  vm.isDisabled = {};
-  vm.openModal = openModal;
-  vm.closeModal = closeModal;
-  vm.takePhoto = CameraFactory.takePicture;
-
-  vm.getItemHeight = getItemHeight;
-
-  function getItemHeight() {
-    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    return Math.floor(width/2);
-  }
-
-  //When the controller is loaded, see if the user is logged in, start sending GPS
+  vm.saveToAlbum     = saveToAlbum;
+  vm.reBroadCast     = reBroadCast;
+  vm.refresh         = refresh;
+  vm.add             = InboxFactory.add;
+  vm.remove          = InboxFactory.remove;
+  vm.isDisabled      = {};
+  vm.openModal       = openModal;
+  vm.closeModal      = closeModal;
+  vm.takePhoto       = CameraFactory.takePicture;
+  vm.getItemHeight   = getItemHeight;
+  
+  //check login, redirect if necessary
   LoginFactory.checkLogin();
 
-  //when the controller is instantiated the first thing it does is call refresh
-  //which calls a function that requests the inbox from factory
+  //load inbox
   vm.refresh();
-
-  //update inbox when changed by factory
-  $scope.$on('updateInbox', function(event, photos) {
-    console.log('onUpdateInbox');
-    vm.add(photos, vm.inbox);
-    AlbumFactory.createThumbData(vm.inbox);
-    //Dummy photo for testing
-    // if (!vm.inbox.length) {
-    //   var photo = {
-    //     photoId: 'goldengate',
-    //     timestamp: Date.now(), 
-    //     TTL: 5*1000*60,
-    //     caption: 'The beautiful Golden Gate Bridge',
-    //     url: vm.url('goldengate')
-    //   };
-    //   vm.add(photo, vm.inbox);
-    // }
-    $scope.$broadcast('scroll.refreshComplete');
-  });
 
   //timer to update TTLs on images
   timer = $interval(updateTimers, 1000);
 
-  function updateTimers() {
-    var photosToRemove = [];
-    vm.inbox.forEach(function(photo) {
-      photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp) );
-      if (photo.timeRemaining <= 0)
-        photosToRemove.push(photo);
-    });
-    while(photosToRemove.length)
-      vm.remove(photosToRemove.pop(), vm.inbox);
-  }
+  $scope.$on('updateInbox', function(event, photos) {
+    console.log('onUpdateInbox');
+    vm.add(photos, vm.inbox);
+    AlbumFactory.createThumbData(vm.inbox);
+    $scope.$broadcast('scroll.refreshComplete');
+  });
 
   $ionicModal.fromTemplateUrl('app/modal/imgView.html', {
     scope: $scope,
@@ -83,10 +52,21 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, CameraFactory,
     vm.caption = photo.caption;
     $scope.modal.show();
   }
-  
+
   function closeModal() {
     console.log('close modal');
     $scope.modal.hide();
+  }
+
+  function updateTimers() {
+    var photosToRemove = [];
+    vm.inbox.forEach(function(photo) {
+      photo.timeRemaining = (photo.TTL - (Date.now() - photo.timestamp) );
+      if (photo.timeRemaining <= 0)
+        photosToRemove.push(photo);
+    });
+    while(photosToRemove.length)
+      vm.remove(photosToRemove.pop(), vm.inbox);
   }
 
   function deleteFromInbox(photo) {
@@ -98,17 +78,21 @@ function InboxCtrl($scope, $interval, InboxFactory, AlbumFactory, CameraFactory,
     AlbumFactory.saveToAlbum(photo);
   }
 
-  //TODO: check if photo has been broadcast already?
   function reBroadCast(photo) {
     var rebroadcastPhoto = _.clone(photo);
     BroadCastFactory.reBroadCast(rebroadcastPhoto, function() {
-      vm.isDisabled[photo.photoId] = true; 
+      vm.isDisabled[photo.photoId] = true;
     });
   }
 
   function refresh() {
     console.log('refresh');
     InboxFactory.requestInbox();
+  }
+
+  function getItemHeight() {
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    return Math.floor(width/2);
   }
 
 }

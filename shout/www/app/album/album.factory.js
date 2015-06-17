@@ -66,20 +66,22 @@ function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
         data.forEach(function(photo) {
           console.log(JSON.stringify(photo));
           photo.url = User.url(photo.photoId);
-          saveToAlbum(photo);
         });
+        saveToAlbum(photo);
+        $rootScope.$broadcast('updateAlbum');
       })
       .error(function() {
-        console.log('error getting inbox'); 
+        console.log('error getting inbox');
       });
   }
 
-  function createThumbData(album) {
-    album.forEach(function(photo) {
-      if (!photo.thumb) {
+  function createThumbData(collection) {
+    collection.forEach(function(photo) {
+      if (!photo.hasOwnProperty('thumb')) {
         resizeFile(photo.url, function(imageData) {
           photo.thumb = imageData;
         });
+        while(!photo.thumb);
       }
     });
   }
@@ -113,7 +115,7 @@ function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
         }
         dx = Math.floor((this.width-this.height)/2);
       }
-        
+
       var canvas = document.createElement('canvas');
       canvas.width = destSize;
       canvas.height = destSize;
