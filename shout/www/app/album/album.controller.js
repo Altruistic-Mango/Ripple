@@ -29,7 +29,6 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, Us
 
   $scope.$on('updateAlbum', function(event) {
     console.log('onUpdateAlbum');
-    vm.album = User.album();
     AlbumFactory.createThumbData(vm.album);
   });
 
