@@ -25,8 +25,6 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, Us
     return Math.floor(width/2);
   }
 
-  AlbumFactory.createThumbData(vm.album);
-
   $scope.$on('updateAlbum', function(event) {
     console.log('onUpdateAlbum');
     AlbumFactory.createThumbData(vm.album);
@@ -50,10 +48,10 @@ function AlbumCtrl($scope, $state, AlbumFactory, InboxFactory, CameraFactory, Us
   }
 
   $ionicModal.fromTemplateUrl('app/modal/imgView.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-  }).then(function(modal) {
-      $scope.modal = modal;
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+    $scope.modal = modal;
   });
 
   function openModal(photo) {

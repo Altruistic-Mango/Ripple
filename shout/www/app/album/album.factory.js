@@ -77,11 +77,10 @@ function AlbumFactory($rootScope, $http, CameraFactory, User, API_HOST) {
 
   function createThumbData(collection) {
     collection.forEach(function(photo) {
-      if (!photo.hasOwnProperty('thumb')) {
+      if (!photo.thumb) {
         resizeFile(photo.url, function(imageData) {
           photo.thumb = imageData;
         });
-        while(!photo.thumb);
       }
     });
   }
